@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useState } from 'react'
+import PageSeo from '../components/seo/PageSeo'
 import Badge from '../components/ui/Badge'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
@@ -57,6 +58,12 @@ function Academics() {
 
   return (
     <div className="bg-surface-white">
+      <PageSeo
+        canonicalPath="/academics"
+        description="Explore the Nursery, Primary, and JSS academic programmes at KBS Nigeria, including subjects, activities, and curriculum alignment."
+        title="Academics | KBS Nigeria"
+      />
+
       <section className="overflow-hidden bg-[var(--gradient-hero)] text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
           <motion.div className="max-w-3xl space-y-5" {...fadeUpMotion(prefersReducedMotion)}>

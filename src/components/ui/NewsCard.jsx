@@ -10,7 +10,7 @@ function NewsCard({ category = 'News', coverImage, date, excerpt, slug, title })
     <Card className="overflow-hidden p-0">
       <div className="aspect-[16/10] w-full overflow-hidden bg-surface-grey">
         {coverImage ? (
-          <img alt={title} className="h-full w-full object-cover" loading="lazy" src={coverImage} />
+          <img alt={title} className="h-full w-full object-cover" height="750" loading="lazy" src={coverImage} width="1200" />
         ) : (
           <div className="flex h-full items-center justify-center text-kbs-lavender">
             <Newspaper className="h-12 w-12" />
@@ -27,7 +27,7 @@ function NewsCard({ category = 'News', coverImage, date, excerpt, slug, title })
           <p className="font-body text-base leading-7 text-text-medium">{excerpt}</p>
         </div>
         <Link
-          className="inline-flex items-center gap-2 font-body text-sm font-semibold text-kbs-cyan transition-colors duration-200 hover:text-kbs-purple"
+          className="inline-flex min-h-11 items-center gap-2 font-body text-sm font-semibold text-kbs-cyan transition-colors duration-200 hover:text-kbs-purple"
           to={`/news/${slug}`}
         >
           <span>Read more</span>

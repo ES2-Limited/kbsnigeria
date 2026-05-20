@@ -1,11 +1,12 @@
 // Admin layout with desktop sidebar and mobile top tabs.
 
-import { FolderOpen, Image, Newspaper, Send } from 'lucide-react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { FolderOpen, Image, LayoutDashboard, LogOut, Newspaper, Send } from 'lucide-react'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { cn } from '../../lib/cn'
+import { supabase } from '../../lib/supabase'
 
 const adminItems = [
-  { label: 'Dashboard', to: '/admin', end: true, icon: null },
+  { label: 'Dashboard', to: '/admin/dashboard', icon: LayoutDashboard },
   { label: 'Gallery', to: '/admin/gallery', icon: Image },
   { label: 'News', to: '/admin/news', icon: Newspaper },
   { label: 'Resources', to: '/admin/resources', icon: FolderOpen },
@@ -33,6 +34,13 @@ function AdminNavLink({ item }) {
 }
 
 function AdminLayout({ children }) {
+  const navigate = useNavigate()
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    navigate('/admin', { replace: true })
+  }
+
   return (
     <div className="min-h-screen bg-white text-text-dark">
       <div className="border-b border-surface-grey bg-white px-4 py-4 sm:px-6 lg:hidden">
@@ -59,6 +67,14 @@ function AdminLayout({ children }) {
             </NavLink>
           ))}
         </nav>
+        <button
+          className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full bg-surface-grey px-4 py-2 font-body text-sm text-text-medium transition-colors duration-200 hover:text-kbs-navy"
+          onClick={handleSignOut}
+          type="button"
+        >
+          <LogOut className="h-4 w-4" />
+          <span>Sign Out</span>
+        </button>
       </div>
 
       <div className="mx-auto grid min-h-screen max-w-7xl lg:grid-cols-[16rem_1fr] lg:gap-8 lg:px-6 xl:px-8">
@@ -72,6 +88,14 @@ function AdminLayout({ children }) {
               <AdminNavLink item={item} key={item.to} />
             ))}
           </nav>
+          <button
+            className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full px-4 py-2 font-body text-sm text-text-medium transition-colors duration-200 hover:bg-white hover:text-kbs-navy"
+            onClick={handleSignOut}
+            type="button"
+          >
+            <LogOut className="h-4 w-4" />
+            <span>Sign Out</span>
+          </button>
         </aside>
 
         <main className="px-4 py-6 sm:px-6 lg:px-0 lg:py-8">

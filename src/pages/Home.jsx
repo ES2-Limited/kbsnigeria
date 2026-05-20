@@ -9,6 +9,7 @@ import Card from '../components/ui/Card'
 import EmptyState from '../components/ui/EmptyState'
 import Input from '../components/ui/Input'
 import NewsCard from '../components/ui/NewsCard'
+import PageSeo from '../components/seo/PageSeo'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
 import { useGallery } from '../hooks/useGallery'
@@ -140,8 +141,8 @@ function GallerySkeleton() {
 
 function Home() {
   const prefersReducedMotion = useReducedMotion()
-  const { news, loading: newsLoading, isEmpty: newsEmpty } = useNews({ limit: 3 })
-  const { images, loading: galleryLoading, isEmpty: galleryEmpty } = useGallery({ limit: 6 })
+  const { news, loading: newsLoading, error: newsError, isEmpty: newsEmpty } = useNews({ limit: 3 })
+  const { images, loading: galleryLoading, error: galleryError, isEmpty: galleryEmpty } = useGallery({ limit: 6 })
   const newsletter = useNewsletterSubscription()
   const [formData, setFormData] = useState({ name: '', email: '' })
 
@@ -161,6 +162,12 @@ function Home() {
 
   return (
     <div className="bg-surface-white">
+      <PageSeo
+        canonicalPath="/"
+        description="Discover Knowledgebased Basic Science Schools, FHA Lugbe, Abuja - a warm, modern nursery to JSS school for growing minds."
+        title="KBS Nigeria | Knowledgebased Basic Science Schools"
+      />
+
       <section className="overflow-hidden bg-[var(--gradient-hero)] text-white">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:grid-cols-2 lg:items-center lg:px-10 lg:pt-24">
           <div className="space-y-8">
@@ -326,7 +333,7 @@ function Home() {
               subtext="Stay up to date with school events, term updates, and important announcements for parents and pupils."
             />
             <Link
-              className="inline-flex items-center gap-2 font-body text-sm font-semibold text-kbs-cyan transition-colors duration-200 hover:text-kbs-purple"
+              className="inline-flex min-h-11 items-center gap-2 font-body text-sm font-semibold text-kbs-cyan transition-colors duration-200 hover:text-kbs-purple"
               to="/news"
             >
               <span>View all news</span>
@@ -335,8 +342,9 @@ function Home() {
           </div>
 
           {newsLoading ? <NewsSkeleton /> : null}
+          {!newsLoading && newsError ? <p className="font-body text-sm text-error">Unable to load the latest news right now.</p> : null}
 
-          {!newsLoading && !newsEmpty ? (
+          {!newsLoading && !newsError && !newsEmpty ? (
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {news.map((item) => (
                 <NewsCard
@@ -352,7 +360,7 @@ function Home() {
             </div>
           ) : null}
 
-          {!newsLoading && newsEmpty ? (
+          {!newsLoading && !newsError && newsEmpty ? (
             <EmptyState
               action={{ as: 'link', label: 'View News Page', to: '/news', variant: 'secondary' }}
               description="Published school updates will appear here as soon as they are added from the admin panel."
@@ -378,23 +386,26 @@ function Home() {
           </div>
 
           {galleryLoading ? <GallerySkeleton /> : null}
+          {!galleryLoading && galleryError ? <p className="font-body text-sm text-error">Unable to load gallery images right now.</p> : null}
 
-          {!galleryLoading && !galleryEmpty ? (
+          {!galleryLoading && !galleryError && !galleryEmpty ? (
             <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
               {images.map((image, index) => (
                 <div className="mb-4 break-inside-avoid overflow-hidden rounded-3xl bg-white shadow-sm" key={image.id}>
                   <img
                     alt={image.caption || `KBS gallery image ${index + 1}`}
                     className="h-auto w-full object-cover"
+                    height="900"
                     loading="lazy"
                     src={image.url}
+                    width="1200"
                   />
                 </div>
               ))}
             </div>
           ) : null}
 
-          {!galleryLoading && galleryEmpty ? (
+          {!galleryLoading && !galleryError && galleryEmpty ? (
             <EmptyState
               action={{ as: 'link', label: 'Visit Gallery', to: '/gallery', variant: 'secondary' }}
               description="Gallery images from school life will appear here once uploads are available."

@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Sitemap placeholder for KBS Nigeria. -->
+  <url>
+    <loc>https://kbsnigeria.com/</loc>
+  </url>
+  <url>
+    <loc>https://kbsnigeria.com/about</loc>
+  </url>
+  <url>
+    <loc>https://kbsnigeria.com/academics</loc>
+  </url>
+  <url>
+    <loc>https://kbsnigeria.com/admissions</loc>
+  </url>
+  <url>
+    <loc>https://kbsnigeria.com/news</loc>
+  </url>
+  <url>
+    <loc>https://kbsnigeria.com/gallery</loc>
+  </url>
+  <url>
+    <loc>https://kbsnigeria.com/resources</loc>
+  </url>
+  <url>
+    <loc>https://kbsnigeria.com/contact</loc>
+  </url>
 </urlset>

@@ -1,10 +1,10 @@
 // Resources page implementation following PRD US-06.
 
 import { motion, useReducedMotion } from 'framer-motion'
-import { Helmet } from 'react-helmet-async'
 import { useMemo, useState } from 'react'
 import EmptyState from '../components/ui/EmptyState'
 import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
+import PageSeo from '../components/seo/PageSeo'
 import ResourceItem from '../components/ui/ResourceItem'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
@@ -32,7 +32,7 @@ function getFileType(fileName) {
 
 function Resources() {
   const prefersReducedMotion = useReducedMotion()
-  const { resources, loading } = useResources()
+  const { resources, loading, error } = useResources()
   const [activeFilter, setActiveFilter] = useState('All')
 
   const filteredResources = useMemo(() => {
@@ -43,13 +43,11 @@ function Resources() {
 
   return (
     <div className="bg-surface-white">
-      <Helmet>
-        <title>Resources | KBS Nigeria</title>
-        <meta
-          content="Download term dates, school circulars, and official forms from Knowledgebased Basic Science Schools."
-          name="description"
-        />
-      </Helmet>
+      <PageSeo
+        canonicalPath="/resources"
+        description="Download term dates, school circulars, and official forms from Knowledgebased Basic Science Schools."
+        title="Resources | KBS Nigeria"
+      />
 
       <section className="overflow-hidden bg-[var(--gradient-hero)] text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
@@ -92,7 +90,9 @@ function Resources() {
             </div>
           ) : null}
 
-          {!loading && filteredResources.length > 0 ? (
+          {!loading && error ? <p className="font-body text-sm text-error">Unable to load resources right now.</p> : null}
+
+          {!loading && !error && filteredResources.length > 0 ? (
             <div className="space-y-4">
               {filteredResources.map((item) => (
                 <ResourceItem
@@ -107,7 +107,7 @@ function Resources() {
             </div>
           ) : null}
 
-          {!loading && filteredResources.length === 0 ? (
+          {!loading && !error && filteredResources.length === 0 ? (
             <EmptyState
               description={`No resources found for ${activeFilter.toLowerCase()}. Uploaded files in this category will appear here.`}
               illustration={<IllustrationPlaceholder className="min-h-[180px] bg-surface-grey" label="Resources placeholder" />}

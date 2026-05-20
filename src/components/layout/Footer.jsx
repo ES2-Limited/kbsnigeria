@@ -1,9 +1,11 @@
 // Public site footer with newsletter signup and contact links.
 
 import { Mail, MapPin, Phone } from 'lucide-react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../ui/Button'
 import Input from '../ui/Input'
+import { useNewsletterSubscription } from '../../hooks/useNewsletterSubscription'
 
 function FacebookIcon(props) {
   return (
@@ -49,6 +51,23 @@ const socialLinks = [
 ]
 
 function Footer() {
+  const newsletter = useNewsletterSubscription()
+  const [formData, setFormData] = useState({ email: '', name: '' })
+
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    setFormData((current) => ({ ...current, [name]: value }))
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const didSubscribe = await newsletter.subscribe(formData)
+
+    if (didSubscribe) {
+      setFormData({ email: '', name: '' })
+    }
+  }
+
   return (
     <footer className="bg-kbs-navy text-white">
       <div className="mx-auto max-w-7xl px-6 py-12 sm:px-8 lg:px-10 lg:py-16">
@@ -58,24 +77,32 @@ function Footer() {
               <p className="font-calligraphy text-xl italic text-white">Join KBS families receiving school updates</p>
               <h2 className="font-display text-3xl text-white sm:text-4xl">Subscribe to Our Newsletter</h2>
             </div>
-            <form className="grid gap-4 sm:grid-cols-2 lg:flex lg:min-w-[34rem] lg:items-end" onSubmit={(event) => event.preventDefault()}>
+            <form className="grid gap-4 sm:grid-cols-2 lg:flex lg:min-w-[34rem] lg:items-end" onSubmit={handleSubmit}>
               <Input
                 className="border-white/20 bg-white text-text-dark"
                 label="Name"
                 labelClassName="text-white"
                 name="name"
+                onChange={handleChange}
+                required
+                value={formData.name}
               />
               <Input
                 className="border-white/20 bg-white text-text-dark"
                 label="Email"
                 labelClassName="text-white"
                 name="email"
+                onChange={handleChange}
+                required
                 type="email"
+                value={formData.email}
               />
-              <Button className="w-full sm:w-auto" type="submit" variant="primary">
+              <Button className="w-full sm:w-auto" loading={newsletter.loading} type="submit" variant="primary">
                 Subscribe
               </Button>
             </form>
+            {newsletter.success ? <p className="font-body text-sm text-white/85">{newsletter.success}</p> : null}
+            {newsletter.error ? <p className="font-body text-sm text-[#ffd4d4]">{newsletter.error}</p> : null}
           </div>
         </div>
 
@@ -98,7 +125,7 @@ function Footer() {
             <ul className="space-y-3 font-body text-sm text-white/80">
               {navItems.map((item) => (
                 <li key={item.to}>
-                  <Link className="transition-colors duration-200 hover:text-kbs-cyan" to={item.to}>
+                  <Link className="inline-flex min-h-11 items-center transition-colors duration-200 hover:text-kbs-cyan" to={item.to}>
                     {item.label}
                   </Link>
                 </li>
@@ -110,20 +137,20 @@ function Footer() {
             <h3 className="font-display text-2xl text-white">Contact</h3>
             <ul className="space-y-4 font-body text-sm text-white/80">
               <li>
-                <a className="flex items-start gap-3 transition-colors duration-200 hover:text-kbs-cyan" href="tel:+2348000000000">
+                <a className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-kbs-cyan" href="tel:+2348000000000">
                   <Phone className="mt-0.5 h-4 w-4 shrink-0" />
                   <span>+234 800 000 0000</span>
                 </a>
               </li>
               <li>
-                <a className="flex items-start gap-3 transition-colors duration-200 hover:text-kbs-cyan" href="mailto:info@kbsnigeria.com">
+                <a className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-kbs-cyan" href="mailto:info@kbsnigeria.com">
                   <Mail className="mt-0.5 h-4 w-4 shrink-0" />
                   <span>info@kbsnigeria.com</span>
                 </a>
               </li>
               <li>
                 <a
-                  className="flex items-start gap-3 transition-colors duration-200 hover:text-kbs-cyan"
+                  className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-kbs-cyan"
                   href="https://maps.google.com/?q=FHA+Lugbe+Abuja"
                   rel="noreferrer"
                   target="_blank"

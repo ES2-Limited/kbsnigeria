@@ -1,10 +1,10 @@
 // News index page implementation following PRD US-05.
 
 import { motion, useReducedMotion } from 'framer-motion'
-import { Helmet } from 'react-helmet-async'
 import EmptyState from '../components/ui/EmptyState'
 import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
 import NewsCard from '../components/ui/NewsCard'
+import PageSeo from '../components/seo/PageSeo'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
 import { useNews } from '../hooks/useNews'
@@ -41,17 +41,15 @@ function NewsSkeleton() {
 
 function News() {
   const prefersReducedMotion = useReducedMotion()
-  const { news, loading, isEmpty } = useNews({ publishedOnly: true })
+  const { news, loading, error, isEmpty } = useNews({ publishedOnly: true })
 
   return (
     <div className="bg-surface-white">
-      <Helmet>
-        <title>News & Announcements | KBS Nigeria</title>
-        <meta
-          content="Read the latest news, school updates, and announcements from Knowledgebased Basic Science Schools, FHA Lugbe, Abuja."
-          name="description"
-        />
-      </Helmet>
+      <PageSeo
+        canonicalPath="/news"
+        description="Read the latest news, school updates, and announcements from Knowledgebased Basic Science Schools, FHA Lugbe, Abuja."
+        title="News & Announcements | KBS Nigeria"
+      />
 
       <section className="overflow-hidden bg-[var(--gradient-hero)] text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
@@ -71,8 +69,9 @@ function News() {
       <motion.section className="py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
           {loading ? <NewsSkeleton /> : null}
+          {!loading && error ? <p className="font-body text-sm text-error">Unable to load news posts right now.</p> : null}
 
-          {!loading && !isEmpty ? (
+          {!loading && !error && !isEmpty ? (
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {news.map((item) => (
                 <NewsCard
@@ -88,7 +87,7 @@ function News() {
             </div>
           ) : null}
 
-          {!loading && isEmpty ? (
+          {!loading && !error && isEmpty ? (
             <EmptyState
               description="Published school announcements will appear here once they are available from the admin panel."
               illustration={<IllustrationPlaceholder className="min-h-[180px] bg-surface-grey" label="News placeholder" />}

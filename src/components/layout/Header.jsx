@@ -116,7 +116,7 @@ function Header() {
     () =>
       ({ isActive }) =>
         cn(
-          'font-body text-sm transition-colors duration-200 hover:text-kbs-cyan',
+          'inline-flex min-h-11 items-center font-body text-sm transition-colors duration-200 hover:text-kbs-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20',
           isActive ? 'font-semibold text-kbs-cyan' : 'text-text-dark',
         ),
     [],
@@ -126,7 +126,7 @@ function Header() {
     () =>
       ({ isActive }) =>
         cn(
-          'flex min-h-14 items-center border-b border-surface-grey/30 font-display text-2xl transition-colors duration-200 hover:text-kbs-cyan',
+          'flex min-h-14 items-center border-b border-surface-grey/30 font-display text-2xl transition-colors duration-200 hover:text-kbs-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20',
           isActive ? 'font-semibold text-kbs-cyan' : 'text-kbs-navy',
         ),
     [],

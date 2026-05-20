@@ -3,10 +3,10 @@
 import DOMPurify from 'dompurify'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Link, Navigate, useParams } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
 import { Copy, MessageCircle, Newspaper } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import Button from '../components/ui/Button'
+import PageSeo from '../components/seo/PageSeo'
 import { useNewsPost } from '../hooks/useNews'
 import { fadeUpMotion } from '../lib/motion'
 
@@ -25,7 +25,7 @@ function formatDate(value) {
 function NewsPost() {
   const prefersReducedMotion = useReducedMotion()
   const { slug } = useParams()
-  const { post, loading, notFound } = useNewsPost(slug)
+  const { post, loading, error, notFound } = useNewsPost(slug)
   const [copyState, setCopyState] = useState('')
 
   const articleUrl = typeof window !== 'undefined' ? window.location.href : `https://kbsnigeria.com/news/${slug}`
@@ -48,13 +48,13 @@ function NewsPost() {
 
   return (
     <div className="bg-surface-white pb-20 sm:pb-24">
-      <Helmet>
-        <title>{post ? `${post.title} | KBS Nigeria` : 'News Post | KBS Nigeria'}</title>
-        <meta
-          content={post?.excerpt ?? 'Read the latest school news and announcements from KBS Nigeria.'}
-          name="description"
-        />
-      </Helmet>
+      <PageSeo
+        canonicalPath={`/news/${slug}`}
+        description={post?.excerpt ?? 'Read the latest school news and announcements from KBS Nigeria.'}
+        image={post?.cover_url}
+        title={post ? `${post.title} | KBS Nigeria` : 'News Post | KBS Nigeria'}
+        type="article"
+      />
 
       {loading ? (
         <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-10">
@@ -67,11 +67,17 @@ function NewsPost() {
         </div>
       ) : null}
 
-      {!loading && post ? (
+      {!loading && error ? (
+        <div className="mx-auto max-w-3xl px-6 pt-12 sm:px-8 lg:px-0">
+          <p className="font-body text-sm text-error">Unable to load this news post right now.</p>
+        </div>
+      ) : null}
+
+      {!loading && !error && post ? (
         <>
           <div className="w-full bg-surface-grey">
             {post.cover_url ? (
-              <img alt={post.title} className="max-h-96 w-full object-cover" src={post.cover_url} />
+              <img alt={post.title} className="max-h-96 w-full object-cover" height="960" loading="lazy" src={post.cover_url} width="1600" />
             ) : (
               <div className="flex max-h-96 min-h-72 w-full items-center justify-center text-kbs-lavender">
                 <Newspaper className="h-20 w-20" />
@@ -81,7 +87,7 @@ function NewsPost() {
 
           <motion.article className="mx-auto max-w-3xl px-6 pt-12 sm:px-8 lg:px-0" {...fadeUpMotion(prefersReducedMotion)}>
             <div className="mb-8 space-y-4">
-              <Link className="font-body text-sm font-semibold text-kbs-cyan hover:text-kbs-purple" to="/news">
+              <Link className="inline-flex min-h-11 items-center font-body text-sm font-semibold text-kbs-cyan hover:text-kbs-purple" to="/news">
                 Back to news
               </Link>
               <p className="font-calligraphy text-xl italic text-kbs-purple">School Announcement</p>

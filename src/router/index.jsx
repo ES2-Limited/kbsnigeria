@@ -1,27 +1,41 @@
 // Application route definitions.
 
-import { createBrowserRouter } from 'react-router-dom'
+import { Suspense, lazy } from 'react'
+import { Navigate, createBrowserRouter } from 'react-router-dom'
 import AdminLayout from '../components/layout/AdminLayout'
 import MainLayout from '../components/layout/MainLayout'
 import { useAuth } from '../hooks/useAuth'
-import About from '../pages/About'
-import Academics from '../pages/Academics'
-import Admissions from '../pages/Admissions'
-import Contact from '../pages/Contact'
-import ComponentShowcase from '../pages/dev/ComponentShowcase'
-import Gallery from '../pages/Gallery'
-import Home from '../pages/Home'
-import News from '../pages/News'
-import NewsPost from '../pages/NewsPost'
-import Resources from '../pages/Resources'
-import Unsubscribe from '../pages/Unsubscribe'
-import AdminGallery from '../pages/admin/AdminGallery'
-import AdminNews from '../pages/admin/AdminNews'
-import AdminNewsletter from '../pages/admin/AdminNewsletter'
-import AdminResources from '../pages/admin/AdminResources'
-import Dashboard from '../pages/admin/Dashboard'
-import Login from '../pages/admin/Login'
 import AdminRoute from './AdminRoute'
+
+const Home = lazy(() => import('../pages/Home'))
+const About = lazy(() => import('../pages/About'))
+const Academics = lazy(() => import('../pages/Academics'))
+const Admissions = lazy(() => import('../pages/Admissions'))
+const News = lazy(() => import('../pages/News'))
+const NewsPost = lazy(() => import('../pages/NewsPost'))
+const Gallery = lazy(() => import('../pages/Gallery'))
+const Resources = lazy(() => import('../pages/Resources'))
+const Contact = lazy(() => import('../pages/Contact'))
+const Unsubscribe = lazy(() => import('../pages/Unsubscribe'))
+const Login = lazy(() => import('../pages/admin/Login'))
+const Dashboard = lazy(() => import('../pages/admin/Dashboard'))
+const AdminGallery = lazy(() => import('../pages/admin/AdminGallery'))
+const AdminNews = lazy(() => import('../pages/admin/AdminNews'))
+const AdminResources = lazy(() => import('../pages/admin/AdminResources'))
+const AdminNewsletter = lazy(() => import('../pages/admin/AdminNewsletter'))
+const ComponentShowcase = lazy(() => import('../pages/dev/ComponentShowcase'))
+
+function RouteFallback() {
+  return <div className="min-h-[40vh] animate-pulse bg-surface-white" />
+}
+
+function withSuspense(Component) {
+  return (
+    <Suspense fallback={<RouteFallback />}>
+      <Component />
+    </Suspense>
+  )
+}
 
 function AdminEntry() {
   const { isAuthenticated, loading } = useAuth()
@@ -30,13 +44,7 @@ function AdminEntry() {
     return null
   }
 
-  return isAuthenticated ? (
-    <AdminLayout>
-      <Dashboard />
-    </AdminLayout>
-  ) : (
-    <Login />
-  )
+  return isAuthenticated ? <Navigate replace to="/admin/dashboard" /> : withSuspense(Login)
 }
 
 const router = createBrowserRouter([
@@ -46,43 +54,43 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: withSuspense(Home),
       },
       {
         path: 'about',
-        element: <About />,
+        element: withSuspense(About),
       },
       {
         path: 'academics',
-        element: <Academics />,
+        element: withSuspense(Academics),
       },
       {
         path: 'admissions',
-        element: <Admissions />,
+        element: withSuspense(Admissions),
       },
       {
         path: 'news',
-        element: <News />,
+        element: withSuspense(News),
       },
       {
         path: 'news/:slug',
-        element: <NewsPost />,
+        element: withSuspense(NewsPost),
       },
       {
         path: 'gallery',
-        element: <Gallery />,
+        element: withSuspense(Gallery),
       },
       {
         path: 'resources',
-        element: <Resources />,
+        element: withSuspense(Resources),
       },
       {
         path: 'contact',
-        element: <Contact />,
+        element: withSuspense(Contact),
       },
       {
         path: 'unsubscribe',
-        element: <Unsubscribe />,
+        element: withSuspense(Unsubscribe),
       },
     ],
   },
@@ -90,7 +98,7 @@ const router = createBrowserRouter([
     ? [
         {
           path: '/dev/components',
-          element: <ComponentShowcase />,
+          element: withSuspense(ComponentShowcase),
         },
       ]
     : []),
@@ -106,28 +114,32 @@ const router = createBrowserRouter([
         element: <AdminLayout />,
         children: [
           {
+            path: 'dashboard',
+            element: withSuspense(Dashboard),
+          },
+          {
             path: 'gallery',
-            element: <AdminGallery />,
+            element: withSuspense(AdminGallery),
           },
           {
             path: 'news',
-            element: <AdminNews />,
+            element: withSuspense(AdminNews),
           },
           {
             path: 'news/new',
-            element: <AdminNews />,
+            element: withSuspense(AdminNews),
           },
           {
             path: 'news/:id/edit',
-            element: <AdminNews />,
+            element: withSuspense(AdminNews),
           },
           {
             path: 'resources',
-            element: <AdminResources />,
+            element: withSuspense(AdminResources),
           },
           {
             path: 'newsletter',
-            element: <AdminNewsletter />,
+            element: withSuspense(AdminNewsletter),
           },
         ],
       },

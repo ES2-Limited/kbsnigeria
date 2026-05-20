@@ -1,12 +1,12 @@
 // Contact page implementation for public enquiries and newsletter signup.
 
 import { motion, useReducedMotion } from 'framer-motion'
-import { Helmet } from 'react-helmet-async'
 import { Mail, MapPin, Phone } from 'lucide-react'
 import { useState } from 'react'
 import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
 import Button from '../components/ui/Button'
 import Input from '../components/ui/Input'
+import PageSeo from '../components/seo/PageSeo'
 import SectionHeader from '../components/ui/SectionHeader'
 import Textarea from '../components/ui/Textarea'
 import WaveDivider from '../components/ui/WaveDivider'
@@ -65,13 +65,11 @@ function Contact() {
 
   return (
     <div className="bg-surface-white">
-      <Helmet>
-        <title>Contact | KBS Nigeria</title>
-        <meta
-          content="Contact Knowledgebased Basic Science Schools in FHA Lugbe, Abuja for admissions enquiries, school information, and updates."
-          name="description"
-        />
-      </Helmet>
+      <PageSeo
+        canonicalPath="/contact"
+        description="Contact Knowledgebased Basic Science Schools in FHA Lugbe, Abuja for admissions enquiries, school information, and updates."
+        title="Contact | KBS Nigeria"
+      />
 
       <section className="overflow-hidden bg-[var(--gradient-hero)] text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
@@ -99,16 +97,16 @@ function Contact() {
             />
 
             <div className="space-y-4 rounded-3xl border border-surface-grey bg-white p-6 shadow-sm sm:p-8">
-              <a className="flex items-start gap-3 font-body text-base text-text-medium hover:text-kbs-cyan" href="tel:+2348000000000">
+              <a className="flex min-h-11 items-start gap-3 font-body text-base text-text-medium hover:text-kbs-cyan" href="tel:+2348000000000">
                 <Phone className="mt-1 h-5 w-5 shrink-0 text-kbs-cyan" />
                 <span>+234 800 000 0000</span>
               </a>
-              <a className="flex items-start gap-3 font-body text-base text-text-medium hover:text-kbs-cyan" href="mailto:info@kbsnigeria.com">
+              <a className="flex min-h-11 items-start gap-3 font-body text-base text-text-medium hover:text-kbs-cyan" href="mailto:info@kbsnigeria.com">
                 <Mail className="mt-1 h-5 w-5 shrink-0 text-kbs-cyan" />
                 <span>info@kbsnigeria.com</span>
               </a>
               <a
-                className="flex items-start gap-3 font-body text-base text-text-medium hover:text-kbs-cyan"
+                className="flex min-h-11 items-start gap-3 font-body text-base text-text-medium hover:text-kbs-cyan"
                 href="https://maps.google.com/?q=FHA+Lugbe+Abuja"
                 rel="noreferrer"
                 target="_blank"
@@ -154,10 +152,12 @@ function Contact() {
             <div className="overflow-hidden rounded-3xl border border-surface-grey bg-white shadow-sm">
               <iframe
                 className="h-[320px] w-full"
+                height="320"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 src="https://www.google.com/maps?q=FHA%20Lugbe%20Abuja&z=14&output=embed"
                 title="Map showing FHA Lugbe, Abuja"
+                width="640"
               />
             </div>
 

@@ -120,3 +120,62 @@
 ### Remaining Public Page Verification
 - Verified the remaining public page changes with `npm run build`.
 - Verified the remaining public page changes with `npm run dev -- --host 127.0.0.1 --port 4173`.
+
+### Supabase Backend
+- Replaced the previous Supabase migration with `supabase/migrations/001_init.sql` to match the requested backend setup.
+- Added the TRD database schema for `news_posts`, `gallery_images`, `resources`, `newsletter_subscribers`, and `newsletter_sends`.
+- Added supporting database objects for backend operation, including `function_rate_limits`, `handle_updated_at()`, request header access, and rate-limit helper functions.
+- Added row-level security policies for public reads, authenticated admin writes, public newsletter subscription inserts, and token-based subscriber updates.
+- Added the four public storage buckets from the TRD with public-read and authenticated-write policies.
+- Seeded the database with 2 published news posts and 3 gallery image records for local testing.
+
+### Supabase Edge Functions
+- Added shared Supabase Edge Function helpers under `supabase/functions/_shared/` for CORS, JSON responses, Supabase clients, Resend integration, and input validation.
+- Implemented `supabase/functions/send-enquiry/index.ts` with payload validation, IP rate limiting, and dual email delivery via Resend.
+- Implemented `supabase/functions/send-confirmation/index.ts` for newsletter opt-in creation and confirmation email delivery.
+- Implemented `supabase/functions/confirm-subscription/index.ts` for token-based subscription confirmation.
+- Implemented `supabase/functions/send-newsletter/index.ts` for authenticated newsletter delivery, unsubscribe token preparation, batch sending, and send logging.
+
+### Supabase Tooling Docs
+- Added `supabase/README.md` with local Supabase startup, function serving, environment variable, and deployment instructions.
+
+### Backend Notes
+- Installed `dompurify` earlier for frontend news post sanitization; no additional runtime package was required for the Edge Functions.
+- Supabase migrations and Edge Functions were created, but local `supabase start` was not executed in this session.
+
+### Admin Panel
+- Built the complete authenticated admin panel across `src/pages/admin/` for login, dashboard, gallery, news, resources, and newsletter management.
+- Updated admin routing so authenticated users are redirected from `/admin` to `/admin/dashboard` and added the protected dashboard route.
+- Updated `AdminLayout` navigation to use the new dashboard route and added sign-out controls for desktop and mobile admin navigation.
+
+### Admin Editing And Utilities
+- Added `src/components/ui/RichTextEditor.jsx` using Tiptap with toolbar actions for bold, italic, H2/H3, bullet lists, numbered lists, and image embeds by URL.
+- Installed `@tiptap/extension-image` to support news and newsletter image embeds in the admin editor.
+- Added `src/lib/slugify.js` for auto-generating news slugs from titles.
+- Added `src/pages/admin/_helpers.js` for admin-side date formatting and storage path parsing.
+
+### Admin Module Features
+- Implemented admin login with `signInWithPassword`, inline error handling, and redirect to `/admin/dashboard`.
+- Implemented dashboard summary counts for news posts, gallery images, resources, and newsletter subscribers, plus quick-action links.
+- Implemented gallery management with multi-file image uploads, Supabase Storage uploads to the `gallery` bucket, row inserts to `gallery_images`, thumbnail listing, and delete actions.
+- Implemented news management with list view, create/edit flows, cover image upload to the `news-covers` bucket, slug generation, draft/published state handling, rich text editing, and delete actions.
+- Implemented resources management with file upload to the `resources` bucket, title/category fields, newest-first listing, and delete actions.
+- Implemented newsletter management with compose and subscribers tabs, optional banner upload to `newsletter-banners`, preview modal, send action through the `send-newsletter` Edge Function, subscriber table, manual add, and remove actions.
+
+### Admin Verification
+- Verified the admin panel changes with `npm run build`.
+- Verified the admin panel changes with `npm run dev -- --host 127.0.0.1 --port 4173`.
+
+### Quality Pass
+- Added a shared `PageSeo` component and applied SEO metadata across all public routes, including Open Graph tags and canonical URLs for news posts.
+- Added route-level `React.lazy` + `Suspense` code splitting for public, admin, and development routes.
+- Updated `vite.config.js` to copy `.htaccess` into `dist/` during builds and to split major dependency groups into separate chunks.
+- Added `DEPLOY.md` with FTP/shared-host deployment steps aligned to the TRD deployment section.
+- Replaced the placeholder sitemap with a static-route `public/sitemap.xml`.
+- Added public-page fetch error states where they were missing and wired the footer newsletter form to the real newsletter subscription flow.
+- Improved tap-target sizing and focus visibility in navigation, footer links, news links, and global interactive styles.
+- Added explicit `width` and `height` attributes to public content images and confirmed lazy loading on fetched gallery/news images.
+
+### Quality Pass Verification
+- Verified production build output after the quality pass with `npm run build`.
+- Confirmed `dist/.htaccess` is present after build.

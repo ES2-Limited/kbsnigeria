@@ -1,12 +1,12 @@
 // Gallery page implementation following PRD US-07.
 
 import { motion, useReducedMotion } from 'framer-motion'
-import { Helmet } from 'react-helmet-async'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import EmptyState from '../components/ui/EmptyState'
 import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
 import Modal from '../components/ui/Modal'
+import PageSeo from '../components/seo/PageSeo'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
 import { useGallery } from '../hooks/useGallery'
@@ -26,7 +26,7 @@ function GallerySkeleton() {
 
 function Gallery() {
   const prefersReducedMotion = useReducedMotion()
-  const { images, loading, isEmpty } = useGallery({ limit: undefined })
+  const { images, loading, error, isEmpty } = useGallery({ limit: undefined })
   const [activeIndex, setActiveIndex] = useState(null)
   const prevButtonRef = useRef(null)
   const nextButtonRef = useRef(null)
@@ -64,13 +64,11 @@ function Gallery() {
 
   return (
     <div className="bg-surface-white">
-      <Helmet>
-        <title>Gallery | KBS Nigeria</title>
-        <meta
-          content="View moments from school life, facilities, events, and classroom experiences at KBS Nigeria."
-          name="description"
-        />
-      </Helmet>
+      <PageSeo
+        canonicalPath="/gallery"
+        description="View moments from school life, facilities, events, and classroom experiences at KBS Nigeria."
+        title="Gallery | KBS Nigeria"
+      />
 
       <section className="overflow-hidden bg-[var(--gradient-hero)] text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
@@ -90,8 +88,9 @@ function Gallery() {
       <motion.section className="py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
           {loading ? <GallerySkeleton /> : null}
+          {!loading && error ? <p className="font-body text-sm text-error">Unable to load gallery images right now.</p> : null}
 
-          {!loading && !isEmpty ? (
+          {!loading && !error && !isEmpty ? (
             <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
               {images.map((image, index) => (
                 <button
@@ -103,15 +102,17 @@ function Gallery() {
                   <img
                     alt={image.caption || `KBS gallery image ${index + 1}`}
                     className="h-auto w-full object-cover"
+                    height="900"
                     loading="lazy"
                     src={image.url}
+                    width="1200"
                   />
                 </button>
               ))}
             </div>
           ) : null}
 
-          {!loading && isEmpty ? (
+          {!loading && !error && isEmpty ? (
             <EmptyState
               description="School photos will appear here once gallery uploads are available."
               illustration={<IllustrationPlaceholder className="min-h-[180px] bg-surface-grey" label="Empty gallery placeholder" />}
@@ -132,7 +133,7 @@ function Gallery() {
         {activeImage ? (
           <div className="space-y-4 text-white">
             <div className="overflow-hidden rounded-3xl bg-kbs-navy/80">
-              <img alt={activeImage.caption || modalTitle} className="max-h-[75vh] w-full object-contain" src={activeImage.url} />
+              <img alt={activeImage.caption || modalTitle} className="max-h-[75vh] w-full object-contain" height="900" loading="lazy" src={activeImage.url} width="1200" />
             </div>
             <div className="flex flex-wrap items-center justify-between gap-4">
               <p className="font-body text-sm text-white/80">{imageCountLabel}</p>

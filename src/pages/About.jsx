@@ -1,6 +1,7 @@
 // About page implementation following PRD US-02.
 
 import { motion, useReducedMotion } from 'framer-motion'
+import PageSeo from '../components/seo/PageSeo'
 import Card from '../components/ui/Card'
 import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
 import SectionHeader from '../components/ui/SectionHeader'
@@ -31,6 +32,12 @@ function About() {
 
   return (
     <div className="bg-surface-white">
+      <PageSeo
+        canonicalPath="/about"
+        description="Learn the story, mission, leadership, and educational values behind Knowledgebased Basic Science Schools in Abuja."
+        title="About KBS | KBS Nigeria"
+      />
+
       <section className="overflow-hidden bg-[var(--gradient-hero)] text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
           <motion.div className="max-w-3xl space-y-5" {...fadeUpMotion(prefersReducedMotion)}>
