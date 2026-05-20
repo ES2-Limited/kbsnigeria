@@ -1,11 +1,14 @@
 // Application route definitions.
 
 import { createBrowserRouter } from 'react-router-dom'
+import AdminLayout from '../components/layout/AdminLayout'
+import MainLayout from '../components/layout/MainLayout'
 import { useAuth } from '../hooks/useAuth'
 import About from '../pages/About'
 import Academics from '../pages/Academics'
 import Admissions from '../pages/Admissions'
 import Contact from '../pages/Contact'
+import ComponentShowcase from '../pages/dev/ComponentShowcase'
 import Gallery from '../pages/Gallery'
 import Home from '../pages/Home'
 import News from '../pages/News'
@@ -27,50 +30,70 @@ function AdminEntry() {
     return null
   }
 
-  return isAuthenticated ? <Dashboard /> : <Login />
+  return isAuthenticated ? (
+    <AdminLayout>
+      <Dashboard />
+    </AdminLayout>
+  ) : (
+    <Login />
+  )
 }
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: <MainLayout />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: 'about',
+        element: <About />,
+      },
+      {
+        path: 'academics',
+        element: <Academics />,
+      },
+      {
+        path: 'admissions',
+        element: <Admissions />,
+      },
+      {
+        path: 'news',
+        element: <News />,
+      },
+      {
+        path: 'news/:slug',
+        element: <NewsPost />,
+      },
+      {
+        path: 'gallery',
+        element: <Gallery />,
+      },
+      {
+        path: 'resources',
+        element: <Resources />,
+      },
+      {
+        path: 'contact',
+        element: <Contact />,
+      },
+      {
+        path: 'unsubscribe',
+        element: <Unsubscribe />,
+      },
+    ],
   },
-  {
-    path: '/about',
-    element: <About />,
-  },
-  {
-    path: '/academics',
-    element: <Academics />,
-  },
-  {
-    path: '/admissions',
-    element: <Admissions />,
-  },
-  {
-    path: '/news',
-    element: <News />,
-  },
-  {
-    path: '/news/:slug',
-    element: <NewsPost />,
-  },
-  {
-    path: '/gallery',
-    element: <Gallery />,
-  },
-  {
-    path: '/resources',
-    element: <Resources />,
-  },
-  {
-    path: '/contact',
-    element: <Contact />,
-  },
-  {
-    path: '/unsubscribe',
-    element: <Unsubscribe />,
-  },
+  ...(import.meta.env.DEV
+    ? [
+        {
+          path: '/dev/components',
+          element: <ComponentShowcase />,
+        },
+      ]
+    : []),
   {
     path: '/admin',
     element: <AdminEntry />,
@@ -80,28 +103,33 @@ const router = createBrowserRouter([
     element: <AdminRoute />,
     children: [
       {
-        path: 'gallery',
-        element: <AdminGallery />,
-      },
-      {
-        path: 'news',
-        element: <AdminNews />,
-      },
-      {
-        path: 'news/new',
-        element: <AdminNews />,
-      },
-      {
-        path: 'news/:id/edit',
-        element: <AdminNews />,
-      },
-      {
-        path: 'resources',
-        element: <AdminResources />,
-      },
-      {
-        path: 'newsletter',
-        element: <AdminNewsletter />,
+        element: <AdminLayout />,
+        children: [
+          {
+            path: 'gallery',
+            element: <AdminGallery />,
+          },
+          {
+            path: 'news',
+            element: <AdminNews />,
+          },
+          {
+            path: 'news/new',
+            element: <AdminNews />,
+          },
+          {
+            path: 'news/:id/edit',
+            element: <AdminNews />,
+          },
+          {
+            path: 'resources',
+            element: <AdminResources />,
+          },
+          {
+            path: 'newsletter',
+            element: <AdminNewsletter />,
+          },
+        ],
       },
     ],
   },
