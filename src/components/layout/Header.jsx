@@ -24,7 +24,7 @@ function Logo() {
         KBS
       </span>
       <span className="flex flex-col">
-        <span className="font-display text-lg leading-none text-kbs-navy">KBS Nigeria</span>
+        <span className="font-display font-bold text-lg leading-none text-kbs-navy">KBS Nigeria</span>
         <span className="font-calligraphy text-sm italic leading-none text-kbs-purple">
           Nurturing great minds
         </span>
@@ -116,8 +116,11 @@ function Header() {
     () =>
       ({ isActive }) =>
         cn(
-          'inline-flex min-h-11 items-center font-body text-sm transition-colors duration-200 hover:text-kbs-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20',
-          isActive ? 'font-semibold text-kbs-cyan' : 'text-text-dark',
+          'relative inline-flex min-h-11 items-center font-body text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20',
+          'after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-kbs-cyan after:transition-all after:duration-200',
+          isActive
+            ? 'font-semibold text-kbs-cyan after:w-full'
+            : 'text-text-dark hover:text-kbs-cyan after:w-0 hover:after:w-full',
         ),
     [],
   )
@@ -126,8 +129,8 @@ function Header() {
     () =>
       ({ isActive }) =>
         cn(
-          'flex min-h-14 items-center border-b border-surface-grey/30 font-display text-2xl transition-colors duration-200 hover:text-kbs-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20',
-          isActive ? 'font-semibold text-kbs-cyan' : 'text-kbs-navy',
+          'flex min-h-[56px] items-center border-b border-surface-grey/30 font-body text-lg transition-colors duration-200 hover:text-kbs-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20',
+          isActive ? 'font-semibold text-kbs-cyan' : 'text-text-dark',
         ),
     [],
   )
@@ -138,7 +141,9 @@ function Header() {
       <header
         className={cn(
           'sticky top-0 z-40 transition-all duration-300',
-          isScrolled ? 'bg-white shadow-sm' : 'bg-white/95',
+          isScrolled
+            ? 'bg-white/95 backdrop-blur-sm shadow-sm border-b border-surface-grey'
+            : 'bg-white',
         )}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 sm:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:px-10">
@@ -159,7 +164,7 @@ function Header() {
           </nav>
 
           <div className="hidden lg:flex lg:justify-self-end">
-            <Button as="link" to="/admissions" variant="primary">
+            <Button as="link" size="sm" to="/admissions" variant="primary">
               Enquire Now
             </Button>
           </div>
@@ -172,7 +177,7 @@ function Header() {
         {isDrawerOpen ? (
           <motion.div
             animate={{ opacity: 1 }}
-            className="fixed inset-0 z-50 bg-kbs-navy/50 lg:hidden"
+            className="fixed inset-0 z-50 bg-white lg:hidden"
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
             onClick={() => setIsDrawerOpen(false)}
@@ -190,18 +195,35 @@ function Header() {
                 <Logo />
                 <HamburgerButton isOpen={isDrawerOpen} onClick={() => setIsDrawerOpen(false)} />
               </div>
-              <nav aria-label="Mobile navigation" className="flex flex-1 flex-col">
+              <motion.nav
+                aria-label="Mobile navigation"
+                className="flex flex-1 flex-col"
+                variants={prefersReducedMotion ? {} : {
+                  open:   { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
+                  closed: {},
+                }}
+                initial="closed"
+                animate="open"
+              >
                 {navItems.map((item) => (
-                  <NavLink
-                    className={mobileNavLinkClass}
-                    end={item.to === '/'}
+                  <motion.div
                     key={item.to}
-                    to={item.to}
+                    variants={prefersReducedMotion ? {} : {
+                      open:   { x: 0, opacity: 1 },
+                      closed: { x: 20, opacity: 0 },
+                    }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
                   >
-                    {item.label}
-                  </NavLink>
+                    <NavLink
+                      className={mobileNavLinkClass}
+                      end={item.to === '/'}
+                      to={item.to}
+                    >
+                      {item.label}
+                    </NavLink>
+                  </motion.div>
                 ))}
-              </nav>
+              </motion.nav>
               <div className="pt-6">
                 <Button as="link" className="w-full" to="/admissions" variant="primary">
                   Enquire Now

@@ -9,11 +9,12 @@ function Card({ children, className, ...props }) {
   return (
     <motion.article
       className={cn(
-        'rounded-2xl border border-surface-grey bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-md',
+        'group rounded-2xl border border-surface-grey bg-white p-6 shadow-card cursor-pointer',
         className,
       )}
-      transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeInOut' }}
-      whileHover={prefersReducedMotion ? undefined : { y: -4 }}
+      whileHover={prefersReducedMotion ? undefined : { y: -8, boxShadow: '0 20px 40px rgba(31,46,122,0.15)' }}
+      whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       {...props}
     >
       {children}

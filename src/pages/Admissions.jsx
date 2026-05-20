@@ -45,7 +45,7 @@ function fadeUpMotion(prefersReducedMotion) {
     : {
         initial: { opacity: 0, y: 30 },
         whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, amount: 0.2 },
+        viewport: { once: true, margin: '-50px' },
         transition: { duration: 0.6, ease: 'easeOut' },
       }
 }
@@ -99,11 +99,11 @@ function Admissions() {
         title="Admissions | KBS Nigeria"
       />
 
-      <section className="overflow-hidden bg-[var(--gradient-hero)] text-white">
+      <section className="overflow-hidden bg-hero-gradient text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
           <motion.div className="max-w-3xl space-y-5" {...fadeUpMotion(prefersReducedMotion)}>
             <p className="font-calligraphy text-xl italic text-kbs-lavender">Admissions</p>
-            <h1 className="font-display text-5xl leading-[1.15] text-white sm:text-[3.25rem] lg:text-[3.5rem]">
+            <h1 className="font-display text-h1 sm:text-display text-white">
               Start Your Child&apos;s KBS Journey With Confidence
             </h1>
             <p className="font-body text-lg leading-8 text-white/85">
@@ -111,7 +111,7 @@ function Admissions() {
             </p>
           </motion.div>
         </div>
-        <WaveDivider color="white" />
+        <WaveDivider className="text-surface-white" />
       </section>
 
       <motion.section className="py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>

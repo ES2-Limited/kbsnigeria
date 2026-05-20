@@ -1,93 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&family=Reem+Kufi:wght@400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --color-kbs-cyan: #29abe2;
-  --color-kbs-navy: #1f2e7a;
-  --color-kbs-purple: #6b5fa5;
-  --color-kbs-lavender: #b0a8d0;
-  --color-surface-white: #f8f9ff;
-  --color-surface-grey: #eef0f8;
-  --color-text-dark: #1a1a2e;
-  --color-text-medium: #4a4a6a;
-  --color-success-green: #22c55e;
-  --color-error-red: #ef4444;
-  --gradient-hero: linear-gradient(135deg, #1f2e7a 0%, #6b5fa5 100%);
-  --gradient-cta: linear-gradient(135deg, #29abe2 0%, #1f2e7a 100%);
-  --font-display: 'Reem Kufi', sans-serif;
-  --font-calligraphy: 'Amiri', serif;
-  --font-body: 'Inter', sans-serif;
-  --text-display-size: 3.5rem;
-  --text-display-line-height: 1.15;
-  --text-h1-size: 2.5rem;
-  --text-h1-line-height: 1.2;
-  --text-h2-size: 1.875rem;
-  --text-h2-line-height: 1.3;
-  --text-h3-size: 1.375rem;
-  --text-h3-line-height: 1.4;
-  --text-h4-size: 1.125rem;
-  --text-h4-line-height: 1.4;
-  --text-calligraphy-size: 1.25rem;
-  --text-calligraphy-line-height: 1.6;
-  --text-body-lg-size: 1.125rem;
-  --text-body-lg-line-height: 1.7;
-  --text-body-size: 1rem;
-  --text-body-line-height: 1.7;
-  --text-small-size: 0.875rem;
-  --text-small-line-height: 1.6;
-  --text-xs-size: 0.75rem;
-  --text-xs-line-height: 1.5;
-}
-
-@media (max-width: 639px) {
-  :root {
-    --text-display-size: 2.625rem;
-    --text-h1-size: 1.875rem;
-    --text-calligraphy-size: 1.0625rem;
+@layer base {
+  html {
+    @apply font-body text-text-dark overflow-x-hidden;
+  }
+  body {
+    @apply m-0 min-w-[320px] min-h-screen bg-surface-white overflow-x-hidden;
+  }
+  #root {
+    @apply min-h-screen;
+  }
+  h1, h2 {
+    @apply font-display;
+  }
+  *, *::before, *::after {
+    box-sizing: border-box;
   }
 }
 
-html {
-  font-family: var(--font-body);
-  background-color: var(--color-surface-white);
-  color: var(--color-text-dark);
-  overflow-x: hidden;
+/* Gradient utility classes moved from Tailwind config */
+.bg-hero-gradient {
+  background: linear-gradient(135deg, #1F2E7A 0%, #6B5FA5 100%);
+}
+.bg-cta-gradient {
+  background: linear-gradient(135deg, #29ABE2 0%, #1F2E7A 100%);
 }
 
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  background-color: var(--color-surface-white);
-  overflow-x: hidden;
-}
-
-#root {
-  min-height: 100vh;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid var(--color-kbs-cyan);
-  outline-offset: 2px;
-}
-
-button,
-input,
-select,
-textarea {
-  font: inherit;
-}
+/* Font fallbacks to ensure fonts load even if <link> fails */
+.font-display { font-family: "Reem Kufi", sans-serif !important; }
+.font-calligraphy { font-family: "Amiri", serif !important; }
+.font-body { font-family: "Inter", sans-serif !important; }

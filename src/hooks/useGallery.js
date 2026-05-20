@@ -31,7 +31,8 @@ export function useGallery({ limit = 6 } = {}) {
       }
 
       if (requestError) {
-        setError(requestError)
+        // Treat errors as empty state for homepage teaser
+        setError(null)
         setImages([])
       } else {
         setImages(data ?? [])

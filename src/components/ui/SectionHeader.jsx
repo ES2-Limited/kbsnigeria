@@ -1,4 +1,4 @@
-// Section header with KBS type pairing.
+// Section header with prescribed KBS typography.
 
 import { cn } from '../../lib/cn'
 
@@ -6,10 +6,14 @@ function SectionHeader({ align = 'center', className, heading, overline, subtext
   const alignmentClass = align === 'left' ? 'items-start text-left' : 'items-center text-center'
 
   return (
-    <div className={cn('flex max-w-3xl flex-col gap-3', alignmentClass, className)}>
-      {overline ? <p className="font-calligraphy text-xl italic text-kbs-purple">{overline}</p> : null}
-      <h2 className="font-display text-4xl leading-tight text-kbs-navy sm:text-5xl">{heading}</h2>
-      {subtext ? <p className="font-body text-base leading-7 text-text-medium sm:text-lg">{subtext}</p> : null}
+    <div className={cn('flex max-w-3xl flex-col', alignmentClass, className)}>
+      {overline ? (
+        <p className="mb-2 font-calligraphy italic text-kbs-purple text-xl sm:text-xl">{overline}</p>
+      ) : null}
+      <h2 className="mb-4 font-display text-h2 text-kbs-navy">{heading}</h2>
+      {subtext ? (
+        <p className="font-body text-text-medium text-lg max-w-2xl mx-auto sm:mx-0">{subtext}</p>
+      ) : null}
     </div>
   )
 }

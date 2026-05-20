@@ -28,6 +28,13 @@ export default {
         calligraphy: ['Amiri', 'serif'],
         body: ['Inter', 'sans-serif'],
       },
+      fontSize: {
+        display: ['3.5rem', { lineHeight: '1.15', fontWeight: '700' }],
+        h1: ['2.5rem', { lineHeight: '1.2', fontWeight: '700' }],
+        h2: ['1.875rem', { lineHeight: '1.3', fontWeight: '500' }],
+        h3: ['1.5rem', { lineHeight: '1.35', fontWeight: '600' }],
+        'body-lg': ['1.125rem', { lineHeight: '1.7', fontWeight: '400' }],
+      },
     },
   },
   plugins: [typography],

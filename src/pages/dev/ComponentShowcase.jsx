@@ -168,7 +168,7 @@ function ComponentShowcase() {
             </div>
             <div className="space-y-4">
               <WaveDivider color="grey" />
-              <WaveDivider color="cyan" direction="top" />
+              <WaveDivider className="text-kbs-cyan" flipX />
             </div>
             <div className="flex items-center gap-4 text-kbs-cyan">
               <LoadingSpinner />

@@ -29,9 +29,9 @@ const Input = forwardRef(function Input(
   return (
     <div className="w-full">
       {label ? (
-        <label className={cn('mb-2 block font-body text-sm font-medium text-text-dark', labelClassName)} htmlFor={fieldId}>
+        <label className={cn('mb-2 block font-body text-sm font-semibold text-text-dark', labelClassName)} htmlFor={fieldId}>
           {label}
-          {required ? <span className="ml-1 text-error">*</span> : null}
+          {required ? <span className="ml-1 text-red-400">*</span> : null}
         </label>
       ) : null}
       <input
@@ -40,7 +40,7 @@ const Input = forwardRef(function Input(
         className={cn(
           inputBaseClass,
           error
-            ? 'border-error ring-2 ring-error/20 focus:border-error focus:ring-error/20'
+            ? 'border-red-400 ring-2 ring-red-400/20 focus:border-red-400 focus:ring-red-400/20'
             : 'border-kbs-lavender',
           className,
         )}

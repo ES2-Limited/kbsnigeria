@@ -74,12 +74,12 @@ function Footer() {
         <div className="mb-12 rounded-3xl bg-white/10 p-6 backdrop-blur-sm sm:p-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl space-y-3">
-              <p className="font-calligraphy text-xl italic text-white">Join KBS families receiving school updates</p>
-              <h2 className="font-display text-3xl text-white sm:text-4xl">Subscribe to Our Newsletter</h2>
+              <p className="font-calligraphy text-xl italic text-white/70">Join KBS families receiving school updates</p>
+              <h2 className="font-display text-h1 text-white">Subscribe to Our Newsletter</h2>
             </div>
             <form className="grid gap-4 sm:grid-cols-2 lg:flex lg:min-w-[34rem] lg:items-end" onSubmit={handleSubmit}>
               <Input
-                className="border-white/20 bg-white text-text-dark"
+                className="bg-white/10 text-white placeholder:text-white/40 border border-white/20 rounded-xl px-4 py-2 focus:border-kbs-cyan focus:ring-2 focus:ring-kbs-cyan/20"
                 label="Name"
                 labelClassName="text-white"
                 name="name"
@@ -88,7 +88,7 @@ function Footer() {
                 value={formData.name}
               />
               <Input
-                className="border-white/20 bg-white text-text-dark"
+                className="bg-white/10 text-white placeholder:text-white/40 border border-white/20 rounded-xl px-4 py-2 focus:border-kbs-cyan focus:ring-2 focus:ring-kbs-cyan/20"
                 label="Email"
                 labelClassName="text-white"
                 name="email"
@@ -102,7 +102,7 @@ function Footer() {
               </Button>
             </form>
             {newsletter.success ? <p className="font-body text-sm text-white/85">{newsletter.success}</p> : null}
-            {newsletter.error ? <p className="font-body text-sm text-[#ffd4d4]">{newsletter.error}</p> : null}
+            {newsletter.error ? <p className="font-body text-sm text-red-400">{newsletter.error}</p> : null}
           </div>
         </div>
 
@@ -114,18 +114,18 @@ function Footer() {
               </span>
               <span className="font-display text-2xl text-white">KBS Nigeria</span>
             </Link>
-            <p className="font-calligraphy text-lg italic text-white/90">Nurturing great minds since 1999</p>
+            <p className="font-calligraphy text-lg italic text-white/70">Nurturing great minds since 1999</p>
             <p className="max-w-sm font-body text-sm leading-7 text-white/80">
               Knowledgebased Basic Science Schools, FHA Lugbe, Abuja, serving families from nursery through JSS.
             </p>
           </section>
 
           <section className="space-y-4">
-            <h3 className="font-display text-2xl text-white">Quick Links</h3>
-            <ul className="space-y-3 font-body text-sm text-white/80">
+            <h3 className="font-body font-semibold text-white text-sm uppercase tracking-wider">Quick Links</h3>
+            <ul className="space-y-3 font-body text-sm text-white/70">
               {navItems.map((item) => (
                 <li key={item.to}>
-                  <Link className="inline-flex min-h-11 items-center transition-colors duration-200 hover:text-kbs-cyan" to={item.to}>
+                  <Link className="inline-flex min-h-11 items-center transition-colors duration-200 hover:text-white" to={item.to}>
                     {item.label}
                   </Link>
                 </li>
@@ -134,28 +134,28 @@ function Footer() {
           </section>
 
           <section className="space-y-4">
-            <h3 className="font-display text-2xl text-white">Contact</h3>
+            <h3 className="font-body font-semibold text-white text-sm uppercase tracking-wider">Contact</h3>
             <ul className="space-y-4 font-body text-sm text-white/80">
               <li>
-                <a className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-kbs-cyan" href="tel:+2348000000000">
-                  <Phone className="mt-0.5 h-4 w-4 shrink-0" />
+                <a className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-white" href="tel:+2348000000000">
+                  <Phone className="mt-0.5 h-4 w-4 shrink-0 text-kbs-cyan" />
                   <span>+234 800 000 0000</span>
                 </a>
               </li>
               <li>
-                <a className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-kbs-cyan" href="mailto:info@kbsnigeria.com">
-                  <Mail className="mt-0.5 h-4 w-4 shrink-0" />
+                <a className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-white" href="mailto:info@kbsnigeria.com">
+                  <Mail className="mt-0.5 h-4 w-4 shrink-0 text-kbs-cyan" />
                   <span>info@kbsnigeria.com</span>
                 </a>
               </li>
               <li>
                 <a
-                  className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-kbs-cyan"
+                  className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-white"
                   href="https://maps.google.com/?q=FHA+Lugbe+Abuja"
                   rel="noreferrer"
                   target="_blank"
                 >
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-kbs-cyan" />
                   <span>FHA Lugbe, Abuja, Nigeria</span>
                 </a>
               </li>
@@ -163,17 +163,17 @@ function Footer() {
           </section>
 
           <section className="space-y-4">
-            <h3 className="font-display text-2xl text-white">Follow Us</h3>
+            <h3 className="font-body font-semibold text-white text-sm uppercase tracking-wider">Follow Us</h3>
             <div className="flex items-center gap-3">
-              {socialLinks.map(({ className, href, icon: Icon, label }) => (
+              {socialLinks.map(({ href, icon: Icon, label }) => (
                 <a
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 transition-colors duration-200 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full text-white/70 transition-colors duration-200 hover:text-kbs-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20"
                   href={href}
                   key={label}
                   rel="noreferrer"
                   target="_blank"
                 >
-                  <Icon className={className} height="20" width="20" />
+                  <Icon height="20" width="20" />
                   <span className="sr-only">{label}</span>
                 </a>
               ))}
@@ -184,7 +184,7 @@ function Footer() {
           </section>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-6 text-sm text-white/70">
+        <div className="mt-8 border-t border-white/10 pt-6 text-center text-xs text-white/40">
           <p>© 2026 Knowledgebased Basic Science Schools. All rights reserved.</p>
         </div>
       </div>

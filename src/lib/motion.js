@@ -6,7 +6,7 @@ export function fadeUpMotion(prefersReducedMotion) {
     : {
         initial: { opacity: 0, y: 30 },
         whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, amount: 0.2 },
+        viewport: { once: true, margin: '-50px' },
         transition: { duration: 0.6, ease: 'easeOut' },
       }
 }
@@ -17,7 +17,7 @@ export function staggerContainerMotion(prefersReducedMotion, staggerChildren = 0
     : {
         initial: 'hidden',
         whileInView: 'visible',
-        viewport: { once: true, amount: 0.2 },
+        viewport: { once: true, margin: '-50px' },
         transition: { staggerChildren },
       }
 }

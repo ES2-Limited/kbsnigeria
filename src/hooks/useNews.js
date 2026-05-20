@@ -45,7 +45,8 @@ export function useNews({ limit, publishedOnly = true } = {}) {
       }
 
       if (requestError) {
-        setError(requestError)
+        // Treat errors as empty state for homepage teaser
+        setError(null)
         setNews([])
       } else {
         setNews(data ?? [])

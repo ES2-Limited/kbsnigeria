@@ -10,9 +10,16 @@ function NewsCard({ category = 'News', coverImage, date, excerpt, slug, title })
     <Card className="overflow-hidden p-0">
       <div className="aspect-[16/10] w-full overflow-hidden bg-surface-grey">
         {coverImage ? (
-          <img alt={title} className="h-full w-full object-cover" height="750" loading="lazy" src={coverImage} width="1200" />
+          <img
+            alt={title}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            height="750"
+            loading="lazy"
+            src={coverImage}
+            width="1200"
+          />
         ) : (
-          <div className="flex h-full items-center justify-center text-kbs-lavender">
+          <div className="flex h-full items-center justify-center text-kbs-lavender transition-colors duration-300 group-hover:bg-kbs-lavender/10">
             <Newspaper className="h-12 w-12" />
           </div>
         )}
@@ -20,18 +27,18 @@ function NewsCard({ category = 'News', coverImage, date, excerpt, slug, title })
       <div className="space-y-4 p-6">
         <div className="flex items-center justify-between gap-3">
           <Badge variant="cyan">{category}</Badge>
-          <span className="font-body text-sm text-text-medium">{date}</span>
+          <span className="font-body text-xs text-text-medium">{date}</span>
         </div>
         <div className="space-y-3">
-          <h3 className="font-display text-2xl leading-tight text-kbs-navy">{title}</h3>
-          <p className="font-body text-base leading-7 text-text-medium">{excerpt}</p>
+          <h3 className="font-display text-h3 text-kbs-navy line-clamp-2">{title}</h3>
+          <p className="font-body text-sm text-text-medium line-clamp-3">{excerpt}</p>
         </div>
         <Link
-          className="inline-flex min-h-11 items-center gap-2 font-body text-sm font-semibold text-kbs-cyan transition-colors duration-200 hover:text-kbs-purple"
+          className="inline-flex min-h-11 items-center gap-2 font-body text-sm font-semibold text-kbs-cyan transition-colors duration-200 hover:text-kbs-navy"
           to={`/news/${slug}`}
         >
           <span>Read more</span>
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
         </Link>
       </div>
     </Card>
