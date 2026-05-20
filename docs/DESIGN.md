@@ -76,34 +76,78 @@ colors: {
 
 ### Font Stack
 
-| Role | Font | Weight | Source |
-|------|------|--------|--------|
-| **Display / Headings** | Nunito | 700, 800 | Google Fonts |
-| **Body / UI** | Inter | 400, 500, 600 | Google Fonts |
-| **Taglines / Accents** | Nunito | 600 Italic | Google Fonts |
+| Role | Font | Weight | Source | Character |
+|------|------|--------|--------|-----------|
+| **Display / Hero headings** | Reem Kufi | 400, 500, 700 | Google Fonts | Kufic-inspired geometric letterforms — dignified, structured, distinctive |
+| **Calligraphy / Taglines & pull quotes** | Amiri | 400, 400i, 700 | Google Fonts | Arabic calligraphic tradition, high-contrast elegant serif |
+| **Body / UI / Admin** | Inter | 400, 500, 600 | Google Fonts | Neutral, highly legible — never competes with display fonts |
 
-Nunito is rounded and friendly — it matches the playful, approachable tone without feeling unprofessional. Inter is neutral and highly legible for body copy.
+### Where Each Font Appears
+
+**Reem Kufi** (Kufic display):
+- Hero heading (school name, page titles)
+- Section headings (H1, H2)
+- Stat counter numbers
+- Navigation logo wordmark if ever needed
+
+**Amiri** (calligraphy):
+- School tagline: *"...nurturing great minds"*
+- Pull quotes and testimonials
+- Decorative section intro lines (e.g. *"Welcome to KBS"* above a heading)
+- Section overlines (small calligraphic text above a bold Reem Kufi heading)
+- News post drop caps (optional)
+
+**Inter** (body):
+- All paragraph text
+- Form labels, inputs, buttons
+- Navigation links
+- Admin panel throughout (calligraphic fonts are unsuitable for dense UI)
+- Captions, tags, badges
+
+### Pairing in Practice
+
+```
+[Amiri italic, small, #6B5FA5]   "Nurturing great minds since 1999"
+[Reem Kufi bold, large, #1F2E7A] Where Every Child Discovers Their Potential
+[Inter regular, #4A4A6A]         At KBS, we believe every child has...
+```
+
+The contrast between Reem Kufi's geometric Kufic structure and Amiri's flowing calligraphic curves creates a layered, culturally resonant typographic voice that is unique in the Nigerian school space.
 
 ### Type Scale
 
-| Token | Size | Line Height | Weight | Usage |
-|-------|------|-------------|--------|-------|
-| `text-display` | 3.5rem (56px) | 1.15 | 800 | Hero heading |
-| `text-h1` | 2.5rem (40px) | 1.2 | 700 | Page titles |
-| `text-h2` | 1.875rem (30px) | 1.3 | 700 | Section headings |
-| `text-h3` | 1.375rem (22px) | 1.4 | 600 | Card headings, sub-sections |
-| `text-h4` | 1.125rem (18px) | 1.4 | 600 | Labels, overlines |
-| `text-body-lg` | 1.125rem (18px) | 1.7 | 400 | Lead paragraphs |
-| `text-body` | 1rem (16px) | 1.7 | 400 | General body copy |
-| `text-small` | 0.875rem (14px) | 1.6 | 400 | Captions, metadata |
-| `text-xs` | 0.75rem (12px) | 1.5 | 500 | Tags, badges |
+| Token | Font | Size | Line Height | Weight | Usage |
+|-------|------|------|-------------|--------|-------|
+| `text-display` | Reem Kufi | 3.5rem (56px) | 1.15 | 700 | Hero heading |
+| `text-h1` | Reem Kufi | 2.5rem (40px) | 1.2 | 700 | Page titles |
+| `text-h2` | Reem Kufi | 1.875rem (30px) | 1.3 | 500 | Section headings |
+| `text-h3` | Inter | 1.375rem (22px) | 1.4 | 600 | Card headings, sub-sections |
+| `text-h4` | Inter | 1.125rem (18px) | 1.4 | 600 | Labels, overlines |
+| `text-calligraphy` | Amiri | 1.25rem (20px) | 1.6 | 400i | Taglines, pull quotes, overlines |
+| `text-body-lg` | Inter | 1.125rem (18px) | 1.7 | 400 | Lead paragraphs |
+| `text-body` | Inter | 1rem (16px) | 1.7 | 400 | General body copy |
+| `text-small` | Inter | 0.875rem (14px) | 1.6 | 400 | Captions, metadata |
+| `text-xs` | Inter | 0.75rem (12px) | 1.5 | 500 | Tags, badges |
 
-**Mobile scale:** Headings reduce by ~20% on screens < 640px.
+**Mobile scale:** Display and H1 reduce by ~25% on screens < 640px. Amiri calligraphy text reduces by ~15%.
+
+### Tailwind Font Family Config
+```js
+// tailwind.config.js
+fontFamily: {
+  display:      ['"Reem Kufi"', 'sans-serif'],
+  calligraphy:  ['Amiri', 'serif'],
+  body:         ['Inter', 'sans-serif'],
+}
+```
+
+Usage: `font-display`, `font-calligraphy`, `font-body`
 
 ### Google Fonts Import
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Nunito:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&family=Reem+Kufi:wght@400;500;700&display=swap" rel="stylesheet">
 ```
 
 ---
