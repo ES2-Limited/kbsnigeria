@@ -9,7 +9,7 @@ import { cn } from '../../lib/cn'
 const focusableSelector =
   'a[href], area[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), iframe, object, embed, [contenteditable], [tabindex]:not([tabindex="-1"])'
 
-function Modal({ children, className, onClose, open, title }) {
+function Modal({ children, className, closeButtonClassName, onClose, open, title, titleClassName }) {
   const prefersReducedMotion = useReducedMotion()
   const containerRef = useRef(null)
 
@@ -88,9 +88,12 @@ function Modal({ children, className, onClose, open, title }) {
             transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: 'easeOut' }}
           >
             <div className="mb-4 flex items-start justify-between gap-4">
-              <h2 className="font-display text-2xl leading-tight text-kbs-navy">{title}</h2>
+              <h2 className={cn('font-display text-2xl leading-tight text-kbs-navy', titleClassName)}>{title}</h2>
               <button
-                className="inline-flex h-11 w-11 items-center justify-center rounded-full text-kbs-navy transition-colors duration-200 hover:bg-surface-grey focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20"
+                className={cn(
+                  'inline-flex h-11 w-11 items-center justify-center rounded-full text-kbs-navy transition-colors duration-200 hover:bg-surface-grey focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20',
+                  closeButtonClassName,
+                )}
                 onClick={onClose}
                 type="button"
               >

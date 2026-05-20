@@ -1,7 +1,6 @@
 // Dev-only component library showcase page.
 
 import { useState } from 'react'
-import { FileImage } from 'lucide-react'
 import Badge from '../../components/ui/Badge'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
@@ -26,6 +25,11 @@ function ShowcaseBlock({ children, title }) {
 
 function ComponentShowcase() {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const illustrationPlaceholder = (
+    <div className="mx-auto flex h-40 w-full max-w-xs items-center justify-center rounded-3xl border-2 border-dashed border-kbs-lavender bg-surface-grey px-6 text-center font-body text-sm text-text-medium">
+      Illustration placeholder
+    </div>
+  )
 
   return (
     <main className="min-h-screen bg-surface-white px-6 py-10 sm:px-8 lg:px-10">
@@ -173,7 +177,7 @@ function ComponentShowcase() {
             <EmptyState
               action={{ label: 'Upload Resource', variant: 'primary', onClick: () => {} }}
               description="No resources have been added yet. Upload term dates, circulars, or forms to populate this section."
-              illustration={<FileImage className="mx-auto h-20 w-20" />}
+              illustration={illustrationPlaceholder}
               title="No resources uploaded yet"
             />
           </div>

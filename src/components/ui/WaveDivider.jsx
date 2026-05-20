@@ -5,6 +5,7 @@ import { cn } from '../../lib/cn'
 const colorClasses = {
   white: 'text-white',
   grey: 'text-surface-grey',
+  'surface-grey': 'text-surface-grey',
   cyan: 'text-kbs-cyan',
   navy: 'text-kbs-navy',
   purple: 'text-kbs-purple',
