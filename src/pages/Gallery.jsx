@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import EmptyState from '../components/ui/EmptyState'
+import FallbackImage from '../components/ui/FallbackImage'
 import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
 import Modal from '../components/ui/Modal'
 import PageSeo from '../components/seo/PageSeo'
@@ -16,7 +17,7 @@ function GallerySkeleton() {
   return (
     <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
       {[0, 1, 2, 3, 4, 5].map((item) => (
-        <div className="mb-4 animate-pulse break-inside-avoid rounded-3xl bg-surface-grey" key={item}>
+        <div className="mb-4 animate-pulse break-inside-avoid rounded-3xl bg-bg-light" key={item}>
           <div className={item % 3 === 0 ? 'h-80' : item % 2 === 0 ? 'h-56' : 'h-72'} />
         </div>
       ))}
@@ -63,17 +64,17 @@ function Gallery() {
   const modalTitle = useMemo(() => (activeImage?.caption ? activeImage.caption : `Gallery image ${imageCountLabel}`), [activeImage, imageCountLabel])
 
   return (
-    <div className="bg-surface-white">
+    <div className="bg-bg-light">
       <PageSeo
         canonicalPath="/gallery"
         description="View moments from school life, facilities, events, and classroom experiences at KBS Nigeria."
         title="Gallery | KBS Nigeria"
       />
 
-      <section className="overflow-hidden bg-hero-gradient text-white">
+      <section className="overflow-hidden bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
           <motion.div className="max-w-3xl space-y-5" {...fadeUpMotion(prefersReducedMotion)}>
-            <p className="font-calligraphy text-xl italic text-kbs-lavender">Gallery</p>
+            <p className="font-calligraphy text-xl italic text-brand-gray">Gallery</p>
             <h1 className="font-display text-h1 sm:text-display text-white">
               A Visual Glimpse Into School Life
             </h1>
@@ -82,7 +83,7 @@ function Gallery() {
             </p>
           </motion.div>
         </div>
-        <WaveDivider className="text-surface-white" />
+        <WaveDivider className="text-white" />
       </section>
 
       <motion.section className="py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>
@@ -94,14 +95,15 @@ function Gallery() {
             <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
               {images.map((image, index) => (
                 <button
-                  className="mb-4 block w-full break-inside-avoid overflow-hidden rounded-3xl bg-white shadow-sm transition-transform duration-200 hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20"
+                  className="mb-4 block w-full break-inside-avoid overflow-hidden rounded-3xl bg-white shadow-sm transition-transform duration-200 hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20"
                   key={image.id}
                   onClick={() => setActiveIndex(index)}
                   type="button"
                 >
-                  <img
+                  <FallbackImage
                     alt={image.caption || `KBS gallery image ${index + 1}`}
                     className="h-auto w-full object-cover"
+                    fallbackSrc="/kbs-logo.png"
                     height="900"
                     loading="lazy"
                     src={image.url}
@@ -115,7 +117,7 @@ function Gallery() {
           {!loading && !error && isEmpty ? (
             <EmptyState
               description="School photos will appear here once gallery uploads are available."
-              illustration={<IllustrationPlaceholder className="min-h-[180px] bg-surface-grey" label="Empty gallery placeholder" />}
+              illustration={<IllustrationPlaceholder className="min-h-[180px] bg-bg-light" label="Empty gallery placeholder" />}
               title="No gallery images yet"
             />
           ) : null}
@@ -123,7 +125,7 @@ function Gallery() {
       </motion.section>
 
       <Modal
-        className="max-w-6xl bg-kbs-navy p-4 sm:p-6"
+        className="max-w-6xl bg-brand-primary p-4 sm:p-6"
         closeButtonClassName="text-white hover:bg-white/10"
         onClose={() => setActiveIndex(null)}
         open={activeIndex !== null}
@@ -132,14 +134,22 @@ function Gallery() {
       >
         {activeImage ? (
           <div className="space-y-4 text-white">
-            <div className="overflow-hidden rounded-3xl bg-kbs-navy/80">
-              <img alt={activeImage.caption || modalTitle} className="max-h-[75vh] w-full object-contain" height="900" loading="lazy" src={activeImage.url} width="1200" />
+            <div className="overflow-hidden rounded-3xl bg-brand-primary/80">
+              <FallbackImage
+                alt={activeImage.caption || modalTitle}
+                className="max-h-[75vh] w-full object-contain"
+                fallbackSrc="/kbs-logo.png"
+                height="900"
+                loading="lazy"
+                src={activeImage.url}
+                width="1200"
+              />
             </div>
             <div className="flex flex-wrap items-center justify-between gap-4">
               <p className="font-body text-sm text-white/80">{imageCountLabel}</p>
               <div className="flex items-center gap-3">
                 <button
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-200 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-200 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20"
                   onClick={() => setActiveIndex((current) => (current === 0 ? images.length - 1 : current - 1))}
                   ref={prevButtonRef}
                   type="button"
@@ -148,7 +158,7 @@ function Gallery() {
                   <span className="sr-only">Previous image</span>
                 </button>
                 <button
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-200 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-200 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20"
                   onClick={() => setActiveIndex((current) => (current === images.length - 1 ? 0 : current + 1))}
                   ref={nextButtonRef}
                   type="button"
