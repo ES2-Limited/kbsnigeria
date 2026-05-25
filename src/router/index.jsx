@@ -26,7 +26,7 @@ const AdminNewsletter = lazy(() => import('../pages/admin/AdminNewsletter'))
 const ComponentShowcase = lazy(() => import('../pages/dev/ComponentShowcase'))
 
 function RouteFallback() {
-  return <div className="min-h-[40vh] animate-pulse bg-surface-white" />
+  return <div className="min-h-[40vh] animate-pulse bg-bg-light" />
 }
 
 function withSuspense(Component) {

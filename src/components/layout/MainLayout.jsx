@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Outlet, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import Footer from './Footer'
 import Header from './Header'
 import { ScrollProgress } from '../ui/ScrollProgress'
@@ -11,8 +12,12 @@ function MainLayout() {
   const location = useLocation()
   const prefersReducedMotion = useReducedMotion()
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [location.pathname])
+
   return (
-    <div className="min-h-screen bg-surface-white text-text-dark">
+    <div className="min-h-screen bg-bg-light text-text-primary">
       <ScrollProgress />
       <Header />
       <AnimatePresence mode="wait" initial={false}>
