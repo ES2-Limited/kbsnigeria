@@ -42,17 +42,17 @@ function Resources() {
   }, [activeFilter, resources])
 
   return (
-    <div className="bg-surface-white">
+    <div className="bg-bg-light">
       <PageSeo
         canonicalPath="/resources"
         description="Download term dates, school circulars, and official forms from Knowledgebased Basic Science Schools."
         title="Resources | KBS Nigeria"
       />
 
-      <section className="overflow-hidden bg-hero-gradient text-white">
+      <section className="overflow-hidden bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
           <motion.div className="max-w-3xl space-y-5" {...fadeUpMotion(prefersReducedMotion)}>
-            <p className="font-calligraphy text-xl italic text-kbs-lavender">Resources</p>
+            <p className="font-calligraphy text-xl italic text-brand-gray">Resources</p>
             <h1 className="font-display text-h1 sm:text-display text-white">
               Important Downloads for Parents
             </h1>
@@ -61,7 +61,7 @@ function Resources() {
             </p>
           </motion.div>
         </div>
-        <WaveDivider className="text-surface-white" />
+        <WaveDivider className="text-white" />
       </section>
 
       <motion.section className="py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>
@@ -70,8 +70,8 @@ function Resources() {
             {filters.map((filter) => (
               <button
                 className={cn(
-                  'min-h-11 rounded-full px-5 py-3 font-body text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20',
-                  activeFilter === filter ? 'bg-kbs-cyan text-white' : 'bg-surface-grey text-text-medium hover:text-kbs-navy',
+                  'min-h-11 rounded-full px-5 py-3 font-body text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20',
+                  activeFilter === filter ? 'bg-brand-primary text-white' : 'bg-bg-light text-text-secondary hover:text-brand-primary',
                 )}
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
@@ -85,7 +85,7 @@ function Resources() {
           {loading ? (
             <div className="space-y-4">
               {[0, 1, 2].map((item) => (
-                <div className="h-32 animate-pulse rounded-2xl bg-surface-grey" key={item} />
+                <div className="h-32 animate-pulse rounded-2xl bg-bg-light" key={item} />
               ))}
             </div>
           ) : null}
@@ -110,7 +110,7 @@ function Resources() {
           {!loading && !error && filteredResources.length === 0 ? (
             <EmptyState
               description={`No resources found for ${activeFilter.toLowerCase()}. Uploaded files in this category will appear here.`}
-              illustration={<IllustrationPlaceholder className="min-h-[180px] bg-surface-grey" label="Resources placeholder" />}
+              illustration={<IllustrationPlaceholder className="min-h-[180px] bg-bg-light" label="Resources placeholder" />}
               title={`No ${activeFilter === 'All' ? 'resources' : activeFilter.toLowerCase()} available yet`}
             />
           ) : null}

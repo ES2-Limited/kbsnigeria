@@ -181,8 +181,8 @@ function AdminNews() {
       <div className="space-y-8">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="font-body text-sm font-semibold uppercase tracking-wide text-kbs-cyan">News Manager</p>
-            <h1 className="font-display text-4xl text-kbs-navy">{pageTitle}</h1>
+            <p className="font-body text-sm font-semibold uppercase tracking-wide text-brand-primary">News Manager</p>
+            <h1 className="font-display text-4xl text-text-primary">{pageTitle}</h1>
           </div>
           <Button as="link" to="/admin/news" variant="secondary">Back to List</Button>
         </div>
@@ -196,19 +196,19 @@ function AdminNews() {
             <Input label="Excerpt" name="excerpt" onChange={handleChange} value={formData.excerpt} />
             <div className="grid gap-5 md:grid-cols-2">
               <div>
-                <label className="mb-2 block font-body text-sm font-medium text-text-dark" htmlFor="news-cover-upload">Cover Image</label>
+                <label className="mb-2 block font-body text-sm font-medium text-text-primary" htmlFor="news-cover-upload">Cover Image</label>
                 <input
                   accept="image/jpeg,image/png,image/webp"
-                  className="w-full rounded-xl border border-kbs-lavender px-4 py-3 font-body text-text-dark"
+                  className="w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary"
                   id="news-cover-upload"
                   onChange={(event) => setCoverFile(event.target.files?.[0] ?? null)}
                   type="file"
                 />
               </div>
               <div>
-                <label className="mb-2 block font-body text-sm font-medium text-text-dark" htmlFor="news-status">Status</label>
+                <label className="mb-2 block font-body text-sm font-medium text-text-primary" htmlFor="news-status">Status</label>
                 <select
-                  className="w-full rounded-xl border border-kbs-lavender px-4 py-3 font-body text-text-dark outline-none transition-all duration-200 focus:border-kbs-cyan focus:ring-2 focus:ring-kbs-cyan/20"
+                  className="w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary outline-none transition-all duration-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20"
                   id="news-status"
                   name="status"
                   onChange={handleChange}
@@ -223,7 +223,7 @@ function AdminNews() {
           </Card>
 
           <Card className="space-y-5">
-            <h2 className="font-body text-lg font-semibold text-text-dark">Post Body</h2>
+            <h2 className="font-body text-lg font-semibold text-text-primary">Post Body</h2>
             <RichTextEditor content={formData.body} onChange={(body) => setFormData((current) => ({ ...current, body }))} />
           </Card>
 
@@ -241,8 +241,8 @@ function AdminNews() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="font-body text-sm font-semibold uppercase tracking-wide text-kbs-cyan">News Manager</p>
-          <h1 className="font-display text-4xl text-kbs-navy">Manage News</h1>
+          <p className="font-body text-sm font-semibold uppercase tracking-wide text-brand-primary">News Manager</p>
+          <h1 className="font-display text-4xl text-text-primary">Manage News</h1>
         </div>
         <Button as="link" to="/admin/news/new" variant="primary">
           <Plus className="h-4 w-4" />
@@ -251,13 +251,13 @@ function AdminNews() {
       </div>
 
       {error ? <p className="font-body text-sm text-error">{error}</p> : null}
-      {loading ? <div className="h-40 animate-pulse rounded-3xl bg-surface-grey" /> : null}
+      {loading ? <div className="h-40 animate-pulse rounded-3xl bg-bg-light" /> : null}
 
       {!loading ? (
         <Card className="overflow-hidden p-0">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-surface-grey font-body text-sm">
-              <thead className="bg-surface-grey/60 text-left text-text-medium">
+            <table className="min-w-full divide-y divide-brand-gray/30 font-body text-sm">
+              <thead className="bg-bg-light/60 text-left text-text-secondary">
                 <tr>
                   <th className="px-6 py-4 font-medium">Title</th>
                   <th className="px-6 py-4 font-medium">Status</th>
@@ -265,17 +265,17 @@ function AdminNews() {
                   <th className="px-6 py-4 font-medium">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-surface-grey">
+              <tbody className="divide-y divide-brand-gray/30">
                 {posts.map((post) => (
                   <tr key={post.id}>
-                    <td className="px-6 py-4 text-text-dark">{post.title}</td>
+                    <td className="px-6 py-4 text-text-primary">{post.title}</td>
                     <td className="px-6 py-4">
                       <Badge variant={post.status === 'published' ? 'cyan' : 'navy'}>{post.status}</Badge>
                     </td>
-                    <td className="px-6 py-4 text-text-medium">{formatAdminDate(post.published_at ?? post.created_at)}</td>
+                    <td className="px-6 py-4 text-text-secondary">{formatAdminDate(post.published_at ?? post.created_at)}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <Link className="text-kbs-cyan transition-colors duration-200 hover:text-kbs-purple" to={`/admin/news/${post.id}/edit`}>
+                        <Link className="text-brand-primary transition-colors duration-200 hover:text-brand-purple" to={`/admin/news/${post.id}/edit`}>
                           <Pencil className="h-4 w-4" />
                         </Link>
                         <button className="text-error transition-colors duration-200 hover:text-error/80" onClick={() => handleDelete(post.id)} type="button">

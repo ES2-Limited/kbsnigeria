@@ -21,7 +21,7 @@ function AdminNavLink({ item }) {
       className={({ isActive }) =>
         cn(
           'flex items-center gap-3 rounded-xl px-4 py-3 font-body text-sm transition-colors duration-200',
-          isActive ? 'bg-kbs-cyan text-white' : 'text-text-medium hover:bg-white hover:text-kbs-navy',
+          isActive ? 'bg-brand-primary text-white' : 'text-text-secondary hover:bg-white hover:text-brand-primary',
         )
       }
       end={item.end}
@@ -42,12 +42,12 @@ function AdminLayout({ children }) {
   }
 
   return (
-    <div className="min-h-screen bg-white text-text-dark">
-      <div className="border-b border-surface-grey bg-white px-4 py-4 sm:px-6 lg:hidden">
+    <div className="min-h-screen bg-white text-text-primary">
+      <div className="border-b border-brand-gray/30 bg-white px-4 py-4 sm:px-6 lg:hidden">
         <div className="mb-4 flex items-center justify-between gap-4">
           <div>
-            <p className="font-body text-2xl font-semibold text-kbs-navy">KBS Admin</p>
-            <p className="font-body text-sm text-text-medium">Content management panel</p>
+            <p className="font-body text-2xl font-semibold text-text-primary">KBS Admin</p>
+            <p className="font-body text-sm text-text-secondary">Content management panel</p>
           </div>
         </div>
         <nav aria-label="Admin navigation" className="flex gap-2 overflow-x-auto pb-1">
@@ -56,7 +56,7 @@ function AdminLayout({ children }) {
               className={({ isActive }) =>
                 cn(
                   'whitespace-nowrap rounded-full px-4 py-2 font-body text-sm transition-colors duration-200',
-                  isActive ? 'bg-kbs-cyan text-white' : 'bg-surface-grey text-text-medium hover:text-kbs-navy',
+                  isActive ? 'bg-brand-primary text-white' : 'bg-bg-light text-text-secondary hover:text-brand-primary',
                 )
               }
               end={item.end}
@@ -68,7 +68,7 @@ function AdminLayout({ children }) {
           ))}
         </nav>
         <button
-          className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full bg-surface-grey px-4 py-2 font-body text-sm text-text-medium transition-colors duration-200 hover:text-kbs-navy"
+          className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full bg-bg-light px-4 py-2 font-body text-sm text-text-secondary transition-colors duration-200 hover:text-brand-primary"
           onClick={handleSignOut}
           type="button"
         >
@@ -78,10 +78,10 @@ function AdminLayout({ children }) {
       </div>
 
       <div className="mx-auto grid min-h-screen max-w-7xl lg:grid-cols-[16rem_1fr] lg:gap-8 lg:px-6 xl:px-8">
-        <aside className="hidden bg-surface-grey lg:block lg:min-h-screen lg:rounded-r-3xl lg:px-5 lg:py-8">
+        <aside className="hidden bg-bg-light lg:block lg:min-h-screen lg:rounded-r-3xl lg:px-5 lg:py-8">
           <div className="mb-8 px-3">
-            <p className="font-body text-3xl font-semibold text-kbs-navy">KBS Admin</p>
-            <p className="mt-2 font-body text-sm text-text-medium">Manage news, resources, gallery, and newsletters.</p>
+            <p className="font-body text-3xl font-semibold text-text-primary">KBS Admin</p>
+            <p className="mt-2 font-body text-sm text-text-secondary">Manage news, resources, gallery, and newsletters.</p>
           </div>
           <nav aria-label="Admin sidebar navigation" className="space-y-2">
             {adminItems.map((item) => (
@@ -89,7 +89,7 @@ function AdminLayout({ children }) {
             ))}
           </nav>
           <button
-            className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full px-4 py-2 font-body text-sm text-text-medium transition-colors duration-200 hover:bg-white hover:text-kbs-navy"
+            className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full px-4 py-2 font-body text-sm text-text-secondary transition-colors duration-200 hover:bg-white hover:text-brand-primary"
             onClick={handleSignOut}
             type="button"
           >

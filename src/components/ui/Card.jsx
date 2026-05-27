@@ -9,7 +9,7 @@ function Card({ children, className, ...props }) {
   return (
     <motion.article
       className={cn(
-        'group rounded-2xl border border-surface-grey bg-white p-6 shadow-card cursor-pointer',
+        'group rounded-2xl border border-brand-gray/30 bg-white p-6 shadow-card cursor-pointer',
         className,
       )}
       whileHover={prefersReducedMotion ? undefined : { y: -8, boxShadow: '0 20px 40px rgba(31,46,122,0.15)' }}

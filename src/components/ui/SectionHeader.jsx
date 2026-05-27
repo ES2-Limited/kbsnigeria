@@ -8,11 +8,11 @@ function SectionHeader({ align = 'center', className, heading, overline, subtext
   return (
     <div className={cn('flex max-w-3xl flex-col', alignmentClass, className)}>
       {overline ? (
-        <p className="mb-2 font-calligraphy italic text-kbs-purple text-xl sm:text-xl">{overline}</p>
+        <p className="mb-2 font-calligraphy italic text-brand-purple text-xl sm:text-xl">{overline}</p>
       ) : null}
-      <h2 className="mb-4 font-display text-h2 text-kbs-navy">{heading}</h2>
+      <h2 className="mb-4 font-display text-h2 text-text-primary">{heading}</h2>
       {subtext ? (
-        <p className="font-body text-text-medium text-lg max-w-2xl mx-auto sm:mx-0">{subtext}</p>
+        <p className="font-body text-text-secondary text-lg max-w-2xl mx-auto sm:mx-0">{subtext}</p>
       ) : null}
     </div>
   )

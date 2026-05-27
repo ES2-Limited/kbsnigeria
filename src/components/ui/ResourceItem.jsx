@@ -35,18 +35,18 @@ function ResourceItem({ category, className, date, downloadUrl, fileType, title 
   return (
     <div
       className={cn(
-        'flex flex-col gap-4 rounded-2xl border border-surface-grey bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between',
+        'flex flex-col gap-4 rounded-2xl border border-brand-gray/30 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between',
         className,
       )}
     >
       <div className="flex items-start gap-4">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-surface-grey text-kbs-navy">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-bg-light text-text-primary">
           <FileIcon className="h-6 w-6" />
         </div>
         <div className="space-y-2">
-          <h3 className="font-body text-lg font-semibold text-text-dark">{title}</h3>
+          <h3 className="font-body text-lg font-semibold text-text-primary">{title}</h3>
           <div className="flex flex-wrap items-center gap-3">
-            <span className="font-body text-sm text-text-medium">{date}</span>
+            <span className="font-body text-sm text-text-secondary">{date}</span>
             <Badge variant={categoryVariantMap[category] ?? 'navy'}>{category}</Badge>
           </div>
         </div>

@@ -12,13 +12,13 @@ const MotionButton = motion.button
 
 const variantClasses = {
   primary:
-    'relative overflow-hidden bg-kbs-cyan text-white shadow-md hover:bg-kbs-cyan/90 focus-visible:ring-kbs-cyan/20',
+    'relative overflow-hidden bg-brand-primary text-white shadow-lg hover:shadow-xl hover:bg-brand-secondary focus-visible:ring-brand-accent/20',
   secondary:
-    'border-2 border-kbs-cyan text-kbs-cyan hover:bg-kbs-cyan hover:text-white focus-visible:ring-kbs-cyan/20',
+    'border-2 border-brand-primary text-brand-primary hover:bg-brand-secondary hover:text-white focus-visible:ring-brand-accent/20',
   ghost:
-    'text-kbs-navy underline underline-offset-4 hover:text-kbs-purple focus-visible:ring-kbs-purple/20',
+    'text-text-primary underline underline-offset-4 hover:text-brand-purple focus-visible:ring-brand-purple/20',
   danger:
-    'bg-error text-white hover:bg-error/90 focus-visible:ring-error/20',
+    'bg-error text-white shadow-lg hover:shadow-xl hover:bg-error/90 focus-visible:ring-error/20',
 }
 
 const sizeClasses = {

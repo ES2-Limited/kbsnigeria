@@ -6,14 +6,14 @@ import SectionHeader from '../components/ui/SectionHeader'
 
 function Unsubscribe() {
   return (
-    <div className="bg-surface-white px-6 py-20 sm:px-8 sm:py-24 lg:px-10">
+    <div className="bg-bg-light px-6 py-20 sm:px-8 sm:py-24 lg:px-10">
       <PageSeo
         canonicalPath="/unsubscribe"
         description="Manage your KBS Nigeria newsletter subscription preferences."
         title="Unsubscribe | KBS Nigeria"
       />
 
-      <div className="mx-auto max-w-3xl rounded-3xl border border-surface-grey bg-white px-6 py-12 text-center shadow-sm sm:px-10">
+      <div className="mx-auto max-w-3xl rounded-3xl border border-brand-gray/30 bg-white px-6 py-12 text-center shadow-sm sm:px-10">
         <SectionHeader
           align="center"
           className="mx-auto"

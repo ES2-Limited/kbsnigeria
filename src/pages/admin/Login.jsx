@@ -43,12 +43,12 @@ function Login() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-surface-grey px-4 py-10">
-      <div className="w-full max-w-md rounded-3xl border border-surface-grey bg-white p-8 shadow-sm">
+    <div className="flex min-h-screen items-center justify-center bg-bg-light px-4 py-10">
+      <div className="w-full max-w-md rounded-3xl border border-brand-gray/30 bg-white p-8 shadow-sm">
         <div className="mb-8 space-y-3 text-center">
-          <p className="font-body text-sm font-semibold uppercase tracking-wide text-kbs-cyan">KBS Nigeria Admin</p>
-          <h1 className="font-display text-4xl text-kbs-navy">Sign In</h1>
-          <p className="font-body text-sm text-text-medium">Use your administrator email and password to access the content panel.</p>
+          <p className="font-body text-sm font-semibold uppercase tracking-wide text-brand-primary">KBS Nigeria Admin</p>
+          <h1 className="font-display text-4xl text-text-primary">Sign In</h1>
+          <p className="font-body text-sm text-text-secondary">Use your administrator email and password to access the content panel.</p>
         </div>
 
         <form className="space-y-5" onSubmit={handleSubmit}>

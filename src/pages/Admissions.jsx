@@ -92,17 +92,17 @@ function Admissions() {
   }
 
   return (
-    <div className="bg-surface-white">
+    <div className="bg-bg-light">
       <PageSeo
         canonicalPath="/admissions"
         description="Find admissions steps, requirements, contact details, and enquiry options for enrolling at KBS Nigeria."
         title="Admissions | KBS Nigeria"
       />
 
-      <section className="overflow-hidden bg-hero-gradient text-white">
+      <section className="overflow-hidden bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
           <motion.div className="max-w-3xl space-y-5" {...fadeUpMotion(prefersReducedMotion)}>
-            <p className="font-calligraphy text-xl italic text-kbs-lavender">Admissions</p>
+            <p className="font-calligraphy text-xl italic text-brand-gray">Admissions</p>
             <h1 className="font-display text-h1 sm:text-display text-white">
               Start Your Child&apos;s KBS Journey With Confidence
             </h1>
@@ -111,7 +111,7 @@ function Admissions() {
             </p>
           </motion.div>
         </div>
-        <WaveDivider className="text-surface-white" />
+        <WaveDivider className="text-white" />
       </section>
 
       <motion.section className="py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>
@@ -126,12 +126,12 @@ function Admissions() {
           <div className="grid gap-6 lg:grid-cols-4">
             {processSteps.map((step, index) => (
               <motion.div key={step.title} {...fadeUpMotion(prefersReducedMotion)}>
-                <div className="h-full rounded-2xl border border-surface-grey bg-white p-6 shadow-sm">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-kbs-cyan font-display text-2xl text-white">
+                <div className="h-full rounded-2xl border border-brand-gray/30 bg-white p-6 shadow-sm">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-brand-primary font-display text-2xl text-white">
                     {index + 1}
                   </div>
-                  <h2 className="font-body text-lg font-semibold text-text-dark">{step.title}</h2>
-                  <p className="mt-3 font-body text-base leading-8 text-text-medium">{step.description}</p>
+                  <h2 className="font-body text-lg font-semibold text-text-primary">{step.title}</h2>
+                  <p className="mt-3 font-body text-base leading-8 text-text-secondary">{step.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -139,7 +139,7 @@ function Admissions() {
         </div>
       </motion.section>
 
-      <motion.section className="bg-surface-grey py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>
+      <motion.section className="bg-bg-light py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:grid lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-12 lg:px-10">
           <div className="mb-10 lg:mb-0">
             <SectionHeader
@@ -148,7 +148,7 @@ function Admissions() {
               overline="What to Prepare"
               subtext="Before admission is finalised, families may be asked to provide the following documents and information."
             />
-            <ul className="mt-6 space-y-4 font-body text-base text-text-medium">
+            <ul className="mt-6 space-y-4 font-body text-base text-text-secondary">
               {requirements.map((item) => (
                 <li key={item}>• {item}</li>
               ))}
@@ -169,7 +169,7 @@ function Admissions() {
               subtext="Tell us about your child and what you would like to know. Our team will follow up with the next steps."
             />
 
-            <form className="space-y-5 rounded-3xl border border-surface-grey bg-white p-6 shadow-sm sm:p-8" onSubmit={handleSubmit}>
+            <form className="space-y-5 rounded-3xl border border-brand-gray/30 bg-white p-6 shadow-sm sm:p-8" onSubmit={handleSubmit}>
               <div className="grid gap-5 sm:grid-cols-2">
                 <Input
                   label="Parent Name"
@@ -233,30 +233,30 @@ function Admissions() {
           </div>
 
           <div className="mt-12 space-y-8 lg:mt-0">
-            <div className="rounded-3xl border border-surface-grey bg-white p-6 shadow-sm sm:p-8">
-              <h2 className="font-display text-3xl text-kbs-navy">Visit or Contact Us</h2>
-              <div className="mt-6 space-y-4 font-body text-base text-text-medium">
-                <a className="flex min-h-11 items-start gap-3 hover:text-kbs-cyan" href="tel:+2348000000000">
-                  <Phone className="mt-1 h-5 w-5 shrink-0 text-kbs-cyan" />
+            <div className="rounded-3xl border border-brand-gray/30 bg-white p-6 shadow-sm sm:p-8">
+              <h2 className="font-display text-3xl text-text-primary">Visit or Contact Us</h2>
+              <div className="mt-6 space-y-4 font-body text-base text-text-secondary">
+                <a className="flex min-h-11 items-start gap-3 hover:text-brand-accent" href="tel:+2348000000000">
+                  <Phone className="mt-1 h-5 w-5 shrink-0 text-brand-primary" />
                   <span>+234 800 000 0000</span>
                 </a>
-                <a className="flex min-h-11 items-start gap-3 hover:text-kbs-cyan" href="mailto:info@kbsnigeria.com">
-                  <Mail className="mt-1 h-5 w-5 shrink-0 text-kbs-cyan" />
+                <a className="flex min-h-11 items-start gap-3 hover:text-brand-accent" href="mailto:info@kbsnigeria.com">
+                  <Mail className="mt-1 h-5 w-5 shrink-0 text-brand-primary" />
                   <span>info@kbsnigeria.com</span>
                 </a>
                 <a
-                  className="flex min-h-11 items-start gap-3 hover:text-kbs-cyan"
+                  className="flex min-h-11 items-start gap-3 hover:text-brand-accent"
                   href="https://maps.google.com/?q=FHA+Lugbe+Abuja"
                   rel="noreferrer"
                   target="_blank"
                 >
-                  <MapPin className="mt-1 h-5 w-5 shrink-0 text-kbs-cyan" />
+                  <MapPin className="mt-1 h-5 w-5 shrink-0 text-brand-primary" />
                   <span>FHA Lugbe, Abuja, Nigeria</span>
                 </a>
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-3xl border border-surface-grey bg-white shadow-sm">
+            <div className="overflow-hidden rounded-3xl border border-brand-gray/30 bg-white shadow-sm">
               <iframe
                 className="h-[320px] w-full"
                 height="320"

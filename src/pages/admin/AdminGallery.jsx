@@ -109,10 +109,10 @@ function AdminGallery() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="font-body text-sm font-semibold uppercase tracking-wide text-kbs-cyan">Gallery Manager</p>
-          <h1 className="font-display text-4xl text-kbs-navy">Manage Gallery Images</h1>
+          <p className="font-body text-sm font-semibold uppercase tracking-wide text-brand-primary">Gallery Manager</p>
+          <h1 className="font-display text-4xl text-text-primary">Manage Gallery Images</h1>
         </div>
-        <label className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-kbs-cyan px-6 py-3 font-body text-sm font-medium text-white shadow-md transition-colors duration-200 hover:bg-kbs-cyan/90">
+        <label className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-brand-primary px-6 py-3 font-body text-sm font-medium text-white shadow-md transition-colors duration-200 hover:bg-brand-secondary">
           <Upload className="h-4 w-4" />
           <span>{uploading ? 'Uploading...' : 'Upload Images'}</span>
           <input accept="image/jpeg,image/png,image/webp" className="hidden" multiple onChange={handleUpload} type="file" />
@@ -121,7 +121,7 @@ function AdminGallery() {
 
       {error ? <p className="font-body text-sm text-error">{error}</p> : null}
 
-      {loading ? <div className="h-40 animate-pulse rounded-3xl bg-surface-grey" /> : null}
+      {loading ? <div className="h-40 animate-pulse rounded-3xl bg-bg-light" /> : null}
 
       {!loading ? (
         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
@@ -129,7 +129,7 @@ function AdminGallery() {
             <Card className="space-y-4 p-4" key={image.id}>
               <img alt={image.caption || 'Gallery image'} className="h-48 w-full rounded-2xl object-cover" src={image.url} />
               <div className="flex items-start justify-between gap-4">
-                <p className="font-body text-sm text-text-medium">{image.caption || 'Untitled image'}</p>
+                <p className="font-body text-sm text-text-secondary">{image.caption || 'Untitled image'}</p>
                 <button className="text-error transition-colors duration-200 hover:text-error/80" onClick={() => handleDelete(image)} type="button">
                   <Trash2 className="h-4 w-4" />
                 </button>

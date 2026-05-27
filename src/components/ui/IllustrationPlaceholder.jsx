@@ -9,7 +9,7 @@ function IllustrationPlaceholder({ className, label, tone = 'light' }) {
         'flex items-center justify-center rounded-3xl border-2 border-dashed px-6 py-10 text-center font-body text-sm',
         tone === 'dark'
           ? 'border-white/20 bg-white/10 text-white/80'
-          : 'border-kbs-lavender bg-white/70 text-text-medium',
+          : 'border-brand-gray/30 bg-white/70 text-text-secondary',
         className,
       )}
     >

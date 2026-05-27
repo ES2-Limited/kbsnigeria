@@ -64,17 +64,17 @@ function Contact() {
   }
 
   return (
-    <div className="bg-surface-white">
+    <div className="bg-bg-light">
       <PageSeo
         canonicalPath="/contact"
         description="Contact Knowledgebased Basic Science Schools in FHA Lugbe, Abuja for admissions enquiries, school information, and updates."
         title="Contact | KBS Nigeria"
       />
 
-      <section className="overflow-hidden bg-hero-gradient text-white">
+      <section className="overflow-hidden bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
           <motion.div className="max-w-3xl space-y-5" {...fadeUpMotion(prefersReducedMotion)}>
-            <p className="font-calligraphy text-xl italic text-kbs-lavender">Contact & Location</p>
+            <p className="font-calligraphy text-xl italic text-brand-gray">Contact & Location</p>
             <h1 className="font-display text-h1 sm:text-display text-white">
               We&apos;re Here to Help Your Family Take the Next Step
             </h1>
@@ -83,7 +83,7 @@ function Contact() {
             </p>
           </motion.div>
         </div>
-        <WaveDivider className="text-surface-white" />
+        <WaveDivider className="text-white" />
       </section>
 
       <motion.section className="py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>
@@ -96,31 +96,31 @@ function Contact() {
               subtext="You can call, email, visit, or send an enquiry using the form. Our team will be happy to guide you."
             />
 
-            <div className="space-y-4 rounded-3xl border border-surface-grey bg-white p-6 shadow-sm sm:p-8">
-              <a className="flex min-h-11 items-start gap-3 font-body text-base text-text-medium hover:text-kbs-cyan" href="tel:+2348000000000">
-                <Phone className="mt-1 h-5 w-5 shrink-0 text-kbs-cyan" />
+            <div className="space-y-4 rounded-3xl border border-brand-gray/30 bg-white p-6 shadow-sm sm:p-8">
+              <a className="flex min-h-11 items-start gap-3 font-body text-base text-text-secondary hover:text-brand-accent" href="tel:+2348000000000">
+                <Phone className="mt-1 h-5 w-5 shrink-0 text-brand-primary" />
                 <span>+234 800 000 0000</span>
               </a>
-              <a className="flex min-h-11 items-start gap-3 font-body text-base text-text-medium hover:text-kbs-cyan" href="mailto:info@kbsnigeria.com">
-                <Mail className="mt-1 h-5 w-5 shrink-0 text-kbs-cyan" />
+              <a className="flex min-h-11 items-start gap-3 font-body text-base text-text-secondary hover:text-brand-accent" href="mailto:info@kbsnigeria.com">
+                <Mail className="mt-1 h-5 w-5 shrink-0 text-brand-primary" />
                 <span>info@kbsnigeria.com</span>
               </a>
               <a
-                className="flex min-h-11 items-start gap-3 font-body text-base text-text-medium hover:text-kbs-cyan"
+                className="flex min-h-11 items-start gap-3 font-body text-base text-text-secondary hover:text-brand-accent"
                 href="https://maps.google.com/?q=FHA+Lugbe+Abuja"
                 rel="noreferrer"
                 target="_blank"
               >
-                <MapPin className="mt-1 h-5 w-5 shrink-0 text-kbs-cyan" />
+                <MapPin className="mt-1 h-5 w-5 shrink-0 text-brand-primary" />
                 <span>FHA Lugbe, Abuja, Nigeria</span>
               </a>
             </div>
 
-            <IllustrationPlaceholder className="min-h-[260px] bg-surface-grey" label="Contact illustration placeholder" />
+            <IllustrationPlaceholder className="min-h-[260px] bg-bg-light" label="Contact illustration placeholder" />
           </div>
 
           <div className="mt-12 space-y-8 lg:mt-0">
-            <form className="rounded-3xl border border-surface-grey bg-white p-6 shadow-sm sm:p-8" onSubmit={handleEnquirySubmit}>
+            <form className="rounded-3xl border border-brand-gray/30 bg-white p-6 shadow-sm sm:p-8" onSubmit={handleEnquirySubmit}>
               <SectionHeader
                 align="left"
                 className="mb-6"
@@ -149,7 +149,7 @@ function Contact() {
               </div>
             </form>
 
-            <div className="overflow-hidden rounded-3xl border border-surface-grey bg-white shadow-sm">
+            <div className="overflow-hidden rounded-3xl border border-brand-gray/30 bg-white shadow-sm">
               <iframe
                 className="h-[320px] w-full"
                 height="320"
@@ -161,7 +161,7 @@ function Contact() {
               />
             </div>
 
-            <form className="rounded-3xl border border-surface-grey bg-white p-6 shadow-sm sm:p-8" onSubmit={handleNewsletterSubmit}>
+            <form className="rounded-3xl border border-brand-gray/30 bg-white p-6 shadow-sm sm:p-8" onSubmit={handleNewsletterSubmit}>
               <SectionHeader
                 align="left"
                 className="mb-6"

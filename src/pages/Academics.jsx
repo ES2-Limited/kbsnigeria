@@ -57,17 +57,17 @@ function Academics() {
   const [activeTier, setActiveTier] = useState(tiers[0])
 
   return (
-    <div className="bg-surface-white">
+    <div className="bg-bg-light">
       <PageSeo
         canonicalPath="/academics"
         description="Explore the Nursery, Primary, and JSS academic programmes at KBS Nigeria, including subjects, activities, and curriculum alignment."
         title="Academics | KBS Nigeria"
       />
 
-      <section className="overflow-hidden bg-hero-gradient text-white">
+      <section className="overflow-hidden bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
-          <motion.div className="max-w-3xl space-y-5" {...fadeUpMotion(prefersReducedMotion)}>
-            <p className="font-calligraphy text-xl italic text-kbs-lavender">Academics</p>
+          <motion.div className="mx-auto max-w-3xl space-y-5 text-center" {...fadeUpMotion(prefersReducedMotion)}>
+            <p className="font-calligraphy text-xl italic text-brand-gray">Academics</p>
             <h1 className="font-display text-h1 sm:text-display text-white">
               Programmes Designed for Every Learning Stage
             </h1>
@@ -76,10 +76,10 @@ function Academics() {
             </p>
           </motion.div>
         </div>
-        <WaveDivider className="text-surface-white" />
+        <WaveDivider className="text-white" />
       </section>
 
-      <motion.section className="py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>
+      <motion.section className="py-24 sm:py-32" {...fadeUpMotion(prefersReducedMotion)}>
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
           <SectionHeader
             align="center"
@@ -93,8 +93,8 @@ function Academics() {
             {tiers.map((tier) => (
               <button
                 className={cn(
-                  'min-h-11 rounded-full px-5 py-3 font-body text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20',
-                  activeTier.id === tier.id ? 'bg-kbs-cyan text-white' : 'bg-surface-grey text-text-medium hover:text-kbs-navy',
+                  'min-h-11 rounded-full px-5 py-3 font-body text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20',
+                  activeTier.id === tier.id ? 'bg-brand-primary text-white' : 'bg-bg-light text-text-secondary hover:text-brand-primary',
                 )}
                 key={tier.id}
                 onClick={() => setActiveTier(tier)}
@@ -115,21 +115,21 @@ function Academics() {
               transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: 'easeOut' }}
             >
               <IllustrationPlaceholder
-                className="min-h-[340px] bg-surface-grey"
+                className="min-h-[340px] bg-bg-light"
                 label={`${activeTier.name} illustration placeholder`}
               />
 
               <div className="space-y-6">
                 <div className="space-y-3">
                   <Badge variant="cyan">{activeTier.ageRange}</Badge>
-                  <h2 className="font-display text-4xl text-kbs-navy">{activeTier.name}</h2>
-                  <p className="font-body text-base leading-8 text-text-medium">{activeTier.description}</p>
+                  <h2 className="font-display text-4xl text-text-primary">{activeTier.name}</h2>
+                  <p className="font-body text-base leading-8 text-text-secondary">{activeTier.description}</p>
                 </div>
 
                 <div className="grid gap-6 lg:grid-cols-2">
                   <Card className="space-y-4">
-                    <h3 className="font-body text-lg font-semibold text-text-dark">Key Subjects</h3>
-                    <ul className="space-y-3 font-body text-base text-text-medium">
+                    <h3 className="font-body text-lg font-semibold text-text-primary">Key Subjects</h3>
+                    <ul className="space-y-3 font-body text-base text-text-secondary">
                       {activeTier.subjects.map((subject) => (
                         <li key={subject}>• {subject}</li>
                       ))}
@@ -137,8 +137,8 @@ function Academics() {
                   </Card>
 
                   <Card className="space-y-4">
-                    <h3 className="font-body text-lg font-semibold text-text-dark">Extracurriculars</h3>
-                    <ul className="space-y-3 font-body text-base text-text-medium">
+                    <h3 className="font-body text-lg font-semibold text-text-primary">Extracurriculars</h3>
+                    <ul className="space-y-3 font-body text-base text-text-secondary">
                       {activeTier.extracurriculars.map((item) => (
                         <li key={item}>• {item}</li>
                       ))}
@@ -146,9 +146,9 @@ function Academics() {
                   </Card>
                 </div>
 
-                <Card className="space-y-3 bg-surface-grey">
-                  <h3 className="font-body text-lg font-semibold text-text-dark">Curriculum Alignment</h3>
-                  <p className="font-body text-base leading-8 text-text-medium">
+                <Card className="space-y-3 bg-bg-light">
+                  <h3 className="font-body text-lg font-semibold text-text-primary">Curriculum Alignment</h3>
+                  <p className="font-body text-base leading-8 text-text-secondary">
                     This tier is delivered in line with NERDC curriculum expectations, with structured classroom practice designed to prepare learners for the academic demands of the next level.
                   </p>
                 </Card>

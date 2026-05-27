@@ -67,7 +67,7 @@ function Modal({ children, className, closeButtonClassName, onClose, open, title
       {open ? (
         <motion.div
           animate={{ opacity: 1 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-kbs-navy/60 px-4 py-8"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-brand-primary/60 px-4 py-8"
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           onClick={onClose}
@@ -88,10 +88,10 @@ function Modal({ children, className, closeButtonClassName, onClose, open, title
             transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: 'easeOut' }}
           >
             <div className="mb-4 flex items-start justify-between gap-4">
-              <h2 className={cn('font-display text-2xl leading-tight text-kbs-navy', titleClassName)}>{title}</h2>
+              <h2 className={cn('font-display text-2xl leading-tight text-text-primary', titleClassName)}>{title}</h2>
               <button
                 className={cn(
-                  'inline-flex h-11 w-11 items-center justify-center rounded-full text-kbs-navy transition-colors duration-200 hover:bg-surface-grey focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20',
+                  'inline-flex h-11 w-11 items-center justify-center rounded-full text-text-primary transition-colors duration-200 hover:bg-bg-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20',
                   closeButtonClassName,
                 )}
                 onClick={onClose}
