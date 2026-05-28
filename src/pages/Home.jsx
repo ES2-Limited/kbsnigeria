@@ -1,7 +1,19 @@
 // Homepage — fully animated per motion spec.
 
 import { animate, motion, useInView, useReducedMotion } from 'framer-motion'
-import { ChevronDown, ChevronRight, Image as ImageIcon, Newspaper } from 'lucide-react'
+import {
+  BookOpen,
+  ChevronDown,
+  ChevronRight,
+  Image as ImageIcon,
+  Newspaper,
+  School,
+  Sparkles,
+  Target,
+  TreeDeciduous,
+  User,
+  Users,
+} from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../components/ui/Button'
@@ -37,21 +49,21 @@ const academics = [
     ages: 'Ages 3–5',
     description: 'A warm first classroom built around play, literacy, and the confidence to ask big questions.',
     variant: 'cyan',
-    icon: '🌱',
+    icon: TreeDeciduous,
   },
   {
     title: 'Primary',
     ages: 'Ages 6–11',
     description: 'Strong foundations in core subjects, creativity, and structured curiosity that grows every term.',
     variant: 'purple',
-    icon: '📚',
+    icon: BookOpen,
   },
   {
     title: 'JSS',
     ages: 'Ages 12–15',
     description: 'Focused preparation for higher study through science, leadership, discipline, and discovery.',
     variant: 'navy',
-    icon: '🎯',
+    icon: Target,
   },
 ]
 
@@ -71,19 +83,19 @@ const testimonials = [
     name: 'Chioma Ibrahim',
     role: 'Parent, Primary student',
     quote: 'KBS has transformed how my child sees learning. The warmth and individual attention is remarkable — she genuinely looks forward to school.',
-    avatar: '👩‍👧',
+    avatar: Users,
   },
   {
     name: 'Mr. Adeyemi',
     role: 'Parent, JSS student',
     quote: 'Discipline, character, and academics in perfect balance. My son has become more confident and independent in the past year at KBS.',
-    avatar: '👨‍👦',
+    avatar: User,
   },
   {
     name: 'Blessing Okafor',
     role: 'Parent, Nursery & Primary',
     quote: 'Two children in school, two different experiences shaped with care. KBS is not just a school — it\'s a family that nurtures potential.',
-    avatar: '👩‍👧‍👦',
+    avatar: Users,
   },
 ]
 
@@ -98,7 +110,7 @@ function formatDate(value) {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function PlaceholderIllustration({ className, label }) {
+function PlaceholderIllustration({ className, icon: Icon, label }) {
   return (
     <div
       className={cn(
@@ -106,7 +118,14 @@ function PlaceholderIllustration({ className, label }) {
         className,
       )}
     >
-      {label}
+      {Icon ? (
+        <>
+          <Icon aria-hidden="true" className="h-16 w-16 text-white/60" />
+          <span className="sr-only">{label}</span>
+        </>
+      ) : (
+        label
+      )}
     </div>
   )
 }
@@ -429,9 +448,11 @@ function Home() {
       <section className="py-24 sm:py-32">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 sm:px-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center lg:px-10">
           <ScrollReveal direction="left">
-            <div className="h-64 flex items-center justify-center rounded-2xl border-2 border-dashed border-brand-gray/30 bg-brand-gray/30 text-sm text-brand-purple">
-              about-mascot.svg
-            </div>
+            <PlaceholderIllustration
+              className="h-64"
+              icon={School}
+              label="About mascot illustration"
+            />
           </ScrollReveal>
 
           <div className="space-y-6">
@@ -471,8 +492,8 @@ function Home() {
             {academics.map((item, i) => (
               <ScrollReveal key={item.title} direction="up" delay={i * 0.15}>
                 <Card className="group h-full space-y-5">
-                  <div className="rounded-xl bg-brand-gray/30 h-40 mb-4 flex items-center justify-center text-6xl transition-all duration-300 group-hover:bg-brand-gray/50 group-hover:scale-110">
-                    {item.icon}
+                  <div className="rounded-xl bg-brand-gray/30 h-40 mb-4 flex items-center justify-center transition-all duration-300 group-hover:bg-brand-gray/50 group-hover:scale-110">
+                    {item.icon ? <item.icon className="h-16 w-16 text-brand-primary" /> : null}
                   </div>
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
@@ -614,7 +635,9 @@ function Home() {
                 <Card className="h-full space-y-5">
                   <p className="font-calligraphy text-lg italic text-text-primary">&ldquo;{testimonial.quote}&rdquo;</p>
                   <div className="flex items-center gap-3 pt-2 border-t border-brand-gray/30">
-                    <div className="text-4xl">{testimonial.avatar}</div>
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-gray/10 text-brand-primary">
+                      {testimonial.avatar ? <testimonial.avatar className="h-6 w-6" /> : null}
+                    </div>
                     <div>
                       <p className="font-body font-semibold text-text-primary">{testimonial.name}</p>
                       <p className="font-body text-xs text-text-secondary">{testimonial.role}</p>
@@ -682,9 +705,11 @@ function Home() {
                   </Button>
                 </motion.div>
               </div>
-              <div className="flex h-72 items-center justify-center rounded-2xl border-2 border-dashed border-white/30 bg-white/10 text-sm text-white/50">
-                admissions-illo.svg
-              </div>
+              <PlaceholderIllustration
+                className="flex h-72 items-center justify-center rounded-2xl border-2 border-dashed border-white/30 bg-white/10 text-sm text-white/50"
+                icon={Sparkles}
+                label="Admissions illustration"
+              />
             </div>
           </ScrollReveal>
         </div>

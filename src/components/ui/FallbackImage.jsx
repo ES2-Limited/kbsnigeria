@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 
 function FallbackImage({ src, fallbackSrc = '/kbs-logo.png', alt, onError, ...props }) {
-  const [currentSrc, setCurrentSrc] = useState(src)
+  const [currentSrc, setCurrentSrc] = useState(src || fallbackSrc)
 
   useEffect(() => {
-    setCurrentSrc(src)
-  }, [src])
+    setCurrentSrc(src || fallbackSrc)
+  }, [src, fallbackSrc])
 
   const handleError = (event) => {
     if (currentSrc !== fallbackSrc) {
