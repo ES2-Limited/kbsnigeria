@@ -35,7 +35,7 @@ export function WhatsAppButton() {
         {/* Pulse ring */}
         {!prefersReduced && (
           <motion.div
-            className="absolute inset-0 rounded-full bg-[#25D366]/40 pointer-events-none"
+            className="absolute inset-0 rounded-full bg-brand-accent/40 pointer-events-none"
             animate={{ scale: [1, 1.6], opacity: [0.6, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: 'easeOut' }}
             aria-hidden="true"
@@ -47,7 +47,7 @@ export function WhatsAppButton() {
           target="_blank"
           rel="noreferrer"
           aria-label="Chat with KBS Nigeria on WhatsApp"
-          className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg"
+          className="relative flex h-14 w-14 items-center justify-center rounded-full bg-brand-accent text-white shadow-lg"
           initial={prefersReduced ? {} : { y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={prefersReduced ? { duration: 0 } : { delay: 1.5, duration: 0.5, ease: 'easeOut' }}

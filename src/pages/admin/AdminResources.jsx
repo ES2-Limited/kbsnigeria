@@ -115,17 +115,17 @@ function AdminResources() {
   return (
     <div className="space-y-8">
       <div>
-        <p className="font-body text-sm font-semibold uppercase tracking-wide text-kbs-cyan">Resources Manager</p>
-        <h1 className="font-display text-4xl text-kbs-navy">Manage Downloadable Resources</h1>
+        <p className="font-body text-sm font-semibold uppercase tracking-wide text-brand-primary">Resources Manager</p>
+        <h1 className="font-display text-4xl text-text-primary">Manage Downloadable Resources</h1>
       </div>
 
       <Card className="space-y-5">
         <form className="grid gap-5 md:grid-cols-[1fr_220px_1fr_auto] md:items-end" onSubmit={handleUpload}>
           <Input label="Title" name="title" onChange={handleChange} required value={formData.title} />
           <div>
-            <label className="mb-2 block font-body text-sm font-medium text-text-dark" htmlFor="resource-category">Category</label>
+            <label className="mb-2 block font-body text-sm font-medium text-text-primary" htmlFor="resource-category">Category</label>
             <select
-              className="w-full rounded-xl border border-kbs-lavender px-4 py-3 font-body text-text-dark outline-none transition-all duration-200 focus:border-kbs-cyan focus:ring-2 focus:ring-kbs-cyan/20"
+              className="w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary outline-none transition-all duration-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20"
               id="resource-category"
               name="category"
               onChange={handleChange}
@@ -137,10 +137,10 @@ function AdminResources() {
             </select>
           </div>
           <div>
-            <label className="mb-2 block font-body text-sm font-medium text-text-dark" htmlFor="resource-file">File</label>
+            <label className="mb-2 block font-body text-sm font-medium text-text-primary" htmlFor="resource-file">File</label>
             <input
               accept=".pdf,.doc,.docx,.xls,.xlsx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-              className="w-full rounded-xl border border-kbs-lavender px-4 py-3 font-body text-text-dark"
+              className="w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary"
               id="resource-file"
               onChange={(event) => setFile(event.target.files?.[0] ?? null)}
               required
@@ -155,13 +155,13 @@ function AdminResources() {
         {error ? <p className="font-body text-sm text-error">{error}</p> : null}
       </Card>
 
-      {loading ? <div className="h-40 animate-pulse rounded-3xl bg-surface-grey" /> : null}
+      {loading ? <div className="h-40 animate-pulse rounded-3xl bg-bg-light" /> : null}
 
       {!loading ? (
         <Card className="overflow-hidden p-0">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-surface-grey font-body text-sm">
-              <thead className="bg-surface-grey/60 text-left text-text-medium">
+            <table className="min-w-full divide-y divide-brand-gray/30 font-body text-sm">
+              <thead className="bg-bg-light/60 text-left text-text-secondary">
                 <tr>
                   <th className="px-6 py-4 font-medium">Title</th>
                   <th className="px-6 py-4 font-medium">Category</th>
@@ -169,12 +169,12 @@ function AdminResources() {
                   <th className="px-6 py-4 font-medium">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-surface-grey">
+              <tbody className="divide-y divide-brand-gray/30">
                 {resources.map((resource) => (
                   <tr key={resource.id}>
-                    <td className="px-6 py-4 text-text-dark">{resource.title}</td>
-                    <td className="px-6 py-4 text-text-medium">{resource.category}</td>
-                    <td className="px-6 py-4 text-text-medium">{formatAdminDate(resource.uploaded_at)}</td>
+                    <td className="px-6 py-4 text-text-primary">{resource.title}</td>
+                    <td className="px-6 py-4 text-text-secondary">{resource.category}</td>
+                    <td className="px-6 py-4 text-text-secondary">{formatAdminDate(resource.uploaded_at)}</td>
                     <td className="px-6 py-4">
                       <button className="text-error transition-colors duration-200 hover:text-error/80" onClick={() => handleDelete(resource)} type="button">
                         <Trash2 className="h-4 w-4" />

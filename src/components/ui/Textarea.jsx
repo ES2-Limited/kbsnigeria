@@ -4,7 +4,7 @@ import { forwardRef, useId } from 'react'
 import { cn } from '../../lib/cn'
 
 const textareaBaseClass =
-  'w-full rounded-xl border px-4 py-3 font-body text-text-dark transition-all duration-200 outline-none placeholder:text-text-medium/60 focus:border-kbs-cyan focus:ring-2 focus:ring-kbs-cyan/20'
+  'w-full rounded-xl border px-4 py-3 font-body text-text-primary transition-all duration-200 outline-none placeholder:text-text-secondary/60 focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20'
 
 const Textarea = forwardRef(function Textarea(
   { className, error, helpText, id, label, required = false, rows = 5, ...props },
@@ -17,7 +17,7 @@ const Textarea = forwardRef(function Textarea(
   return (
     <div className="w-full">
       {label ? (
-        <label className="mb-2 block font-body text-sm font-semibold text-text-dark" htmlFor={fieldId}>
+        <label className="mb-2 block font-body text-sm font-semibold text-text-primary" htmlFor={fieldId}>
           {label}
           {required ? <span className="ml-1 text-red-400">*</span> : null}
         </label>
@@ -29,7 +29,7 @@ const Textarea = forwardRef(function Textarea(
           textareaBaseClass,
           error
             ? 'border-red-400 ring-2 ring-red-400/20 focus:border-red-400 focus:ring-red-400/20'
-            : 'border-kbs-lavender',
+            : 'border-brand-gray/30',
           className,
         )}
         id={fieldId}
@@ -39,7 +39,7 @@ const Textarea = forwardRef(function Textarea(
         {...props}
       />
       {error || helpText ? (
-        <p className={cn('mt-2 text-sm font-body', error ? 'text-error' : 'text-text-medium')} id={helpId}>
+        <p className={cn('mt-2 text-sm font-body', error ? 'text-error' : 'text-text-secondary')} id={helpId}>
           {error || helpText}
         </p>
       ) : null}

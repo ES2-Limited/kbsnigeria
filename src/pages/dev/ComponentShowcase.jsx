@@ -16,8 +16,8 @@ import WaveDivider from '../../components/ui/WaveDivider'
 
 function ShowcaseBlock({ children, title }) {
   return (
-    <section className="space-y-6 rounded-3xl border border-surface-grey bg-white p-6 shadow-sm sm:p-8">
-      <h2 className="font-display text-3xl text-kbs-navy">{title}</h2>
+    <section className="space-y-6 rounded-3xl border border-brand-gray/30 bg-white p-6 shadow-sm sm:p-8">
+      <h2 className="font-display text-3xl text-text-primary">{title}</h2>
       {children}
     </section>
   )
@@ -26,13 +26,13 @@ function ShowcaseBlock({ children, title }) {
 function ComponentShowcase() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const illustrationPlaceholder = (
-    <div className="mx-auto flex h-40 w-full max-w-xs items-center justify-center rounded-3xl border-2 border-dashed border-kbs-lavender bg-surface-grey px-6 text-center font-body text-sm text-text-medium">
+    <div className="mx-auto flex h-40 w-full max-w-xs items-center justify-center rounded-3xl border-2 border-dashed border-brand-gray/30 bg-bg-light px-6 text-center font-body text-sm text-text-secondary">
       Illustration placeholder
     </div>
   )
 
   return (
-    <main className="min-h-screen bg-surface-white px-6 py-10 sm:px-8 lg:px-10">
+    <main className="min-h-screen bg-bg-light px-6 py-10 sm:px-8 lg:px-10">
       <div className="mx-auto flex max-w-6xl flex-col gap-10">
         <SectionHeader
           align="left"
@@ -65,8 +65,8 @@ function ComponentShowcase() {
             <Card>
               <div className="space-y-3">
                 <Badge variant="cyan">Term Dates</Badge>
-                <h3 className="font-display text-2xl text-kbs-navy">Standard Card</h3>
-                <p className="font-body text-base leading-7 text-text-medium">
+                <h3 className="font-display text-2xl text-text-primary">Standard Card</h3>
+                <p className="font-body text-base leading-7 text-text-secondary">
                   Cards use the approved KBS border, radius, shadow, spacing, and hover lift treatment.
                 </p>
               </div>
@@ -99,7 +99,7 @@ function ComponentShowcase() {
           </div>
           <Modal onClose={() => setIsModalOpen(false)} open={isModalOpen} title="Admissions Enquiry">
             <div className="space-y-4">
-              <p className="font-body leading-7 text-text-medium">
+              <p className="font-body leading-7 text-text-secondary">
                 This modal demonstrates the approved fade and scale entrance, focus trapping, escape close, and backdrop dismiss behaviour.
               </p>
               <Input label="Parent Name" />
@@ -168,11 +168,11 @@ function ComponentShowcase() {
             </div>
             <div className="space-y-4">
               <WaveDivider color="grey" />
-              <WaveDivider className="text-kbs-cyan" flipX />
+              <WaveDivider className="text-brand-primary" flipX />
             </div>
-            <div className="flex items-center gap-4 text-kbs-cyan">
+            <div className="flex items-center gap-4 text-brand-primary">
               <LoadingSpinner />
-              <span className="font-body text-text-medium">Loading spinner preview</span>
+              <span className="font-body text-text-secondary">Loading spinner preview</span>
             </div>
             <EmptyState
               action={{ label: 'Upload Resource', variant: 'primary', onClick: () => {} }}

@@ -1,7 +1,19 @@
 // Homepage — fully animated per motion spec.
 
 import { animate, motion, useInView, useReducedMotion } from 'framer-motion'
-import { ChevronDown, ChevronRight, Image as ImageIcon, Newspaper } from 'lucide-react'
+import {
+  BookOpen,
+  ChevronDown,
+  ChevronRight,
+  Image as ImageIcon,
+  Newspaper,
+  School,
+  Sparkles,
+  Target,
+  TreeDeciduous,
+  User,
+  Users,
+} from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../components/ui/Button'
@@ -14,6 +26,7 @@ import { ScrollReveal } from '../components/ui/ScrollReveal'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
 import Badge from '../components/ui/Badge'
+import FallbackImage from '../components/ui/FallbackImage'
 import { useGallery } from '../hooks/useGallery'
 import { useNews } from '../hooks/useNews'
 import { useNewsletterSubscription } from '../hooks/useNewsletterSubscription'
@@ -36,31 +49,55 @@ const academics = [
     ages: 'Ages 3–5',
     description: 'A warm first classroom built around play, literacy, and the confidence to ask big questions.',
     variant: 'cyan',
+    icon: TreeDeciduous,
   },
   {
     title: 'Primary',
     ages: 'Ages 6–11',
     description: 'Strong foundations in core subjects, creativity, and structured curiosity that grows every term.',
     variant: 'purple',
+    icon: BookOpen,
   },
   {
     title: 'JSS',
     ages: 'Ages 12–15',
     description: 'Focused preparation for higher study through science, leadership, discipline, and discovery.',
     variant: 'navy',
+    icon: Target,
   },
 ]
 
 const tileGradients = [
-  'from-kbs-lavender/40 to-kbs-cyan/20',
-  'from-kbs-navy/10 to-kbs-purple/20',
-  'from-kbs-cyan/20 to-kbs-lavender/30',
-  'from-kbs-purple/20 to-kbs-navy/10',
-  'from-kbs-lavender/30 to-kbs-cyan/30',
-  'from-kbs-cyan/10 to-kbs-lavender/40',
+  'from-brand-gray/40 to-brand-accent/20',
+  'from-brand-primary/10 to-brand-purple/20',
+  'from-brand-accent/20 to-brand-gray/30',
+  'from-brand-purple/20 to-brand-primary/10',
+  'from-brand-gray/30 to-brand-accent/30',
+  'from-brand-accent/10 to-brand-gray/40',
 ]
 
 const tileHeights = ['h-56', 'h-40', 'h-48', 'h-40', 'h-56', 'h-44']
+
+const testimonials = [
+  {
+    name: 'Chioma Ibrahim',
+    role: 'Parent, Primary student',
+    quote: 'KBS has transformed how my child sees learning. The warmth and individual attention is remarkable — she genuinely looks forward to school.',
+    avatar: Users,
+  },
+  {
+    name: 'Mr. Adeyemi',
+    role: 'Parent, JSS student',
+    quote: 'Discipline, character, and academics in perfect balance. My son has become more confident and independent in the past year at KBS.',
+    avatar: User,
+  },
+  {
+    name: 'Blessing Okafor',
+    role: 'Parent, Nursery & Primary',
+    quote: 'Two children in school, two different experiences shaped with care. KBS is not just a school — it\'s a family that nurtures potential.',
+    avatar: Users,
+  },
+]
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -73,7 +110,7 @@ function formatDate(value) {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function PlaceholderIllustration({ className, label }) {
+function PlaceholderIllustration({ className, icon: Icon, label }) {
   return (
     <div
       className={cn(
@@ -81,7 +118,14 @@ function PlaceholderIllustration({ className, label }) {
         className,
       )}
     >
-      {label}
+      {Icon ? (
+        <>
+          <Icon aria-hidden="true" className="h-16 w-16 text-white/60" />
+          <span className="sr-only">{label}</span>
+        </>
+      ) : (
+        label
+      )}
     </div>
   )
 }
@@ -116,13 +160,13 @@ function NewsSkeleton() {
   return (
     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
       {[0, 1, 2].map((i) => (
-        <div className="overflow-hidden rounded-2xl border border-surface-grey bg-white shadow-sm" key={i}>
-          <div className="aspect-[16/10] animate-pulse bg-surface-grey" />
+        <div className="overflow-hidden rounded-2xl border border-brand-gray/30 bg-white shadow-sm" key={i}>
+          <div className="aspect-[16/10] animate-pulse bg-bg-light" />
           <div className="space-y-4 p-6">
-            <div className="h-6 w-24 animate-pulse rounded-full bg-surface-grey" />
-            <div className="h-8 animate-pulse rounded-xl bg-surface-grey" />
-            <div className="h-20 animate-pulse rounded-2xl bg-surface-grey" />
-            <div className="h-5 w-28 animate-pulse rounded-full bg-surface-grey" />
+            <div className="h-6 w-24 animate-pulse rounded-full bg-bg-light" />
+            <div className="h-8 animate-pulse rounded-xl bg-bg-light" />
+            <div className="h-20 animate-pulse rounded-2xl bg-bg-light" />
+            <div className="h-5 w-28 animate-pulse rounded-full bg-bg-light" />
           </div>
         </div>
       ))}
@@ -134,7 +178,7 @@ function GallerySkeleton() {
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
       {[0, 1, 2, 3, 4, 5].map((i) => (
-        <div className="h-48 animate-pulse rounded-2xl bg-surface-grey" key={i} />
+        <div className="h-48 animate-pulse rounded-2xl bg-bg-light" key={i} />
       ))}
     </div>
   )
@@ -157,11 +201,11 @@ function GalleryPlaceholderGrid({ prefersReducedMotion }) {
           transition={{ duration: 0.4, delay: i * 0.08, ease: 'easeOut' }}
           whileHover={prefersReducedMotion ? {} : { scale: 1.03 }}
         >
-          <div className="flex h-full items-center justify-center text-kbs-lavender">
+          <div className="flex h-full items-center justify-center text-brand-gray">
             <ImageIcon className="h-8 w-8 opacity-60" />
           </div>
           {/* CSS overlay on hover */}
-          <div className="absolute inset-0 bg-kbs-navy/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+          <div className="absolute inset-0 bg-brand-primary/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         </motion.div>
       ))}
     </div>
@@ -216,7 +260,7 @@ function Home() {
   }
 
   return (
-    <div className="bg-surface-white">
+    <div className="bg-bg-light">
       <PageSeo
         canonicalPath="/"
         description="Discover Knowledgebased Basic Science Schools, FHA Lugbe, Abuja — a warm, modern nursery to JSS school for growing minds."
@@ -227,7 +271,7 @@ function Home() {
       <section className="relative overflow-hidden text-white">
         {/* Background gradient fade-in */}
         <motion.div
-          className="absolute inset-0 bg-hero-gradient"
+          className="absolute inset-0 bg-gradient-to-r from-brand-accent via-brand-secondary to-brand-primary"
           initial={prefersReducedMotion ? {} : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
@@ -240,7 +284,7 @@ function Home() {
           <div className="space-y-8">
             {/* Overline — delay 0.2s */}
             <motion.p
-              className="font-calligraphy text-lg italic text-kbs-lavender sm:text-xl"
+              className="font-calligraphy text-lg italic text-brand-gray sm:text-xl"
               initial={prefersReducedMotion ? {} : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
@@ -298,7 +342,7 @@ function Home() {
               >
                 <Button
                   as="link"
-                  className="border-2 border-white text-white hover:bg-white hover:text-kbs-navy"
+                  className="border-2 border-white text-white hover:bg-white hover:text-brand-primary"
                   size="lg"
                   to="/about"
                   variant="secondary"
@@ -322,13 +366,13 @@ function Home() {
                 />
                 <motion.div
                   aria-hidden="true"
-                  className="absolute bottom-4 -left-6 h-20 w-20 rounded-full bg-kbs-cyan/20 blur-lg pointer-events-none"
+                  className="absolute bottom-4 -left-6 h-20 w-20 rounded-full bg-brand-primary/20 blur-lg pointer-events-none"
                   animate={{ y: [0, 12, 0] }}
                   transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
                 />
                 <motion.div
                   aria-hidden="true"
-                  className="absolute top-1/3 -right-4 h-24 w-24 rounded-full bg-kbs-lavender/20 blur-xl pointer-events-none"
+                  className="absolute top-1/3 -right-4 h-24 w-24 rounded-full bg-brand-gray/20 blur-xl pointer-events-none"
                   animate={{ y: [0, -8, 0], x: [0, 5, 0] }}
                   transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
                 />
@@ -368,11 +412,11 @@ function Home() {
           </motion.button>
         </div>
 
-        <WaveDivider className="text-kbs-cyan" />
+        <WaveDivider className="text-brand-primary" />
       </section>
 
       {/* ── 2. STATS BAR ────────────────────────────────────────────────────── */}
-      <section id="stats" className="relative overflow-hidden bg-kbs-cyan py-12" ref={statsRef}>
+      <section id="stats" className="relative overflow-hidden bg-brand-primary py-16 sm:py-20" ref={statsRef}>
         {/* Shimmer sweep — plays once when section enters view */}
         {!prefersReducedMotion && (
           <motion.div
@@ -398,15 +442,17 @@ function Home() {
         </motion.div>
       </section>
 
-      <WaveDivider className="text-surface-white" />
+      <WaveDivider className="text-white" />
 
       {/* ── 3. ABOUT TEASER ─────────────────────────────────────────────────── */}
-      <section className="py-20 sm:py-24">
+      <section className="py-24 sm:py-32">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 sm:px-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center lg:px-10">
           <ScrollReveal direction="left">
-            <div className="h-64 flex items-center justify-center rounded-2xl border-2 border-dashed border-kbs-lavender bg-kbs-lavender/30 text-sm text-kbs-purple">
-              about-mascot.svg
-            </div>
+            <PlaceholderIllustration
+              className="h-64"
+              icon={School}
+              label="About mascot illustration"
+            />
           </ScrollReveal>
 
           <div className="space-y-6">
@@ -425,38 +471,40 @@ function Home() {
             </ScrollReveal>
           </div>
         </div>
-        <WaveDivider className="text-surface-grey" />
+        <WaveDivider className="text-bg-light" />
       </section>
 
       {/* ── 4. ACADEMICS ────────────────────────────────────────────────────── */}
-      <section className="bg-surface-grey py-0">
-        <div className="mx-auto max-w-7xl px-6 py-20 sm:px-8 sm:py-24 lg:px-10">
-          <ScrollReveal direction="up" className="mx-auto mb-12">
-            <SectionHeader
-              align="center"
-              heading="Learning Pathways for Every Stage"
-              overline="Academics"
-              subtext="Each level is thoughtfully structured to meet children where they are and prepare them for what comes next."
-            />
-          </ScrollReveal>
+      <section className="bg-bg-light py-0">
+        <div className="mx-auto max-w-7xl px-6 py-24 sm:px-8 sm:py-32 lg:px-10">
+          <ScrollReveal direction="up" className="mb-12">
+  <div className="mx-auto max-w-3xl text-center">
+    <SectionHeader
+      align="center"
+      heading="Learning Pathways for Every Stage"
+      overline="Academics"
+      subtext="Each level is thoughtfully structured to meet children where they are and prepare them for what comes next."
+    />
+  </div>
+</ScrollReveal>
 
           <div className="grid gap-6 lg:grid-cols-3">
             {academics.map((item, i) => (
               <ScrollReveal key={item.title} direction="up" delay={i * 0.15}>
                 <Card className="group h-full space-y-5">
-                  <div className="rounded-xl bg-kbs-lavender/30 h-40 mb-4 flex items-center justify-center text-kbs-purple text-sm transition-colors duration-300 group-hover:bg-kbs-lavender/50">
-                    {`${item.title.toLowerCase()}-illo.svg`}
+                  <div className="rounded-xl bg-brand-gray/30 h-40 mb-4 flex items-center justify-center transition-all duration-300 group-hover:bg-brand-gray/50 group-hover:scale-110">
+                    {item.icon ? <item.icon className="h-16 w-16 text-brand-primary" /> : null}
                   </div>
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <Badge variant={item.variant}>{item.title}</Badge>
-                      <p className="font-body text-xs font-semibold uppercase tracking-wide text-kbs-cyan">{item.ages}</p>
+                      <p className="font-body text-xs font-semibold uppercase tracking-wide text-brand-primary">{item.ages}</p>
                     </div>
-                    <h3 className="font-display text-h3 text-kbs-navy">{item.title}</h3>
-                    <p className="font-body text-sm text-text-medium">{item.description}</p>
+                    <h3 className="font-display text-h3 text-text-primary">{item.title}</h3>
+                    <p className="font-body text-sm text-text-secondary">{item.description}</p>
                   </div>
                   <Link
-                    className="inline-flex items-center gap-1 font-body font-semibold text-kbs-cyan hover:text-kbs-navy transition-colors"
+                    className="inline-flex items-center gap-1 font-body font-semibold text-brand-primary hover:text-brand-primary transition-colors"
                     to="/academics"
                   >
                     <span>Explore {item.title}</span>
@@ -467,11 +515,11 @@ function Home() {
             ))}
           </div>
         </div>
-        <WaveDivider className="text-surface-white" />
+        <WaveDivider className="text-white" />
       </section>
 
       {/* ── 5. NEWS ─────────────────────────────────────────────────────────── */}
-      <section className="py-20 sm:py-24">
+      <section className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
           <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <ScrollReveal direction="up">
@@ -483,7 +531,7 @@ function Home() {
               />
             </ScrollReveal>
             <Link
-              className="inline-flex min-h-11 items-center gap-2 font-body text-sm font-semibold text-kbs-cyan transition-colors hover:text-kbs-purple"
+              className="inline-flex min-h-11 items-center gap-2 font-body text-sm font-semibold text-brand-primary transition-colors hover:text-brand-purple"
               to="/news"
             >
               <span>View all news</span>
@@ -518,10 +566,10 @@ function Home() {
         </div>
       </section>
 
-      <WaveDivider className="text-surface-grey" />
+      <WaveDivider className="text-bg-light" />
 
       {/* ── 6. GALLERY TEASER ───────────────────────────────────────────────── */}
-      <section className="bg-surface-grey py-20 sm:py-24">
+      <section className="bg-bg-light py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
           <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <ScrollReveal direction="up">
@@ -549,9 +597,10 @@ function Home() {
             <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
               {images.map((image, index) => (
                 <div className="mb-4 break-inside-avoid overflow-hidden rounded-3xl bg-white shadow-sm" key={image.id}>
-                  <img
+                  <FallbackImage
                     alt={image.caption || `KBS gallery image ${index + 1}`}
                     className="h-auto w-full object-cover"
+                    fallbackSrc="/kbs-logo.png"
                     height="900"
                     loading="lazy"
                     src={image.url}
@@ -564,10 +613,47 @@ function Home() {
         </div>
       </section>
 
-      <WaveDivider className="text-kbs-cyan" />
+      <WaveDivider className="text-brand-primary" />
 
-      {/* ── 7. ADMISSIONS CTA BANNER ────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-cta-gradient py-24 text-white">
+      {/* ── 7. TESTIMONIALS ─────────────────────────────────────────────────── */}
+      <section className="py-24 sm:py-32 bg-bg-light">
+        <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
+         <ScrollReveal direction="up" className="mb-12">
+  <div className="mx-auto max-w-3xl text-center">
+    <SectionHeader
+      align="center"
+      heading="What KBS Families Say"
+      overline="Testimonials"
+      subtext="Hear from parents and guardians whose children are thriving at Knowledgebased Basic Science Schools."
+    />
+  </div>
+</ScrollReveal>
+
+          <div className="grid gap-8 lg:grid-cols-3">
+            {testimonials.map((testimonial, i) => (
+              <ScrollReveal key={testimonial.name} direction="up" delay={i * 0.15}>
+                <Card className="h-full space-y-5">
+                  <p className="font-calligraphy text-lg italic text-text-primary">&ldquo;{testimonial.quote}&rdquo;</p>
+                  <div className="flex items-center gap-3 pt-2 border-t border-brand-gray/30">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-gray/10 text-brand-primary">
+                      {testimonial.avatar ? <testimonial.avatar className="h-6 w-6" /> : null}
+                    </div>
+                    <div>
+                      <p className="font-body font-semibold text-text-primary">{testimonial.name}</p>
+                      <p className="font-body text-xs text-text-secondary">{testimonial.role}</p>
+                    </div>
+                  </div>
+                </Card>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <WaveDivider className="text-white" />
+
+      {/* ── 8. ADMISSIONS CTA BANNER ────────────────────────────────────────── */}
+      <section className="relative overflow-hidden bg-gradient-to-r from-brand-primary to-brand-accent py-24 text-white">
         {/* Decorative animated circles */}
         {!prefersReducedMotion && (
           <>
@@ -585,7 +671,7 @@ function Home() {
             />
             <motion.div
               aria-hidden="true"
-              className="absolute top-8 left-8 h-16 w-16 rounded-full bg-kbs-cyan/30 pointer-events-none"
+              className="absolute top-8 left-8 h-16 w-16 rounded-full bg-brand-primary/30 pointer-events-none"
               animate={{ scale: [1, 1.3, 1] }}
               transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             />
@@ -605,7 +691,7 @@ function Home() {
                 <p className="mb-2 font-calligraphy text-xl italic text-white/80">Admissions Open</p>
                 <h2 className="mb-4 font-display text-h1 text-white">Ready to Join the KBS Family?</h2>
                 <p className="mb-8 max-w-2xl font-body text-body-lg text-white/80">
-                  Spaces are limited. Enquire today to begin your child's journey at Knowledgebased Basic Science Schools.
+                  Spaces are limited. Enquire today to begin your child&apos;s journey at Knowledgebased Basic Science Schools.
                 </p>
                 {/* CTA with glow on hover */}
                 <motion.div
@@ -619,20 +705,22 @@ function Home() {
                   </Button>
                 </motion.div>
               </div>
-              <div className="flex h-72 items-center justify-center rounded-2xl border-2 border-dashed border-white/30 bg-white/10 text-sm text-white/50">
-                admissions-illo.svg
-              </div>
+              <PlaceholderIllustration
+                className="flex h-72 items-center justify-center rounded-2xl border-2 border-dashed border-white/30 bg-white/10 text-sm text-white/50"
+                icon={Sparkles}
+                label="Admissions illustration"
+              />
             </div>
           </ScrollReveal>
         </div>
-        <WaveDivider className="text-surface-white" />
+        <WaveDivider className="text-white" />
       </section>
 
       {/* ── 8. NEWSLETTER ───────────────────────────────────────────────────── */}
-      <section className="pb-20 sm:pb-24">
+      <section className="py-24 sm:py-32">
         <div className="mx-auto max-w-4xl px-6 sm:px-8 lg:px-10">
           <ScrollReveal direction="up">
-            <div className="rounded-[2rem] border border-surface-grey bg-white px-6 py-10 shadow-sm sm:px-10 sm:py-12">
+            <div className="rounded-[2rem] border border-brand-gray/30 bg-white px-6 py-10 shadow-sm sm:px-10 sm:py-12">
               <SectionHeader
                 align="center"
                 className="mx-auto mb-10"
@@ -644,15 +732,19 @@ function Home() {
               <form className="grid gap-5 sm:grid-cols-2" onSubmit={handleNewsletterSubmit}>
                 <Input
                   label="Name"
+                  labelClassName="sr-only sm:not-sr-only"
                   name="name"
                   onChange={handleNewsletterChange}
+                  placeholder="Your name"
                   required
                   value={formData.name}
                 />
                 <Input
                   label="Email"
+                  labelClassName="sr-only sm:not-sr-only"
                   name="email"
                   onChange={handleNewsletterChange}
+                  placeholder="your@email.com"
                   required
                   type="email"
                   value={formData.email}
@@ -673,7 +765,7 @@ function Home() {
                   {newsletter.error ? (
                     <p className="text-center font-body text-sm text-error">{newsletter.error}</p>
                   ) : null}
-                  <p className="text-center font-body text-sm text-text-medium">
+                  <p className="text-center font-body text-sm text-text-secondary">
                     Join families already subscribed to KBS updates.
                   </p>
                 </div>
@@ -683,7 +775,7 @@ function Home() {
         </div>
       </section>
 
-      <WaveDivider className="text-kbs-navy" />
+      <WaveDivider className="text-text-primary" />
     </div>
   )
 }

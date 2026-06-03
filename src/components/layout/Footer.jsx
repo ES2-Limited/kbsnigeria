@@ -4,6 +4,7 @@ import { Mail, MapPin, Phone } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../ui/Button'
+import FallbackImage from '../ui/FallbackImage'
 import Input from '../ui/Input'
 import { useNewsletterSubscription } from '../../hooks/useNewsletterSubscription'
 
@@ -47,7 +48,7 @@ const navItems = [
 const socialLinks = [
   { href: 'https://facebook.com', icon: FacebookIcon, label: 'Facebook', className: 'text-white' },
   { href: 'https://instagram.com', icon: InstagramIcon, label: 'Instagram', className: 'text-white' },
-  { href: 'https://wa.me/2340000000000', icon: WhatsAppIcon, label: 'WhatsApp', className: 'text-success' },
+  { href: 'https://wa.me/2340000000000', icon: WhatsAppIcon, label: 'WhatsApp', className: 'text-white' },
 ]
 
 function Footer() {
@@ -69,7 +70,7 @@ function Footer() {
   }
 
   return (
-    <footer className="bg-kbs-navy text-white">
+    <footer className="bg-bg-dark text-white">
       <div className="mx-auto max-w-7xl px-6 py-12 sm:px-8 lg:px-10 lg:py-16">
         <div className="mb-12 rounded-3xl bg-white/10 p-6 backdrop-blur-sm sm:p-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -79,7 +80,7 @@ function Footer() {
             </div>
             <form className="grid gap-4 sm:grid-cols-2 lg:flex lg:min-w-[34rem] lg:items-end" onSubmit={handleSubmit}>
               <Input
-                className="bg-white/10 text-white placeholder:text-white/40 border border-white/20 rounded-xl px-4 py-2 focus:border-kbs-cyan focus:ring-2 focus:ring-kbs-cyan/20"
+                className="bg-white/10 text-white placeholder:text-white/40 border border-white/20 rounded-xl px-4 py-2 focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20"
                 label="Name"
                 labelClassName="text-white"
                 name="name"
@@ -88,7 +89,7 @@ function Footer() {
                 value={formData.name}
               />
               <Input
-                className="bg-white/10 text-white placeholder:text-white/40 border border-white/20 rounded-xl px-4 py-2 focus:border-kbs-cyan focus:ring-2 focus:ring-kbs-cyan/20"
+                className="bg-white/10 text-white placeholder:text-white/40 border border-white/20 rounded-xl px-4 py-2 focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20"
                 label="Email"
                 labelClassName="text-white"
                 name="email"
@@ -97,9 +98,13 @@ function Footer() {
                 type="email"
                 value={formData.email}
               />
-              <Button className="w-full sm:w-auto" loading={newsletter.loading} type="submit" variant="primary">
-                Subscribe
-              </Button>
+              <div className="mt-5 space-y-3">
+                <Button loading={newsletter.loading} size="lg" type="submit" variant="primary">
+                  Subscribe
+                </Button>
+                {/* {newsletter.success ? <p className="font-body text-sm text-success">{newsletter.success}</p> : null}
+                {newsletter.error ? <p className="font-body text-sm text-error">{newsletter.error}</p> : null} */}
+              </div>
             </form>
             {newsletter.success ? <p className="font-body text-sm text-white/85">{newsletter.success}</p> : null}
             {newsletter.error ? <p className="font-body text-sm text-red-400">{newsletter.error}</p> : null}
@@ -108,11 +113,13 @@ function Footer() {
 
         <div className="grid gap-10 sm:grid-cols-2 xl:grid-cols-4">
           <section className="space-y-4">
-            <Link className="inline-flex items-center gap-3" to="/">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-kbs-cyan font-display text-lg text-white">
-                KBS
-              </span>
-              <span className="font-display text-2xl text-white">KBS Nigeria</span>
+            <Link className="inline-flex items-center gap-2 h-20 transition-opacity hover:opacity-80" to="/">
+              <FallbackImage
+                alt="KBS Nigeria - Knowledgebased Basic Science Schools"
+                className="h-full w-auto object-contain"
+                fallbackSrc="/kbs-logo.png"
+                src="/kbs-logo.png"
+              />
             </Link>
             <p className="font-calligraphy text-lg italic text-white/70">Nurturing great minds since 1999</p>
             <p className="max-w-sm font-body text-sm leading-7 text-white/80">
@@ -125,7 +132,7 @@ function Footer() {
             <ul className="space-y-3 font-body text-sm text-white/70">
               {navItems.map((item) => (
                 <li key={item.to}>
-                  <Link className="inline-flex min-h-11 items-center transition-colors duration-200 hover:text-white" to={item.to}>
+                  <Link className="relative inline-flex min-h-11 items-center transition-colors duration-200 hover:text-white after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-brand-primary after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100" to={item.to}>
                     {item.label}
                   </Link>
                 </li>
@@ -138,13 +145,13 @@ function Footer() {
             <ul className="space-y-4 font-body text-sm text-white/80">
               <li>
                 <a className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-white" href="tel:+2348000000000">
-                  <Phone className="mt-0.5 h-4 w-4 shrink-0 text-kbs-cyan" />
+                  <Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand-primary" />
                   <span>+234 800 000 0000</span>
                 </a>
               </li>
               <li>
                 <a className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-white" href="mailto:info@kbsnigeria.com">
-                  <Mail className="mt-0.5 h-4 w-4 shrink-0 text-kbs-cyan" />
+                  <Mail className="mt-0.5 h-4 w-4 shrink-0 text-brand-primary" />
                   <span>info@kbsnigeria.com</span>
                 </a>
               </li>
@@ -155,7 +162,7 @@ function Footer() {
                   rel="noreferrer"
                   target="_blank"
                 >
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-kbs-cyan" />
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-primary" />
                   <span>FHA Lugbe, Abuja, Nigeria</span>
                 </a>
               </li>
@@ -167,7 +174,7 @@ function Footer() {
             <div className="flex items-center gap-3">
               {socialLinks.map(({ href, icon: Icon, label }) => (
                 <a
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full text-white/70 transition-colors duration-200 hover:text-kbs-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full text-white/70 transition-colors duration-200 hover:text-brand-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20"
                   href={href}
                   key={label}
                   rel="noreferrer"

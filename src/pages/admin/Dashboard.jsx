@@ -50,8 +50,8 @@ function Dashboard() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="font-body text-sm font-semibold uppercase tracking-wide text-kbs-cyan">Dashboard</p>
-          <h1 className="font-display text-4xl text-kbs-navy">Admin Overview</h1>
+          <p className="font-body text-sm font-semibold uppercase tracking-wide text-brand-primary">Dashboard</p>
+          <h1 className="font-display text-4xl text-text-primary">Admin Overview</h1>
         </div>
         <div className="flex flex-wrap gap-3">
           <Button as="link" to="/admin/news/new" variant="primary">Create News Post</Button>
@@ -66,23 +66,23 @@ function Dashboard() {
         {summaryItems.map(({ icon: Icon, key, label }) => (
           <Card className="space-y-4" key={key}>
             <div className="flex items-center justify-between">
-              <p className="font-body text-sm font-medium text-text-medium">{label}</p>
-              <div className="rounded-full bg-surface-grey p-3 text-kbs-navy">
+              <p className="font-body text-sm font-medium text-text-secondary">{label}</p>
+              <div className="rounded-full bg-bg-light p-3 text-text-primary">
                 <Icon className="h-5 w-5" />
               </div>
             </div>
-            <p className="font-display text-5xl text-kbs-navy">{loading ? '...' : counts[key]}</p>
+            <p className="font-display text-5xl text-text-primary">{loading ? '...' : counts[key]}</p>
           </Card>
         ))}
       </div>
 
       <Card className="space-y-5">
-        <h2 className="font-display text-3xl text-kbs-navy">Quick Actions</h2>
+        <h2 className="font-display text-3xl text-text-primary">Quick Actions</h2>
         <div className="flex flex-wrap gap-3">
-          <Link className="rounded-full bg-surface-grey px-4 py-3 font-body text-sm text-text-medium transition-colors duration-200 hover:text-kbs-navy" to="/admin/gallery">Manage Gallery</Link>
-          <Link className="rounded-full bg-surface-grey px-4 py-3 font-body text-sm text-text-medium transition-colors duration-200 hover:text-kbs-navy" to="/admin/news">Manage News</Link>
-          <Link className="rounded-full bg-surface-grey px-4 py-3 font-body text-sm text-text-medium transition-colors duration-200 hover:text-kbs-navy" to="/admin/resources">Manage Resources</Link>
-          <Link className="rounded-full bg-surface-grey px-4 py-3 font-body text-sm text-text-medium transition-colors duration-200 hover:text-kbs-navy" to="/admin/newsletter">Newsletter & Subscribers</Link>
+          <Link className="rounded-full bg-bg-light px-4 py-3 font-body text-sm text-text-secondary transition-colors duration-200 hover:text-brand-primary" to="/admin/gallery">Manage Gallery</Link>
+          <Link className="rounded-full bg-bg-light px-4 py-3 font-body text-sm text-text-secondary transition-colors duration-200 hover:text-brand-primary" to="/admin/news">Manage News</Link>
+          <Link className="rounded-full bg-bg-light px-4 py-3 font-body text-sm text-text-secondary transition-colors duration-200 hover:text-brand-primary" to="/admin/resources">Manage Resources</Link>
+          <Link className="rounded-full bg-bg-light px-4 py-3 font-body text-sm text-text-secondary transition-colors duration-200 hover:text-brand-primary" to="/admin/newsletter">Newsletter & Subscribers</Link>
         </div>
       </Card>
     </div>

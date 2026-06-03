@@ -24,11 +24,16 @@ function PageSeo({ canonicalPath = '/', description, image, title, type = 'websi
       <title>{title}</title>
       <meta content={description} name="description" />
       <link href={canonicalUrl} rel="canonical" />
+      <meta content="index, follow" name="robots" />
       <meta content={title} property="og:title" />
       <meta content={description} property="og:description" />
       <meta content={ogImage} property="og:image" />
       <meta content={canonicalUrl} property="og:url" />
       <meta content={type} property="og:type" />
+      <meta content="summary_large_image" name="twitter:card" />
+      <meta content={title} name="twitter:title" />
+      <meta content={description} name="twitter:description" />
+      <meta content={ogImage} name="twitter:image" />
     </Helmet>
   )
 }

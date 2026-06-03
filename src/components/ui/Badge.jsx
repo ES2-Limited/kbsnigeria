@@ -3,9 +3,9 @@
 import { cn } from '../../lib/cn'
 
 const variantClasses = {
-  cyan: 'bg-kbs-cyan/10 text-kbs-cyan',
-  purple: 'bg-kbs-purple/10 text-kbs-purple',
-  navy: 'bg-kbs-navy/10 text-kbs-navy',
+  cyan: 'bg-brand-primary/10 text-brand-primary',
+  purple: 'bg-brand-purple/10 text-brand-purple',
+  navy: 'bg-brand-primary/10 text-text-primary',
 }
 
 function Badge({ children, className, variant = 'cyan' }) {

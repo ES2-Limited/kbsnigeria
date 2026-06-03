@@ -145,8 +145,8 @@ function AdminNewsletter() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="font-body text-sm font-semibold uppercase tracking-wide text-kbs-cyan">Newsletter</p>
-          <h1 className="font-display text-4xl text-kbs-navy">Newsletter & Subscribers</h1>
+          <p className="font-body text-sm font-semibold uppercase tracking-wide text-brand-primary">Newsletter</p>
+          <h1 className="font-display text-4xl text-text-primary">Newsletter & Subscribers</h1>
         </div>
         <Badge variant="cyan">{subscribers.length} Subscribers</Badge>
       </div>
@@ -154,7 +154,7 @@ function AdminNewsletter() {
       <div className="flex flex-wrap gap-3">
         <button
           className={`rounded-full px-5 py-3 font-body text-sm transition-colors duration-200 ${
-            activeTab === 'compose' ? 'bg-kbs-cyan text-white' : 'bg-surface-grey text-text-medium'
+            activeTab === 'compose' ? 'bg-brand-primary text-white' : 'bg-bg-light text-text-secondary'
           }`}
           onClick={() => setActiveTab('compose')}
           type="button"
@@ -163,7 +163,7 @@ function AdminNewsletter() {
         </button>
         <button
           className={`rounded-full px-5 py-3 font-body text-sm transition-colors duration-200 ${
-            activeTab === 'subscribers' ? 'bg-kbs-cyan text-white' : 'bg-surface-grey text-text-medium'
+            activeTab === 'subscribers' ? 'bg-brand-primary text-white' : 'bg-bg-light text-text-secondary'
           }`}
           onClick={() => setActiveTab('subscribers')}
           type="button"
@@ -179,10 +179,10 @@ function AdminNewsletter() {
           <Card className="space-y-5">
             <Input label="Subject Line" name="subject" onChange={handleNewsletterChange} required value={newsletterForm.subject} />
             <div>
-              <label className="mb-2 block font-body text-sm font-medium text-text-dark" htmlFor="newsletter-banner">Optional Banner Image</label>
+              <label className="mb-2 block font-body text-sm font-medium text-text-primary" htmlFor="newsletter-banner">Optional Banner Image</label>
               <input
                 accept="image/jpeg,image/png,image/webp"
-                className="w-full rounded-xl border border-kbs-lavender px-4 py-3 font-body text-text-dark"
+                className="w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary"
                 id="newsletter-banner"
                 onChange={(event) => setBannerFile(event.target.files?.[0] ?? null)}
                 type="file"
@@ -212,8 +212,8 @@ function AdminNewsletter() {
         <div className="space-y-6">
           <Card className="space-y-5">
             <div className="flex items-center gap-3">
-              <Users className="h-5 w-5 text-kbs-navy" />
-              <h2 className="font-body text-lg font-semibold text-text-dark">Manual Add Subscriber</h2>
+              <Users className="h-5 w-5 text-text-primary" />
+              <h2 className="font-body text-lg font-semibold text-text-primary">Manual Add Subscriber</h2>
             </div>
             <form className="grid gap-5 md:grid-cols-[1fr_1fr_auto] md:items-end" onSubmit={handleAddSubscriber}>
               <Input label="Name" name="name" onChange={handleSubscriberChange} required value={subscriberForm.name} />
@@ -222,13 +222,13 @@ function AdminNewsletter() {
             </form>
           </Card>
 
-          {loadingSubscribers ? <div className="h-40 animate-pulse rounded-3xl bg-surface-grey" /> : null}
+          {loadingSubscribers ? <div className="h-40 animate-pulse rounded-3xl bg-bg-light" /> : null}
 
           {!loadingSubscribers ? (
             <Card className="overflow-hidden p-0">
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-surface-grey font-body text-sm">
-                  <thead className="bg-surface-grey/60 text-left text-text-medium">
+                <table className="min-w-full divide-y divide-brand-gray/30 font-body text-sm">
+                  <thead className="bg-bg-light/60 text-left text-text-secondary">
                     <tr>
                       <th className="px-6 py-4 font-medium">Name</th>
                       <th className="px-6 py-4 font-medium">Email</th>
@@ -237,15 +237,15 @@ function AdminNewsletter() {
                       <th className="px-6 py-4 font-medium">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-surface-grey">
+                  <tbody className="divide-y divide-brand-gray/30">
                     {subscribers.map((subscriber) => (
                       <tr key={subscriber.id}>
-                        <td className="px-6 py-4 text-text-dark">{subscriber.name}</td>
-                        <td className="px-6 py-4 text-text-medium">{subscriber.email}</td>
+                        <td className="px-6 py-4 text-text-primary">{subscriber.name}</td>
+                        <td className="px-6 py-4 text-text-secondary">{subscriber.email}</td>
                         <td className="px-6 py-4">
                           <Badge variant={subscriber.confirmed ? 'cyan' : 'navy'}>{subscriber.confirmed ? 'Confirmed' : 'Pending'}</Badge>
                         </td>
-                        <td className="px-6 py-4 text-text-medium">{formatAdminDate(subscriber.subscribed_at)}</td>
+                        <td className="px-6 py-4 text-text-secondary">{formatAdminDate(subscriber.subscribed_at)}</td>
                         <td className="px-6 py-4">
                           <button className="text-error transition-colors duration-200 hover:text-error/80" onClick={() => handleRemoveSubscriber(subscriber.id)} type="button">
                             <Trash2 className="h-4 w-4" />

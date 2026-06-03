@@ -6,10 +6,10 @@
 
 @layer base {
   html {
-    @apply font-body text-text-dark overflow-x-hidden;
+    @apply font-body text-text-primary overflow-x-hidden;
   }
   body {
-    @apply m-0 min-w-[320px] min-h-screen bg-surface-white overflow-x-hidden;
+    @apply m-0 min-w-[320px] min-h-screen bg-bg-light overflow-x-hidden;
   }
   #root {
     @apply min-h-screen;
@@ -23,12 +23,9 @@
 }
 
 /* Gradient utility classes moved from Tailwind config */
-.bg-hero-gradient {
-  background: linear-gradient(135deg, #1F2E7A 0%, #6B5FA5 100%);
-}
-.bg-cta-gradient {
-  background: linear-gradient(135deg, #29ABE2 0%, #1F2E7A 100%);
-}
+
+
+
 
 /* Font fallbacks to ensure fonts load even if <link> fails */
 .font-display { font-family: "Reem Kufi", sans-serif !important; }

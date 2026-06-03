@@ -6,6 +6,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { Copy, MessageCircle, Newspaper } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import Button from '../components/ui/Button'
+import FallbackImage from '../components/ui/FallbackImage'
 import PageSeo from '../components/seo/PageSeo'
 import { useNewsPost } from '../hooks/useNews'
 import { fadeUpMotion } from '../lib/motion'
@@ -47,7 +48,7 @@ function NewsPost() {
   }
 
   return (
-    <div className="bg-surface-white pb-20 sm:pb-24">
+    <div className="bg-bg-light pb-20 sm:pb-24">
       <PageSeo
         canonicalPath={`/news/${slug}`}
         description={post?.excerpt ?? 'Read the latest school news and announcements from KBS Nigeria.'}
@@ -58,11 +59,11 @@ function NewsPost() {
 
       {loading ? (
         <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-10">
-          <div className="h-96 animate-pulse rounded-3xl bg-surface-grey" />
+          <div className="h-96 animate-pulse rounded-3xl bg-bg-light" />
           <div className="mx-auto mt-10 max-w-3xl space-y-4">
-            <div className="h-12 animate-pulse rounded-2xl bg-surface-grey" />
-            <div className="h-6 w-40 animate-pulse rounded-full bg-surface-grey" />
-            <div className="h-56 animate-pulse rounded-3xl bg-surface-grey" />
+            <div className="h-12 animate-pulse rounded-2xl bg-bg-light" />
+            <div className="h-6 w-40 animate-pulse rounded-full bg-bg-light" />
+            <div className="h-56 animate-pulse rounded-3xl bg-bg-light" />
           </div>
         </div>
       ) : null}
@@ -75,11 +76,19 @@ function NewsPost() {
 
       {!loading && !error && post ? (
         <>
-          <div className="w-full bg-surface-grey">
+          <div className="w-full bg-bg-light">
             {post.cover_url ? (
-              <img alt={post.title} className="max-h-96 w-full object-cover" height="960" loading="lazy" src={post.cover_url} width="1600" />
+              <FallbackImage
+                alt={post.title}
+                className="max-h-96 w-full object-cover"
+                fallbackSrc="/kbs-logo.png"
+                height="960"
+                loading="lazy"
+                src={post.cover_url}
+                width="1600"
+              />
             ) : (
-              <div className="flex max-h-96 min-h-72 w-full items-center justify-center text-kbs-lavender">
+              <div className="flex max-h-96 min-h-72 w-full items-center justify-center text-brand-gray">
                 <Newspaper className="h-20 w-20" />
               </div>
             )}
@@ -87,20 +96,20 @@ function NewsPost() {
 
           <motion.article className="mx-auto max-w-3xl px-6 pt-12 sm:px-8 lg:px-0" {...fadeUpMotion(prefersReducedMotion)}>
             <div className="mb-8 space-y-4">
-              <Link className="inline-flex min-h-11 items-center font-body text-sm font-semibold text-kbs-cyan hover:text-kbs-purple" to="/news">
+              <Link className="inline-flex min-h-11 items-center font-body text-sm font-semibold text-brand-primary hover:text-brand-purple" to="/news">
                 Back to news
               </Link>
-              <p className="font-calligraphy text-xl italic text-kbs-purple">School Announcement</p>
-              <h1 className="font-display text-4xl leading-tight text-kbs-navy sm:text-5xl">{post.title}</h1>
-              <p className="font-body text-sm text-text-medium">Published {formatDate(post.published_at ?? post.created_at)}</p>
+              <p className="font-calligraphy text-xl italic text-brand-purple">School Announcement</p>
+              <h1 className="font-display text-4xl leading-tight text-text-primary sm:text-5xl">{post.title}</h1>
+              <p className="font-body text-sm text-text-secondary">Published {formatDate(post.published_at ?? post.created_at)}</p>
             </div>
 
             <div
-              className="prose prose-lg max-w-prose prose-headings:font-display prose-headings:text-kbs-navy prose-p:text-text-medium prose-a:text-kbs-cyan prose-strong:text-text-dark"
+              className="prose prose-lg max-w-prose prose-headings:font-display prose-headings:text-text-primary prose-p:text-text-secondary prose-a:text-brand-primary prose-strong:text-text-primary"
               dangerouslySetInnerHTML={{ __html: sanitizedBody }}
             />
 
-            <div className="mt-10 flex flex-wrap items-center gap-4 border-t border-surface-grey pt-6">
+            <div className="mt-10 flex flex-wrap items-center gap-4 border-t border-brand-gray/30 pt-6">
               <Button
                 as="a"
                 href={`https://wa.me/?text=${encodeURIComponent(`${post.title} ${articleUrl}`)}`}
@@ -115,7 +124,7 @@ function NewsPost() {
                 <Copy className="h-4 w-4" />
                 <span>Copy link</span>
               </Button>
-              {copyState ? <p className="font-body text-sm text-text-medium">{copyState}</p> : null}
+              {copyState ? <p className="font-body text-sm text-text-secondary">{copyState}</p> : null}
             </div>
           </motion.article>
         </>

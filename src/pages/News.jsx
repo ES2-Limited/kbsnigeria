@@ -26,12 +26,12 @@ function NewsSkeleton() {
   return (
     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
       {[0, 1, 2].map((item) => (
-        <div className="overflow-hidden rounded-2xl border border-surface-grey bg-white shadow-sm" key={item}>
-          <div className="aspect-[16/10] animate-pulse bg-surface-grey" />
+        <div className="overflow-hidden rounded-2xl border border-brand-gray/30 bg-white shadow-sm" key={item}>
+          <div className="aspect-[16/10] animate-pulse bg-bg-light" />
           <div className="space-y-4 p-6">
-            <div className="h-6 w-24 animate-pulse rounded-full bg-surface-grey" />
-            <div className="h-8 animate-pulse rounded-xl bg-surface-grey" />
-            <div className="h-20 animate-pulse rounded-2xl bg-surface-grey" />
+            <div className="h-6 w-24 animate-pulse rounded-full bg-bg-light" />
+            <div className="h-8 animate-pulse rounded-xl bg-bg-light" />
+            <div className="h-20 animate-pulse rounded-2xl bg-bg-light" />
           </div>
         </div>
       ))}
@@ -44,17 +44,17 @@ function News() {
   const { news, loading, error, isEmpty } = useNews({ publishedOnly: true })
 
   return (
-    <div className="bg-surface-white">
+    <div className="bg-bg-light">
       <PageSeo
         canonicalPath="/news"
         description="Read the latest news, school updates, and announcements from Knowledgebased Basic Science Schools, FHA Lugbe, Abuja."
         title="News & Announcements | KBS Nigeria"
       />
 
-      <section className="overflow-hidden bg-hero-gradient text-white">
+      <section className="overflow-hidden bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
           <motion.div className="max-w-3xl space-y-5" {...fadeUpMotion(prefersReducedMotion)}>
-            <p className="font-calligraphy text-xl italic text-kbs-lavender">News & Announcements</p>
+            <p className="font-calligraphy text-xl italic text-brand-gray">News & Announcements</p>
             <h1 className="font-display text-h1 sm:text-display text-white">
               School Updates for Parents and Families
             </h1>
@@ -63,7 +63,7 @@ function News() {
             </p>
           </motion.div>
         </div>
-        <WaveDivider className="text-surface-white" />
+        <WaveDivider className="text-white" />
       </section>
 
       <motion.section className="py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>
@@ -90,7 +90,7 @@ function News() {
           {!loading && !error && isEmpty ? (
             <EmptyState
               description="Published school announcements will appear here once they are available from the admin panel."
-              illustration={<IllustrationPlaceholder className="min-h-[180px] bg-surface-grey" label="News placeholder" />}
+              illustration={<IllustrationPlaceholder className="min-h-[180px] bg-bg-light" label="News placeholder" />}
               title="No news published yet"
             />
           ) : null}

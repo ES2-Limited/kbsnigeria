@@ -13,7 +13,7 @@ function ToolbarButton({ active, children, onClick, title }) {
     <button
       className={cn(
         'inline-flex h-10 min-w-10 items-center justify-center rounded-lg border px-3 text-sm transition-colors duration-200',
-        active ? 'border-kbs-cyan bg-kbs-cyan text-white' : 'border-surface-grey bg-white text-text-medium hover:text-kbs-navy',
+        active ? 'border-brand-primary bg-brand-primary text-white' : 'border-brand-gray/30 bg-white text-text-secondary hover:text-brand-primary',
       )}
       onClick={onClick}
       title={title}
@@ -39,7 +39,7 @@ function RichTextEditor({ content = '', onChange }) {
     editorProps: {
       attributes: {
         class:
-          'min-h-[240px] rounded-b-2xl border border-t-0 border-kbs-lavender px-4 py-4 font-body text-text-dark outline-none prose prose-sm max-w-none focus:border-kbs-cyan',
+          'min-h-[240px] rounded-b-2xl border border-t-0 border-brand-gray/30 px-4 py-4 font-body text-text-primary outline-none prose prose-sm max-w-none focus:border-brand-primary',
       },
     },
     onUpdate: ({ editor: nextEditor }) => {
@@ -54,7 +54,7 @@ function RichTextEditor({ content = '', onChange }) {
   }, [content, editor])
 
   if (!editor) {
-    return <div className="min-h-[300px] animate-pulse rounded-2xl bg-surface-grey" />
+    return <div className="min-h-[300px] animate-pulse rounded-2xl bg-bg-light" />
   }
 
   const addImage = () => {
@@ -68,7 +68,7 @@ function RichTextEditor({ content = '', onChange }) {
 
   return (
     <div>
-      <div className="flex flex-wrap gap-2 rounded-t-2xl border border-b-0 border-kbs-lavender bg-surface-grey p-3">
+      <div className="flex flex-wrap gap-2 rounded-t-2xl border border-b-0 border-brand-gray/30 bg-bg-light p-3">
         <ToolbarButton active={editor.isActive('bold')} onClick={() => editor.chain().focus().toggleBold().run()} title="Bold">
           <Bold className="h-4 w-4" />
         </ToolbarButton>
@@ -98,7 +98,7 @@ function RichTextEditor({ content = '', onChange }) {
 
       <div className="mt-3 flex flex-col gap-3 sm:flex-row">
         <input
-          className="w-full rounded-xl border border-kbs-lavender px-4 py-3 font-body text-text-dark outline-none transition-all duration-200 focus:border-kbs-cyan focus:ring-2 focus:ring-kbs-cyan/20"
+          className="w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary outline-none transition-all duration-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20"
           onChange={(event) => setImageUrl(event.target.value)}
           placeholder="Paste image URL to embed"
           type="url"

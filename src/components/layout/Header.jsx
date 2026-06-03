@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import Button from '../ui/Button'
+import FallbackImage from '../ui/FallbackImage'
 import { cn } from '../../lib/cn'
 
 const navItems = [
@@ -19,16 +20,13 @@ const navItems = [
 
 function Logo() {
   return (
-    <Link className="inline-flex items-center gap-3" to="/">
-      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-kbs-cyan font-display text-lg text-white">
-        KBS
-      </span>
-      <span className="flex flex-col">
-        <span className="font-display font-bold text-lg leading-none text-kbs-navy">KBS Nigeria</span>
-        <span className="font-calligraphy text-sm italic leading-none text-kbs-purple">
-          Nurturing great minds
-        </span>
-      </span>
+    <Link className="inline-flex items-center gap-2 h-14 transition-opacity hover:opacity-80" to="/">
+      <FallbackImage
+        alt="KBS Nigeria - Knowledgebased Basic Science Schools"
+        className="h-full w-auto object-contain"
+        fallbackSrc="/kbs-logo.png"
+        src="/kbs-logo.png"
+      />
     </Link>
   )
 }
@@ -38,7 +36,7 @@ function HamburgerButton({ isOpen, onClick }) {
 
   return (
     <button
-      className="inline-flex h-11 w-11 items-center justify-center rounded-full text-kbs-navy transition-colors duration-200 hover:bg-surface-grey focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20 lg:hidden"
+      className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text-primary transition-colors duration-200 hover:bg-bg-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20 lg:hidden"
       onClick={onClick}
       type="button"
     >
@@ -116,11 +114,11 @@ function Header() {
     () =>
       ({ isActive }) =>
         cn(
-          'relative inline-flex min-h-11 items-center font-body text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20',
-          'after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-kbs-cyan after:transition-all after:duration-200',
+          'relative inline-flex min-h-11 items-center font-body text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20',
+          'after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-brand-primary after:transition-all after:duration-200',
           isActive
-            ? 'font-semibold text-kbs-cyan after:w-full'
-            : 'text-text-dark hover:text-kbs-cyan after:w-0 hover:after:w-full',
+            ? 'font-semibold text-brand-primary after:w-full'
+            : 'text-text-primary hover:text-brand-accent after:w-0 hover:after:w-full',
         ),
     [],
   )
@@ -129,8 +127,8 @@ function Header() {
     () =>
       ({ isActive }) =>
         cn(
-          'flex min-h-[56px] items-center border-b border-surface-grey/30 font-body text-lg transition-colors duration-200 hover:text-kbs-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kbs-cyan/20',
-          isActive ? 'font-semibold text-kbs-cyan' : 'text-text-dark',
+          'flex min-h-[56px] items-center border-b border-brand-gray/30 font-body text-lg transition-colors duration-200 hover:text-brand-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20',
+          isActive ? 'font-semibold text-brand-primary' : 'text-text-primary',
         ),
     [],
   )
@@ -142,7 +140,7 @@ function Header() {
         className={cn(
           'sticky top-0 z-40 transition-all duration-300',
           isScrolled
-            ? 'bg-white/95 backdrop-blur-sm shadow-sm border-b border-surface-grey'
+            ? 'bg-white/95 backdrop-blur-sm shadow-sm border-b border-brand-gray/30'
             : 'bg-white',
         )}
       >

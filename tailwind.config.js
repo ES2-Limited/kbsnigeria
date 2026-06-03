@@ -6,19 +6,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        kbs: {
-          cyan: '#29ABE2',
-          navy: '#1F2E7A',
-          purple: '#6B5FA5',
-          lavender: '#B0A8D0',
+        brand: {
+          primary: '#2E3192',
+          secondary: '#3F51B5',
+          accent: '#2DB6E3',
+          purple: '#6C63FF',
+          gray: '#B0B3B8',
         },
-        surface: {
-          white: '#F8F9FF',
-          grey: '#EEF0F8',
+        bg: {
+          light: '#F8FAFC',
+          dark: '#0F172A',
         },
         text: {
-          dark: '#1A1A2E',
-          medium: '#4A4A6A',
+          primary: '#1E293B',
+          secondary: '#64748B',
         },
         success: '#22C55E',
         error: '#EF4444',
