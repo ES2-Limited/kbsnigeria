@@ -7,6 +7,18 @@ import Button from '../ui/Button'
 import FallbackImage from '../ui/FallbackImage'
 import Input from '../ui/Input'
 import { useNewsletterSubscription } from '../../hooks/useNewsletterSubscription'
+import {
+  ADDRESS,
+  EMAIL,
+  EXTERNAL_QUICK_LINKS,
+  MAPS_URL,
+  OPENING_HOURS,
+  PHONES,
+  SCHOOL_NAME,
+  SOCIAL_LINKS,
+  TAGLINE_SINCE,
+  WHATSAPP_URL,
+} from '../../lib/site'
 
 function FacebookIcon(props) {
   return (
@@ -45,11 +57,24 @@ const navItems = [
   { label: 'Contact', to: '/contact' },
 ]
 
-const socialLinks = [
-  { href: 'https://facebook.com', icon: FacebookIcon, label: 'Facebook', className: 'text-white' },
-  { href: 'https://instagram.com', icon: InstagramIcon, label: 'Instagram', className: 'text-white' },
-  { href: 'https://wa.me/2340000000000', icon: WhatsAppIcon, label: 'WhatsApp', className: 'text-white' },
-]
+const socialLinks = SOCIAL_LINKS.map((link) => {
+  if (link.label === 'Facebook') {
+    return { ...link, icon: FacebookIcon, className: 'text-white' }
+  }
+
+  if (link.label === 'Instagram') {
+    return { ...link, icon: InstagramIcon, className: 'text-white' }
+  }
+
+  return { ...link, icon: FacebookIcon, className: 'text-white' }
+})
+
+socialLinks.push({
+  href: WHATSAPP_URL,
+  icon: WhatsAppIcon,
+  label: 'WhatsApp',
+  className: 'text-white',
+})
 
 function Footer() {
   const newsletter = useNewsletterSubscription()
@@ -99,7 +124,7 @@ function Footer() {
                 value={formData.email}
               />
               <div className="mt-5 space-y-3">
-                <Button loading={newsletter.loading} size="lg" type="submit" variant="primary">
+                <Button loading={newsletter.loading} loadingText="Subscribing..." size="lg" type="submit" variant="primary">
                   Subscribe
                 </Button>
                 {/* {newsletter.success ? <p className="font-body text-sm text-success">{newsletter.success}</p> : null}
@@ -111,7 +136,7 @@ function Footer() {
           </div>
         </div>
 
-        <div className="grid gap-10 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-10 sm:grid-cols-2 xl:grid-cols-5">
           <section className="space-y-4">
             <Link className="inline-flex items-center gap-2 h-20 transition-opacity hover:opacity-80" to="/">
               <FallbackImage
@@ -121,9 +146,9 @@ function Footer() {
                 src="/kbs-logo.png"
               />
             </Link>
-            <p className="font-calligraphy text-lg italic text-white/70">Nurturing great minds since 1999</p>
+            <p className="font-calligraphy text-lg italic text-white/70">{TAGLINE_SINCE}</p>
             <p className="max-w-sm font-body text-sm leading-7 text-white/80">
-              Knowledgebased Basic Science Schools, FHA Lugbe, Abuja, serving families from nursery through JSS.
+              {SCHOOL_NAME}, {ADDRESS.city}, serving families from nursery through JSS.
             </p>
           </section>
 
@@ -143,29 +168,52 @@ function Footer() {
           <section className="space-y-4">
             <h3 className="font-body font-semibold text-white text-sm uppercase tracking-wider">Contact</h3>
             <ul className="space-y-4 font-body text-sm text-white/80">
+              {PHONES.map((phone) => (
+                <li key={phone.href}>
+                  <a className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-white" href={phone.href}>
+                    <Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand-primary" />
+                    <span>{phone.display}</span>
+                  </a>
+                </li>
+              ))}
               <li>
-                <a className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-white" href="tel:+2348000000000">
-                  <Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand-primary" />
-                  <span>+234 800 000 0000</span>
-                </a>
-              </li>
-              <li>
-                <a className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-white" href="mailto:info@kbsnigeria.com">
+                <a className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-white" href={`mailto:${EMAIL}`}>
                   <Mail className="mt-0.5 h-4 w-4 shrink-0 text-brand-primary" />
-                  <span>info@kbsnigeria.com</span>
+                  <span>{EMAIL}</span>
                 </a>
               </li>
               <li>
                 <a
                   className="flex min-h-11 items-start gap-3 transition-colors duration-200 hover:text-white"
-                  href="https://maps.google.com/?q=FHA+Lugbe+Abuja"
+                  href={MAPS_URL}
                   rel="noreferrer"
                   target="_blank"
                 >
                   <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-primary" />
-                  <span>FHA Lugbe, Abuja, Nigeria</span>
+                  <span>
+                    {ADDRESS.line1}, {ADDRESS.line2}, {ADDRESS.city}, {ADDRESS.country}
+                  </span>
                 </a>
               </li>
+              <li className="font-body text-sm text-white/70">{OPENING_HOURS}</li>
+            </ul>
+          </section>
+
+          <section className="space-y-4">
+            <h3 className="font-body font-semibold text-white text-sm uppercase tracking-wider">Useful Links</h3>
+            <ul className="space-y-3 font-body text-sm text-white/70">
+              {EXTERNAL_QUICK_LINKS.map((link) => (
+                <li key={link.label}>
+                  <a
+                    className="relative inline-flex min-h-11 items-center transition-colors duration-200 hover:text-white"
+                    href={link.href}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </section>
 
