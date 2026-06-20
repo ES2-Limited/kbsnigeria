@@ -9,6 +9,11 @@ export function useEnquirySubmission() {
   const [success, setSuccess] = useState('')
 
   const submitEnquiry = async (payload) => {
+    if (payload.website?.trim()) {
+      setSuccess('Your enquiry has been sent successfully. Our admissions team will contact you shortly.')
+      return true
+    }
+
     setLoading(true)
     setError('')
     setSuccess('')
