@@ -10,6 +10,7 @@ import Card from '../../components/ui/Card'
 import Input from '../../components/ui/Input'
 import RichTextEditor from '../../components/ui/RichTextEditor'
 import { slugify } from '../../lib/slugify'
+import { invalidateQueryCache } from '../../lib/queryCache'
 import { supabase } from '../../lib/supabase'
 import { formatAdminDate } from './_helpers'
 
@@ -158,6 +159,8 @@ function AdminNews() {
     }
 
     setSaving(false)
+    invalidateQueryCache('news')
+    invalidateQueryCache('admin')
     navigate('/admin/news')
   }
 
@@ -173,10 +176,9 @@ function AdminNews() {
       return
     }
 
+    invalidateQueryCache('news')
+    invalidateQueryCache('admin')
     loadPosts()
-  }
-
-  if (isFormMode) {
     return (
       <div className="space-y-8">
         <div className="flex items-center justify-between gap-4">

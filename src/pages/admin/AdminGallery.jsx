@@ -4,6 +4,7 @@ import { Trash2, Upload } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
+import { invalidateQueryCache } from '../../lib/queryCache'
 import { supabase } from '../../lib/supabase'
 
 function AdminGallery() {
@@ -79,6 +80,8 @@ function AdminGallery() {
 
     setUploading(false)
     event.target.value = ''
+    invalidateQueryCache('gallery')
+    invalidateQueryCache('admin')
     loadImages()
   }
 
@@ -102,6 +105,8 @@ function AdminGallery() {
       return
     }
 
+    invalidateQueryCache('gallery')
+    invalidateQueryCache('admin')
     loadImages()
   }
 

@@ -1,20 +1,22 @@
 // Hook for reading gallery images from Supabase.
 
 import { useEffect, useState } from 'react'
+import { fetchWithCache } from '../lib/queryCache'
 import { supabase } from '../lib/supabase'
 
 export function useGallery({ limit = 6 } = {}) {
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const cacheKey = `gallery:${typeof limit === 'number' ? limit : 'all'}`
 
   useEffect(() => {
     let mounted = true
 
-    const loadImages = async () => {
-      setLoading(true)
-      setError(null)
+    setLoading(true)
+    setError(null)
 
+    fetchWithCache(cacheKey, async () => {
       let query = supabase
         .from('gallery_images')
         .select('id, url, caption, uploaded_at')
@@ -25,28 +27,35 @@ export function useGallery({ limit = 6 } = {}) {
       }
 
       const { data, error: requestError } = await query
+      return { data: data ?? [], error: requestError }
+    })
+      .then(({ data, error: requestError }) => {
+        if (!mounted) {
+          return
+        }
 
-      if (!mounted) {
-        return
-      }
+        if (requestError) {
+          setError(null)
+          setImages([])
+        } else {
+          setImages(data)
+        }
 
-      if (requestError) {
-        // Treat errors as empty state for homepage teaser
-        setError(null)
+        setLoading(false)
+      })
+      .catch(() => {
+        if (!mounted) {
+          return
+        }
+
         setImages([])
-      } else {
-        setImages(data ?? [])
-      }
-
-      setLoading(false)
-    }
-
-    loadImages()
+        setLoading(false)
+      })
 
     return () => {
       mounted = false
     }
-  }, [limit])
+  }, [cacheKey, limit])
 
   return {
     images,

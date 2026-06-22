@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
 import Input from '../../components/ui/Input'
+import { invalidateQueryCache } from '../../lib/queryCache'
 import { supabase } from '../../lib/supabase'
 import { formatAdminDate, getPublicStoragePath } from './_helpers'
 
@@ -85,6 +86,8 @@ function AdminResources() {
     setFormData({ category: 'Term Dates', title: '' })
     setFile(null)
     setSaving(false)
+    invalidateQueryCache('resources')
+    invalidateQueryCache('admin')
     loadResources()
   }
 
@@ -109,6 +112,8 @@ function AdminResources() {
       return
     }
 
+    invalidateQueryCache('resources')
+    invalidateQueryCache('admin')
     loadResources()
   }
 
