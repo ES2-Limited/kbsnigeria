@@ -1,41 +1,25 @@
-// Button component with KBS variants, sizes, and Framer Motion micro-interactions.
+// Button component — mobile-first CTAs with clear loading states.
 
 import { forwardRef } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useReducedMotion } from 'framer-motion'
 import LoadingSpinner from './LoadingSpinner'
 import { cn } from '../../lib/cn'
 
-const MotionLink   = motion(Link)
-const MotionAnchor = motion.a
-const MotionButton = motion.button
-
 const variantClasses = {
   primary:
-    'relative overflow-hidden bg-brand-primary text-white shadow-lg hover:shadow-xl hover:bg-brand-secondary focus-visible:ring-brand-accent/20',
+    'bg-brand-accent text-white shadow-md hover:bg-brand-accent/90 hover:shadow-lg active:scale-[0.98] disabled:hover:bg-brand-accent',
   secondary:
-    'border-2 border-brand-primary text-brand-primary hover:bg-brand-secondary hover:text-white focus-visible:ring-brand-accent/20',
+    'border-2 border-brand-accent bg-white text-brand-primary hover:bg-brand-accent/10 active:scale-[0.98]',
   ghost:
-    'text-text-primary underline underline-offset-4 hover:text-brand-purple focus-visible:ring-brand-purple/20',
+    'bg-transparent text-brand-primary hover:bg-brand-accent/10 active:scale-[0.98]',
   danger:
-    'bg-error text-white shadow-lg hover:shadow-xl hover:bg-error/90 focus-visible:ring-error/20',
+    'bg-error text-white shadow-md hover:bg-error/90 active:scale-[0.98]',
 }
 
 const sizeClasses = {
-  sm: 'min-h-11 px-4 py-2 text-sm',
-  md: 'min-h-11 px-6 py-3 text-base',
-  lg: 'min-h-11 px-8 py-4 text-lg',
-}
-
-// Shine sweep shown on primary buttons during hover
-const shineVariants = {
-  rest:  { x: '-100%' },
-  hover: { x: '200%', transition: { duration: 0.45, ease: 'easeInOut' } },
-}
-
-const buttonVariants = {
-  rest:  { scale: 1 },
-  hover: { scale: 1.04, transition: { type: 'spring', stiffness: 400, damping: 17 } },
+  sm: 'min-h-11 gap-2 px-4 py-2.5 text-sm',
+  md: 'min-h-11 gap-2 px-5 py-3 text-sm sm:px-6 sm:text-base',
+  lg: 'min-h-12 gap-2.5 px-6 py-3.5 text-base sm:px-8 sm:text-lg',
 }
 
 const Button = forwardRef(function Button(
@@ -44,7 +28,9 @@ const Button = forwardRef(function Button(
     children,
     className,
     disabled = false,
+    fullWidth = false,
     loading = false,
+    loadingText,
     onClick,
     size = 'md',
     to,
@@ -57,66 +43,52 @@ const Button = forwardRef(function Button(
   },
   ref,
 ) {
-  const prefersReduced = useReducedMotion()
   const isDisabled = disabled || loading
 
   const classes = cn(
-    'inline-flex items-center justify-center gap-2 rounded-full font-body font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-60',
+    'inline-flex items-center justify-center rounded-xl font-body font-semibold transition-all duration-200',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white',
+    'disabled:cursor-not-allowed disabled:opacity-55 disabled:shadow-none disabled:active:scale-100',
     variantClasses[variant],
     sizeClasses[size],
+    fullWidth && 'w-full',
     className,
   )
 
-  const motionProps = prefersReduced
-    ? {}
-    : {
-        variants: buttonVariants,
-        initial: 'rest',
-        whileHover: 'hover',
-        whileTap: { scale: 0.96, transition: { type: 'spring', stiffness: 400, damping: 17 } },
-      }
-
-  const shine = variant === 'primary' && !prefersReduced ? (
-    <motion.span
-      aria-hidden="true"
-      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none"
-      variants={shineVariants}
-    />
-  ) : null
-
   const content = (
     <>
-      {shine}
-      {loading ? <LoadingSpinner className="h-4 w-4" label="Button loading" /> : null}
-      <span>{children}</span>
+      {loading ? <LoadingSpinner className="h-4 w-4 shrink-0" label="Loading" /> : null}
+      <span className={cn(loading && !loadingText && 'opacity-80')}>
+        {loading && loadingText ? loadingText : children}
+      </span>
     </>
   )
 
   if (as === 'link') {
     return (
-      <MotionLink
-        {...motionProps}
+      <Link
+        aria-busy={loading}
         aria-disabled={isDisabled}
         className={classes}
-        onClick={isDisabled ? undefined : onClick}
+        onClick={isDisabled ? (event) => event.preventDefault() : onClick}
         ref={ref}
         tabIndex={isDisabled ? -1 : undefined}
         to={isDisabled ? '#' : to}
         {...props}
       >
         {content}
-      </MotionLink>
+      </Link>
     )
   }
 
   if (as === 'a') {
     return (
-      <MotionAnchor
-        {...motionProps}
+      <a
+        aria-busy={loading}
         aria-disabled={isDisabled}
         className={classes}
         href={isDisabled ? undefined : href}
-        onClick={isDisabled ? undefined : onClick}
+        onClick={isDisabled ? (event) => event.preventDefault() : onClick}
         ref={ref}
         rel={rel}
         tabIndex={isDisabled ? -1 : undefined}
@@ -124,13 +96,13 @@ const Button = forwardRef(function Button(
         {...props}
       >
         {content}
-      </MotionAnchor>
+      </a>
     )
   }
 
   return (
-    <MotionButton
-      {...motionProps}
+    <button
+      aria-busy={loading}
       className={classes}
       disabled={isDisabled}
       onClick={onClick}
@@ -139,7 +111,7 @@ const Button = forwardRef(function Button(
       {...props}
     >
       {content}
-    </MotionButton>
+    </button>
   )
 })
 

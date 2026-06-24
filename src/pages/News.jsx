@@ -7,6 +7,7 @@ import NewsCard from '../components/ui/NewsCard'
 import PageSeo from '../components/seo/PageSeo'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
+import { NewsGridSkeleton } from '../components/ui/Skeleton'
 import { useNews } from '../hooks/useNews'
 import { fadeUpMotion } from '../lib/motion'
 
@@ -20,23 +21,6 @@ function formatDate(value) {
     month: 'long',
     year: 'numeric',
   }).format(new Date(value))
-}
-
-function NewsSkeleton() {
-  return (
-    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {[0, 1, 2].map((item) => (
-        <div className="overflow-hidden rounded-2xl border border-brand-gray/30 bg-white shadow-sm" key={item}>
-          <div className="aspect-[16/10] animate-pulse bg-bg-light" />
-          <div className="space-y-4 p-6">
-            <div className="h-6 w-24 animate-pulse rounded-full bg-bg-light" />
-            <div className="h-8 animate-pulse rounded-xl bg-bg-light" />
-            <div className="h-20 animate-pulse rounded-2xl bg-bg-light" />
-          </div>
-        </div>
-      ))}
-    </div>
-  )
 }
 
 function News() {
@@ -67,8 +51,8 @@ function News() {
       </section>
 
       <motion.section className="py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>
-        <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
-          {loading ? <NewsSkeleton /> : null}
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+          {loading ? <NewsGridSkeleton count={6} /> : null}
           {!loading && error ? <p className="font-body text-sm text-error">Unable to load news posts right now.</p> : null}
 
           {!loading && !error && !isEmpty ? (

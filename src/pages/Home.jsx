@@ -21,6 +21,7 @@ import Card from '../components/ui/Card'
 import EmptyState from '../components/ui/EmptyState'
 import Input from '../components/ui/Input'
 import NewsCard from '../components/ui/NewsCard'
+import { GalleryGridSkeleton, NewsGridSkeleton } from '../components/ui/Skeleton'
 import PageSeo from '../components/seo/PageSeo'
 import { ScrollReveal } from '../components/ui/ScrollReveal'
 import SectionHeader from '../components/ui/SectionHeader'
@@ -152,34 +153,6 @@ function Counter({ label, value }) {
     <div className="rounded-2xl bg-white/10 px-4 py-6 text-center text-white" ref={ref}>
       <div className="font-display font-bold text-4xl leading-none sm:text-5xl">{count}+</div>
       <p className="mt-3 font-body text-sm font-semibold uppercase tracking-wide text-white/90">{label}</p>
-    </div>
-  )
-}
-
-function NewsSkeleton() {
-  return (
-    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {[0, 1, 2].map((i) => (
-        <div className="overflow-hidden rounded-2xl border border-brand-gray/30 bg-white shadow-sm" key={i}>
-          <div className="aspect-[16/10] animate-pulse bg-bg-light" />
-          <div className="space-y-4 p-6">
-            <div className="h-6 w-24 animate-pulse rounded-full bg-bg-light" />
-            <div className="h-8 animate-pulse rounded-xl bg-bg-light" />
-            <div className="h-20 animate-pulse rounded-2xl bg-bg-light" />
-            <div className="h-5 w-28 animate-pulse rounded-full bg-bg-light" />
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function GallerySkeleton() {
-  return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-      {[0, 1, 2, 3, 4, 5].map((i) => (
-        <div className="h-48 animate-pulse rounded-2xl bg-bg-light" key={i} />
-      ))}
     </div>
   )
 }
@@ -321,28 +294,27 @@ function Home() {
             </motion.p>
 
             {/* Buttons — spring pop, stagger from delay 1.1s */}
-            <div className="flex flex-col gap-4 sm:flex-row">
+            <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
               <motion.div
+                className="w-full sm:w-auto"
                 initial={prefersReducedMotion ? {} : { scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 18, delay: 1.1 }}
-                whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
-                whileTap={prefersReducedMotion ? {} : { scale: 0.97 }}
               >
-                <Button as="link" size="lg" to="/admissions" variant="primary">
+                <Button as="link" fullWidth className="sm:w-auto" size="lg" to="/admissions" variant="primary">
                   Enquire Now
                 </Button>
               </motion.div>
               <motion.div
+                className="w-full sm:w-auto"
                 initial={prefersReducedMotion ? {} : { scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 18, delay: 1.2 }}
-                whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
-                whileTap={prefersReducedMotion ? {} : { scale: 0.97 }}
               >
                 <Button
                   as="link"
-                  className="border-2 border-white text-white hover:bg-white hover:text-brand-primary"
+                  className="border-2 border-white text-white hover:bg-white hover:text-brand-primary sm:w-auto"
+                  fullWidth
                   size="lg"
                   to="/about"
                   variant="secondary"
@@ -539,7 +511,7 @@ function Home() {
             </Link>
           </div>
 
-          {newsLoading ? <NewsSkeleton /> : null}
+          {newsLoading ? <NewsGridSkeleton count={3} /> : null}
           {!newsLoading && (newsError || newsEmpty) ? (
             <EmptyState
               description="School updates will appear here as they are added."
@@ -585,7 +557,7 @@ function Home() {
             </Button>
           </div>
 
-          {galleryLoading ? <GallerySkeleton /> : null}
+          {galleryLoading ? <GalleryGridSkeleton count={6} /> : null}
 
           {/* No images: animated placeholder mosaic grid */}
           {!galleryLoading && (galleryError || galleryEmpty) ? (
@@ -750,7 +722,7 @@ function Home() {
                   value={formData.email}
                 />
                 <div className="sm:col-span-2 flex flex-col items-center gap-4">
-                  <Button loading={newsletter.loading} size="lg" type="submit" variant="primary">
+                  <Button fullWidth loading={newsletter.loading} loadingText="Subscribing..." size="lg" type="submit" variant="primary">
                     Subscribe
                   </Button>
                   {newsletter.success ? (
