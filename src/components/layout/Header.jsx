@@ -36,7 +36,7 @@ function HamburgerButton({ isOpen, onClick }) {
 
   return (
     <button
-      className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text-primary transition-colors duration-200 hover:bg-bg-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20 lg:hidden"
+      className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-text-primary transition-colors duration-200 hover:bg-bg-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20 xl:hidden"
       onClick={onClick}
       type="button"
     >
@@ -144,13 +144,13 @@ function Header() {
             : 'bg-white',
         )}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 sm:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:px-10">
-          <div className="lg:justify-self-start">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4 xl:grid xl:grid-cols-[auto_1fr_auto] xl:items-center xl:gap-8 xl:px-10">
+          <div className="min-w-0 xl:justify-self-start">
             <Logo />
           </div>
 
-          <nav aria-label="Primary navigation" className="hidden lg:block lg:justify-self-center">
-            <ul className="flex items-center gap-6">
+          <nav aria-label="Primary navigation" className="hidden xl:block xl:justify-self-center">
+            <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 2xl:gap-x-6">
               {navItems.map((item) => (
                 <li key={item.to}>
                   <NavLink className={desktopNavLinkClass} end={item.to === '/'} to={item.to}>
@@ -161,8 +161,8 @@ function Header() {
             </ul>
           </nav>
 
-          <div className="hidden lg:flex lg:justify-self-end">
-            <Button as="link" size="sm" to="/admissions" variant="primary">
+          <div className="hidden shrink-0 xl:flex xl:justify-self-end">
+            <Button as="link" size="md" to="/admissions" variant="primary">
               Enquire Now
             </Button>
           </div>
@@ -175,7 +175,7 @@ function Header() {
         {isDrawerOpen ? (
           <motion.div
             animate={{ opacity: 1 }}
-            className="fixed inset-0 z-50 bg-white lg:hidden"
+            className="fixed inset-0 z-50 bg-black/20 xl:hidden"
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
             onClick={() => setIsDrawerOpen(false)}
@@ -183,7 +183,7 @@ function Header() {
           >
             <motion.div
               animate={{ x: 0 }}
-              className="ml-auto flex h-full w-full max-w-md flex-col bg-white px-6 pb-8 pt-6"
+              className="ml-auto flex h-full w-full max-w-sm flex-col bg-white px-4 pb-8 pt-4 shadow-2xl sm:max-w-md sm:px-6 sm:pt-6"
               exit={{ x: '100%' }}
               initial={{ x: prefersReducedMotion ? 0 : '100%' }}
               onClick={(event) => event.stopPropagation()}
@@ -222,8 +222,8 @@ function Header() {
                   </motion.div>
                 ))}
               </motion.nav>
-              <div className="pt-6">
-                <Button as="link" className="w-full" to="/admissions" variant="primary">
+              <div className="pt-4 sm:pt-6">
+                <Button as="link" fullWidth size="lg" to="/admissions" variant="primary">
                   Enquire Now
                 </Button>
               </div>
