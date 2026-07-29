@@ -1,6 +1,7 @@
 // Hook for reading published news posts from Supabase.
 
 import { useEffect, useState } from 'react'
+import { fetchWithCache } from '../lib/queryCache'
 import { supabase } from '../lib/supabase'
 
 function buildNewsQuery({ limit, publishedOnly, slug } = {}) {
@@ -29,38 +30,45 @@ export function useNews({ limit, publishedOnly = true } = {}) {
   const [news, setNews] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const cacheKey = `news:list:${publishedOnly}:${limit ?? 'all'}`
 
   useEffect(() => {
     let mounted = true
 
-    const loadNews = async () => {
-      setLoading(true)
-      setError(null)
+    setLoading(true)
+    setError(null)
 
-      const query = buildNewsQuery({ limit, publishedOnly })
-      const { data, error: requestError } = await query
+    fetchWithCache(cacheKey, async () => {
+      const { data, error: requestError } = await buildNewsQuery({ limit, publishedOnly })
+      return { data: data ?? [], error: requestError }
+    })
+      .then(({ data, error: requestError }) => {
+        if (!mounted) {
+          return
+        }
 
-      if (!mounted) {
-        return
-      }
+        if (requestError) {
+          setError(null)
+          setNews([])
+        } else {
+          setNews(data)
+        }
 
-      if (requestError) {
-        // Treat errors as empty state for homepage teaser
-        setError(null)
+        setLoading(false)
+      })
+      .catch(() => {
+        if (!mounted) {
+          return
+        }
+
         setNews([])
-      } else {
-        setNews(data ?? [])
-      }
-
-      setLoading(false)
-    }
-
-    loadNews()
+        setLoading(false)
+      })
 
     return () => {
       mounted = false
     }
-  }, [limit, publishedOnly])
+  }, [cacheKey, limit, publishedOnly])
 
   return {
     news,
@@ -74,42 +82,52 @@ export function useNewsPost(slug, { publishedOnly = true } = {}) {
   const [post, setPost] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const cacheKey = `news:post:${publishedOnly}:${slug ?? ''}`
 
   useEffect(() => {
     let mounted = true
 
-    const loadPost = async () => {
-      if (!slug) {
-        setPost(null)
-        setLoading(false)
-        return
-      }
-
-      setLoading(true)
-      setError(null)
-
-      const { data, error: requestError } = await buildNewsQuery({ publishedOnly, slug })
-
-      if (!mounted) {
-        return
-      }
-
-      if (requestError) {
-        setError(requestError)
-        setPost(null)
-      } else {
-        setPost(data ?? null)
-      }
-
+    if (!slug) {
+      setPost(null)
       setLoading(false)
+      return undefined
     }
 
-    loadPost()
+    setLoading(true)
+    setError(null)
+
+    fetchWithCache(cacheKey, async () => {
+      const { data, error: requestError } = await buildNewsQuery({ publishedOnly, slug })
+      return { data: data ?? null, error: requestError }
+    })
+      .then(({ data, error: requestError }) => {
+        if (!mounted) {
+          return
+        }
+
+        if (requestError) {
+          setError(requestError)
+          setPost(null)
+        } else {
+          setPost(data)
+        }
+
+        setLoading(false)
+      })
+      .catch((requestError) => {
+        if (!mounted) {
+          return
+        }
+
+        setError(requestError)
+        setPost(null)
+        setLoading(false)
+      })
 
     return () => {
       mounted = false
     }
-  }, [publishedOnly, slug])
+  }, [cacheKey, publishedOnly, slug])
 
   return {
     post,

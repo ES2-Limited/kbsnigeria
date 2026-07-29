@@ -55,7 +55,7 @@ function Login() {
           <Input label="Email Address" name="email" onChange={handleChange} required type="email" value={formData.email} />
           <Input label="Password" name="password" onChange={handleChange} required type="password" value={formData.password} />
           {error ? <p className="font-body text-sm text-error">{error}</p> : null}
-          <Button className="w-full" loading={loading} size="lg" type="submit" variant="primary">
+          <Button className="w-full" fullWidth loading={loading} loadingText="Signing in..." size="lg" type="submit" variant="primary">
             Sign In
           </Button>
         </form>

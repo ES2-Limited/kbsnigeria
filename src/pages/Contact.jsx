@@ -1,10 +1,11 @@
 // Contact page implementation for public enquiries and newsletter signup.
 
 import { motion, useReducedMotion } from 'framer-motion'
-import { Mail, MapPin, Phone } from 'lucide-react'
 import { useState } from 'react'
+import ContactDetails from '../components/layout/ContactDetails'
 import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
 import Button from '../components/ui/Button'
+import HoneypotField from '../components/ui/HoneypotField'
 import Input from '../components/ui/Input'
 import PageSeo from '../components/seo/PageSeo'
 import SectionHeader from '../components/ui/SectionHeader'
@@ -13,6 +14,7 @@ import WaveDivider from '../components/ui/WaveDivider'
 import { useEnquirySubmission } from '../hooks/useEnquirySubmission'
 import { useNewsletterSubscription } from '../hooks/useNewsletterSubscription'
 import { fadeUpMotion } from '../lib/motion'
+import { MAPS_EMBED_URL } from '../lib/site'
 
 function Contact() {
   const prefersReducedMotion = useReducedMotion()
@@ -25,6 +27,7 @@ function Contact() {
     phone: '',
     email: '',
     message: '',
+    website: '',
   })
   const [newsletterData, setNewsletterData] = useState({ name: '', email: '' })
 
@@ -50,6 +53,7 @@ function Contact() {
         phone: '',
         email: '',
         message: '',
+        website: '',
       })
     }
   }
@@ -96,31 +100,16 @@ function Contact() {
               subtext="You can call, email, visit, or send an enquiry using the form. Our team will be happy to guide you."
             />
 
-            <div className="space-y-4 rounded-3xl border border-brand-gray/30 bg-white p-6 shadow-sm sm:p-8">
-              <a className="flex min-h-11 items-start gap-3 font-body text-base text-text-secondary hover:text-brand-accent" href="tel:+2348000000000">
-                <Phone className="mt-1 h-5 w-5 shrink-0 text-brand-primary" />
-                <span>+234 800 000 0000</span>
-              </a>
-              <a className="flex min-h-11 items-start gap-3 font-body text-base text-text-secondary hover:text-brand-accent" href="mailto:info@kbsnigeria.com">
-                <Mail className="mt-1 h-5 w-5 shrink-0 text-brand-primary" />
-                <span>info@kbsnigeria.com</span>
-              </a>
-              <a
-                className="flex min-h-11 items-start gap-3 font-body text-base text-text-secondary hover:text-brand-accent"
-                href="https://maps.google.com/?q=FHA+Lugbe+Abuja"
-                rel="noreferrer"
-                target="_blank"
-              >
-                <MapPin className="mt-1 h-5 w-5 shrink-0 text-brand-primary" />
-                <span>FHA Lugbe, Abuja, Nigeria</span>
-              </a>
+            <div className="rounded-3xl border border-brand-gray/30 bg-white p-6 shadow-sm sm:p-8">
+              <ContactDetails />
             </div>
 
             <IllustrationPlaceholder className="min-h-[260px] bg-bg-light" label="Contact illustration placeholder" />
           </div>
 
           <div className="mt-12 space-y-8 lg:mt-0">
-            <form className="rounded-3xl border border-brand-gray/30 bg-white p-6 shadow-sm sm:p-8" onSubmit={handleEnquirySubmit}>
+            <form className="relative rounded-3xl border border-brand-gray/30 bg-white p-6 shadow-sm sm:p-8" onSubmit={handleEnquirySubmit}>
+              <HoneypotField name="website" onChange={handleFormChange} value={formData.website} />
               <SectionHeader
                 align="left"
                 className="mb-6"
@@ -141,7 +130,7 @@ function Contact() {
                 </div>
               </div>
               <div className="mt-5 space-y-3">
-                <Button loading={enquiry.loading} size="lg" type="submit" variant="primary">
+                <Button fullWidth loading={enquiry.loading} loadingText="Sending..." size="lg" type="submit" variant="primary">
                   Submit Enquiry
                 </Button>
                 {enquiry.success ? <p className="font-body text-sm text-success">{enquiry.success}</p> : null}
@@ -155,8 +144,8 @@ function Contact() {
                 height="320"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps?q=FHA%20Lugbe%20Abuja&z=14&output=embed"
-                title="Map showing FHA Lugbe, Abuja"
+                src={MAPS_EMBED_URL}
+                title="Map showing KBS Nigeria, FHA Lugbe, Abuja"
                 width="640"
               />
             </div>
@@ -174,7 +163,7 @@ function Contact() {
                 <Input label="Email" name="email" onChange={handleNewsletterChange} required type="email" value={newsletterData.email} />
               </div>
               <div className="mt-5 space-y-3">
-                <Button loading={newsletter.loading} size="lg" type="submit" variant="primary">
+                <Button fullWidth loading={newsletter.loading} loadingText="Subscribing..." size="lg" type="submit" variant="primary">
                   Subscribe
                 </Button>
                 {newsletter.success ? <p className="font-body text-sm text-success">{newsletter.success}</p> : null}

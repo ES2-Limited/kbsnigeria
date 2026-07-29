@@ -10,20 +10,9 @@ import Modal from '../components/ui/Modal'
 import PageSeo from '../components/seo/PageSeo'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
+import { GalleryGridSkeleton } from '../components/ui/Skeleton'
 import { useGallery } from '../hooks/useGallery'
 import { fadeUpMotion } from '../lib/motion'
-
-function GallerySkeleton() {
-  return (
-    <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
-      {[0, 1, 2, 3, 4, 5].map((item) => (
-        <div className="mb-4 animate-pulse break-inside-avoid rounded-3xl bg-bg-light" key={item}>
-          <div className={item % 3 === 0 ? 'h-80' : item % 2 === 0 ? 'h-56' : 'h-72'} />
-        </div>
-      ))}
-    </div>
-  )
-}
 
 function Gallery() {
   const prefersReducedMotion = useReducedMotion()
@@ -87,8 +76,8 @@ function Gallery() {
       </section>
 
       <motion.section className="py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>
-        <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
-          {loading ? <GallerySkeleton /> : null}
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+          {loading ? <GalleryGridSkeleton count={9} /> : null}
           {!loading && error ? <p className="font-body text-sm text-error">Unable to load gallery images right now.</p> : null}
 
           {!loading && !error && !isEmpty ? (

@@ -17,6 +17,7 @@ const Gallery = lazy(() => import('../pages/Gallery'))
 const Resources = lazy(() => import('../pages/Resources'))
 const Contact = lazy(() => import('../pages/Contact'))
 const Unsubscribe = lazy(() => import('../pages/Unsubscribe'))
+const NotFound = lazy(() => import('../pages/NotFound'))
 const Login = lazy(() => import('../pages/admin/Login'))
 const Dashboard = lazy(() => import('../pages/admin/Dashboard'))
 const AdminGallery = lazy(() => import('../pages/admin/AdminGallery'))
@@ -25,8 +26,10 @@ const AdminResources = lazy(() => import('../pages/admin/AdminResources'))
 const AdminNewsletter = lazy(() => import('../pages/admin/AdminNewsletter'))
 const ComponentShowcase = lazy(() => import('../pages/dev/ComponentShowcase'))
 
+import { PageLoader } from '../components/ui/Skeleton'
+
 function RouteFallback() {
-  return <div className="min-h-[40vh] animate-pulse bg-bg-light" />
+  return <PageLoader />
 }
 
 function withSuspense(Component) {
@@ -91,6 +94,10 @@ const router = createBrowserRouter([
       {
         path: 'unsubscribe',
         element: withSuspense(Unsubscribe),
+      },
+      {
+        path: '*',
+        element: withSuspense(NotFound),
       },
     ],
   },

@@ -6,6 +6,7 @@ import EmptyState from '../components/ui/EmptyState'
 import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
 import PageSeo from '../components/seo/PageSeo'
 import ResourceItem from '../components/ui/ResourceItem'
+import { ResourceListSkeleton } from '../components/ui/Skeleton'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
 import { useResources } from '../hooks/useResources'
@@ -82,13 +83,7 @@ function Resources() {
             ))}
           </div>
 
-          {loading ? (
-            <div className="space-y-4">
-              {[0, 1, 2].map((item) => (
-                <div className="h-32 animate-pulse rounded-2xl bg-bg-light" key={item} />
-              ))}
-            </div>
-          ) : null}
+          {loading ? <ResourceListSkeleton count={4} /> : null}
 
           {!loading && error ? <p className="font-body text-sm text-error">Unable to load resources right now.</p> : null}
 

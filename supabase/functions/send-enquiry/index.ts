@@ -28,7 +28,11 @@ Deno.serve(async (request) => {
     return json(request, 400, { error: 'Invalid JSON payload.' })
   }
 
-  const { parentName, childName, classLevel, phone, email, message } = payload
+  const { parentName, childName, classLevel, phone, email, message, website } = payload
+
+  if (typeof website === 'string' && website.trim().length > 0) {
+    return json(request, 200, { success: true, message: 'Enquiry sent successfully.' })
+  }
 
   if (
     !isNonEmptyString(parentName, 120) ||

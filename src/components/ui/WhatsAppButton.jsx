@@ -1,7 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useState } from 'react'
-
-const WHATSAPP_NUMBER = '2340000000000'
+import { WHATSAPP_URL } from '../../lib/site'
 
 function WhatsAppIcon() {
   return (
@@ -43,7 +42,7 @@ export function WhatsAppButton() {
         )}
 
         <motion.a
-          href={`https://wa.me/${WHATSAPP_NUMBER}`}
+          href={WHATSAPP_URL}
           target="_blank"
           rel="noreferrer"
           aria-label="Chat with KBS Nigeria on WhatsApp"

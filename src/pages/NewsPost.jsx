@@ -6,6 +6,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { Copy, MessageCircle, Newspaper } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import Button from '../components/ui/Button'
+import { Skeleton } from '../components/ui/Skeleton'
 import FallbackImage from '../components/ui/FallbackImage'
 import PageSeo from '../components/seo/PageSeo'
 import { useNewsPost } from '../hooks/useNews'
@@ -58,12 +59,13 @@ function NewsPost() {
       />
 
       {loading ? (
-        <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-10">
-          <div className="h-96 animate-pulse rounded-3xl bg-bg-light" />
-          <div className="mx-auto mt-10 max-w-3xl space-y-4">
-            <div className="h-12 animate-pulse rounded-2xl bg-bg-light" />
-            <div className="h-6 w-40 animate-pulse rounded-full bg-bg-light" />
-            <div className="h-56 animate-pulse rounded-3xl bg-bg-light" />
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-10">
+          <Skeleton className="h-56 w-full rounded-3xl sm:h-80" />
+          <div className="mx-auto mt-8 max-w-3xl space-y-4">
+            <Skeleton className="h-10 w-3/4" />
+            <Skeleton className="h-5 w-40" />
+            <Skeleton className="h-48 w-full" />
+            <Skeleton className="h-48 w-full" />
           </div>
         </div>
       ) : null}

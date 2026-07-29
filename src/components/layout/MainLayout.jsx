@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
+import { trackPageView } from '../../lib/analytics'
 import Footer from './Footer'
 import Header from './Header'
 import { ScrollProgress } from '../ui/ScrollProgress'
@@ -14,7 +15,8 @@ function MainLayout() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
-  }, [location.pathname])
+    trackPageView(`${location.pathname}${location.search}`)
+  }, [location.pathname, location.search])
 
   return (
     <div className="min-h-screen bg-bg-light text-text-primary">
