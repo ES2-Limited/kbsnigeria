@@ -39,6 +39,30 @@ export default {
       screens: {
         xs: '375px',
       },
+      boxShadow: {
+        card: '0 4px 20px -2px rgba(46, 49, 146, 0.08), 0 2px 8px -2px rgba(15, 23, 42, 0.06)',
+        'card-hover': '0 12px 32px -4px rgba(46, 49, 146, 0.16), 0 4px 12px -2px rgba(15, 23, 42, 0.08)',
+        glow: '0 0 30px rgba(45, 182, 227, 0.55)',
+      },
+      keyframes: {
+        shimmer: {
+          '0%':   { backgroundPosition: '200% 0' },
+          '100%': { backgroundPosition: '-200% 0' },
+        },
+        'float-slow': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+      },
+      animation: {
+        shimmer: 'shimmer 1.6s infinite',
+        'float-slow': 'float-slow 5s ease-in-out infinite',
+        marquee: 'marquee 28s linear infinite',
+      },
     },
   },
   plugins: [typography],

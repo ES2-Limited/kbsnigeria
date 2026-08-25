@@ -10,6 +10,7 @@ import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
 import { cn } from '../lib/cn'
+import { fadeUpMotion } from '../lib/motion'
 
 const tiers = [
   {
@@ -40,17 +41,6 @@ const tiers = [
       'The JSS programme prepares learners for the next stage with deeper academic rigour, personal responsibility, and exposure to leadership and practical problem solving.',
   },
 ]
-
-function fadeUpMotion(prefersReducedMotion) {
-  return prefersReducedMotion
-    ? {}
-    : {
-        initial: { opacity: 0, y: 30 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, margin: '-50px' },
-        transition: { duration: 0.6, ease: 'easeOut' },
-      }
-}
 
 function Academics() {
   const prefersReducedMotion = useReducedMotion()
@@ -92,6 +82,7 @@ function Academics() {
           <div className="mb-10 flex flex-wrap justify-center gap-3">
             {tiers.map((tier) => (
               <button
+                aria-pressed={activeTier.id === tier.id}
                 className={cn(
                   'min-h-11 rounded-full px-5 py-3 font-body text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20',
                   activeTier.id === tier.id ? 'bg-brand-primary text-white' : 'bg-bg-light text-text-secondary hover:text-brand-primary',

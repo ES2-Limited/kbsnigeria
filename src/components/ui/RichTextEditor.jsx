@@ -25,6 +25,7 @@ function ToolbarButton({ active, children, onClick, title }) {
 }
 
 function RichTextEditor({ content = '', onChange }) {
+  const [imageError, setImageError] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const editor = useEditor({
     extensions: [
@@ -58,11 +59,20 @@ function RichTextEditor({ content = '', onChange }) {
   }
 
   const addImage = () => {
-    if (!imageUrl.trim()) {
+    const trimmedUrl = imageUrl.trim()
+
+    if (!trimmedUrl) {
       return
     }
 
-    editor.chain().focus().setImage({ src: imageUrl.trim() }).run()
+    // Only allow secure image sources — blocks javascript: and other schemes.
+    if (!trimmedUrl.startsWith('https://')) {
+      setImageError('Only secure https:// image URLs can be embedded.')
+      return
+    }
+
+    setImageError('')
+    editor.chain().focus().setImage({ src: trimmedUrl }).run()
     setImageUrl('')
   }
 
@@ -108,6 +118,11 @@ function RichTextEditor({ content = '', onChange }) {
           <ImageIcon className="h-4 w-4" />
           <span>Embed Image</span>
         </Button>
+        {imageError ? (
+          <p className="font-body text-sm text-red-600 sm:w-full" role="alert">
+            {imageError}
+          </p>
+        ) : null}
       </div>
     </div>
   )

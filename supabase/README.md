@@ -4,6 +4,7 @@ This directory contains the KBS Nigeria Supabase database migration and Edge Fun
 
 ## Contents
 - `migrations/001_init.sql`: initial schema, RLS, storage buckets, and seed data
+- `migrations/002_tighten_subscriber_rls.sql`: removes the public insert policy on `newsletter_subscribers` so double opt-in cannot be bypassed
 - `functions/send-enquiry`: admissions/contact email function with IP rate limiting
 - `functions/send-confirmation`: newsletter opt-in starter
 - `functions/confirm-subscription`: newsletter confirmation endpoint

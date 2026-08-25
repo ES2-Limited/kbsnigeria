@@ -1,22 +1,14 @@
 // Public site header with responsive navigation.
 
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import Button from '../ui/Button'
 import FallbackImage from '../ui/FallbackImage'
 import { cn } from '../../lib/cn'
+import { NAV_ITEMS } from '../../lib/site'
 
-const navItems = [
-  { label: 'Home', to: '/' },
-  { label: 'About', to: '/about' },
-  { label: 'Academics', to: '/academics' },
-  { label: 'Admissions', to: '/admissions' },
-  { label: 'News', to: '/news' },
-  { label: 'Gallery', to: '/gallery' },
-  { label: 'Resources', to: '/resources' },
-  { label: 'Contact', to: '/contact' },
-]
+const DRAWER_ID = 'mobile-navigation-drawer'
 
 function Logo() {
   return (
@@ -31,13 +23,16 @@ function Logo() {
   )
 }
 
-function HamburgerButton({ isOpen, onClick }) {
+const HamburgerButton = forwardRef(function HamburgerButton({ controlsId, isOpen, onClick }, ref) {
   const prefersReducedMotion = useReducedMotion()
 
   return (
     <button
+      aria-controls={controlsId}
+      aria-expanded={isOpen}
       className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-text-primary transition-colors duration-200 hover:bg-bg-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20 xl:hidden"
       onClick={onClick}
+      ref={ref}
       type="button"
     >
       <svg aria-hidden="true" className="h-6 w-6" fill="none" viewBox="0 0 24 24">
@@ -70,7 +65,7 @@ function HamburgerButton({ isOpen, onClick }) {
       <span className="sr-only">Toggle navigation menu</span>
     </button>
   )
-}
+})
 
 function Header() {
   const location = useLocation()
@@ -78,10 +73,41 @@ function Header() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const sentinelRef = useRef(null)
+  const drawerToggleRef = useRef(null)
+  const drawerPanelRef = useRef(null)
 
   useEffect(() => {
     setIsDrawerOpen(false)
   }, [location.pathname])
+
+  // Escape closes the drawer.
+  useEffect(() => {
+    if (!isDrawerOpen) {
+      return undefined
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setIsDrawerOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isDrawerOpen])
+
+  // Move focus into the drawer when it opens; restore it to the toggle on close.
+  const wasDrawerOpenRef = useRef(false)
+  useEffect(() => {
+    if (isDrawerOpen) {
+      drawerPanelRef.current?.focus()
+      wasDrawerOpenRef.current = true
+    } else if (wasDrawerOpenRef.current) {
+      wasDrawerOpenRef.current = false
+      drawerToggleRef.current?.focus()
+    }
+  }, [isDrawerOpen])
 
   useEffect(() => {
     const sentinel = sentinelRef.current
@@ -140,18 +166,23 @@ function Header() {
         className={cn(
           'sticky top-0 z-40 transition-all duration-300',
           isScrolled
-            ? 'bg-white/95 backdrop-blur-sm shadow-sm border-b border-brand-gray/30'
+            ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-brand-gray/30'
             : 'bg-white',
         )}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4 xl:grid xl:grid-cols-[auto_1fr_auto] xl:items-center xl:gap-8 xl:px-10">
+        <div className={cn(
+          'mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 xl:grid xl:grid-cols-[auto_1fr_auto] xl:items-center xl:gap-8 xl:px-10 transition-all duration-300',
+          isScrolled
+            ? 'py-2.5 sm:py-3'
+            : 'py-3 sm:py-4',
+        )}>
           <div className="min-w-0 xl:justify-self-start">
             <Logo />
           </div>
 
           <nav aria-label="Primary navigation" className="hidden xl:block xl:justify-self-center">
             <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 2xl:gap-x-6">
-              {navItems.map((item) => (
+              {NAV_ITEMS.map((item) => (
                 <li key={item.to}>
                   <NavLink className={desktopNavLinkClass} end={item.to === '/'} to={item.to}>
                     {item.label}
@@ -167,7 +198,12 @@ function Header() {
             </Button>
           </div>
 
-          <HamburgerButton isOpen={isDrawerOpen} onClick={() => setIsDrawerOpen((open) => !open)} />
+          <HamburgerButton
+            controlsId={DRAWER_ID}
+            isOpen={isDrawerOpen}
+            onClick={() => setIsDrawerOpen((open) => !open)}
+            ref={drawerToggleRef}
+          />
         </div>
       </header>
 
@@ -183,15 +219,21 @@ function Header() {
           >
             <motion.div
               animate={{ x: 0 }}
-              className="ml-auto flex h-full w-full max-w-sm flex-col bg-white px-4 pb-8 pt-4 shadow-2xl sm:max-w-md sm:px-6 sm:pt-6"
+              aria-label="Site menu"
+              aria-modal="true"
+              className="ml-auto flex h-full w-full max-w-sm flex-col bg-white px-4 pb-8 pt-4 shadow-2xl outline-none focus-visible:outline-none sm:max-w-md sm:px-6 sm:pt-6"
+              id={DRAWER_ID}
               exit={{ x: '100%' }}
               initial={{ x: prefersReducedMotion ? 0 : '100%' }}
               onClick={(event) => event.stopPropagation()}
+              ref={drawerPanelRef}
+              role="dialog"
+              tabIndex={-1}
               transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, ease: 'easeOut' }}
             >
               <div className="mb-8 flex items-center justify-between gap-4">
                 <Logo />
-                <HamburgerButton isOpen={isDrawerOpen} onClick={() => setIsDrawerOpen(false)} />
+                <HamburgerButton controlsId={DRAWER_ID} isOpen={isDrawerOpen} onClick={() => setIsDrawerOpen(false)} />
               </div>
               <motion.nav
                 aria-label="Mobile navigation"
@@ -203,7 +245,7 @@ function Header() {
                 initial="closed"
                 animate="open"
               >
-                {navItems.map((item) => (
+                {NAV_ITEMS.map((item) => (
                   <motion.div
                     key={item.to}
                     variants={prefersReducedMotion ? {} : {

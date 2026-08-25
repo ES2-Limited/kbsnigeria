@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { X } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useId, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '../../lib/cn'
 
@@ -12,11 +12,16 @@ const focusableSelector =
 function Modal({ children, className, closeButtonClassName, onClose, open, title, titleClassName }) {
   const prefersReducedMotion = useReducedMotion()
   const containerRef = useRef(null)
+  const previouslyFocusedRef = useRef(null)
+  const titleId = useId()
 
   useEffect(() => {
     if (!open) {
       return undefined
     }
+
+    // Remember the invoking element so focus can be restored on close.
+    previouslyFocusedRef.current = document.activeElement
 
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
@@ -55,6 +60,8 @@ function Modal({ children, className, closeButtonClassName, onClose, open, title
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
       document.body.style.overflow = ''
+      previouslyFocusedRef.current?.focus?.()
+      previouslyFocusedRef.current = null
     }
   }, [onClose, open])
 
@@ -75,6 +82,7 @@ function Modal({ children, className, closeButtonClassName, onClose, open, title
         >
           <motion.div
             animate={{ opacity: 1, scale: 1 }}
+            aria-labelledby={titleId}
             aria-modal="true"
             className={cn(
               'relative w-full max-w-2xl rounded-2xl bg-white p-6 shadow-md focus:outline-none',
@@ -88,7 +96,9 @@ function Modal({ children, className, closeButtonClassName, onClose, open, title
             transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: 'easeOut' }}
           >
             <div className="mb-4 flex items-start justify-between gap-4">
-              <h2 className={cn('font-display text-2xl leading-tight text-text-primary', titleClassName)}>{title}</h2>
+              <h2 className={cn('font-display text-2xl leading-tight text-text-primary', titleClassName)} id={titleId}>
+                {title}
+              </h2>
               <button
                 className={cn(
                   'inline-flex h-11 w-11 items-center justify-center rounded-full text-text-primary transition-colors duration-200 hover:bg-bg-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20',

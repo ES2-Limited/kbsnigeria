@@ -18,12 +18,20 @@ export function fetchWithCache(key, fetcher, { ttl = DEFAULT_TTL_MS } = {}) {
   const promise = Promise.resolve()
     .then(fetcher)
     .then((value) => {
-      cache.set(key, { value, at: Date.now() })
-      inflight.delete(key)
+      // Only cache if this exact promise is still the registered in-flight
+      // request — an invalidateQueryCache() call may have evicted it mid-flight
+      // and started a fresher fetch, whose result must not be overwritten by
+      // this stale response.
+      if (inflight.get(key) === promise) {
+        cache.set(key, { value, at: Date.now() })
+        inflight.delete(key)
+      }
       return value
     })
     .catch((error) => {
-      inflight.delete(key)
+      if (inflight.get(key) === promise) {
+        inflight.delete(key)
+      }
       throw error
     })
 

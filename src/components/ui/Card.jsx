@@ -9,10 +9,10 @@ function Card({ children, className, ...props }) {
   return (
     <motion.article
       className={cn(
-        'group rounded-2xl border border-brand-gray/30 bg-white p-6 shadow-card cursor-pointer',
+        'group rounded-2xl border border-brand-gray/30 bg-white p-6 shadow-card hover:shadow-card-hover transition-shadow duration-300 cursor-pointer',
         className,
       )}
-      whileHover={prefersReducedMotion ? undefined : { y: -8, boxShadow: '0 20px 40px rgba(31,46,122,0.15)' }}
+      whileHover={prefersReducedMotion ? undefined : { y: -4 }}
       whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       {...props}

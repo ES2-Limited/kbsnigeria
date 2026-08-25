@@ -12,6 +12,7 @@ import SectionHeader from '../components/ui/SectionHeader'
 import Textarea from '../components/ui/Textarea'
 import WaveDivider from '../components/ui/WaveDivider'
 import { useEnquirySubmission } from '../hooks/useEnquirySubmission'
+import { fadeUpMotion } from '../lib/motion'
 import { MAPS_EMBED_URL } from '../lib/site'
 
 const processSteps = [
@@ -40,17 +41,6 @@ const requirements = [
   'Previous school records where applicable',
   'Parent or guardian contact details',
 ]
-
-function fadeUpMotion(prefersReducedMotion) {
-  return prefersReducedMotion
-    ? {}
-    : {
-        initial: { opacity: 0, y: 30 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, margin: '-50px' },
-        transition: { duration: 0.6, ease: 'easeOut' },
-      }
-}
 
 function Admissions() {
   const prefersReducedMotion = useReducedMotion()
@@ -223,8 +213,8 @@ function Admissions() {
                 <Button fullWidth loading={enquiry.loading} loadingText="Sending..." size="lg" type="submit" variant="primary">
                   Submit Enquiry
                 </Button>
-                {enquiry.success ? <p className="font-body text-sm text-success">{enquiry.success}</p> : null}
-                {enquiry.error ? <p className="font-body text-sm text-error">{enquiry.error}</p> : null}
+                {enquiry.success ? <p className="font-body text-sm text-success" role="status">{enquiry.success}</p> : null}
+                {enquiry.error ? <p className="font-body text-sm text-error" role="alert">{enquiry.error}</p> : null}
               </div>
             </form>
           </div>

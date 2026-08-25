@@ -52,3 +52,15 @@ export const EXTERNAL_QUICK_LINKS = [
   { label: 'AMIS – FCT', href: 'https://amis.nemis.gov.ng/' },
   { label: 'FCT UBEB', href: 'https://ubeb.fct.gov.ng/' },
 ]
+
+/** Primary navigation — shared by Header and Footer. */
+export const NAV_ITEMS = [
+  { label: 'Home', to: '/' },
+  { label: 'About', to: '/about' },
+  { label: 'Academics', to: '/academics' },
+  { label: 'Admissions', to: '/admissions' },
+  { label: 'News', to: '/news' },
+  { label: 'Gallery', to: '/gallery' },
+  { label: 'Resources', to: '/resources' },
+  { label: 'Contact', to: '/contact' },
+]

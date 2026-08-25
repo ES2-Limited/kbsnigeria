@@ -6,6 +6,7 @@ import Card from '../components/ui/Card'
 import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
+import { fadeUpMotion } from '../lib/motion'
 
 const staff = [
   { name: 'Mrs Amina Yusuf', role: 'Head of School' },
@@ -15,17 +16,6 @@ const staff = [
 ]
 
 const affiliations = ['NERDC Aligned Curriculum', 'WAEC Preparation Track', 'Safe School Practices', 'Parent Partnership Focus']
-
-function fadeUpMotion(prefersReducedMotion) {
-  return prefersReducedMotion
-    ? {}
-    : {
-        initial: { opacity: 0, y: 30 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, margin: '-50px' },
-        transition: { duration: 0.6, ease: 'easeOut' },
-      }
-}
 
 function About() {
   const prefersReducedMotion = useReducedMotion()
@@ -107,7 +97,7 @@ function About() {
               subtext="KBS is committed to raising children who are not only academically prepared, but also confident, respectful, and ready to engage the world with purpose."
             />
             <blockquote className="font-calligraphy text-2xl italic leading-10 text-brand-purple sm:text-[1.75rem]">
-              "Every child deserves a school experience that sees their potential clearly and guides it patiently. That is the heart of our work at KBS."
+              &ldquo;Every child deserves a school experience that sees their potential clearly and guides it patiently. That is the heart of our work at KBS.&rdquo;
             </blockquote>
             <p className="font-body text-base leading-8 text-text-secondary">
               Our leadership team works closely with staff and families to ensure that pupils are supported academically, emotionally, and socially through every phase of their learning journey.

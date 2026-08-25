@@ -52,6 +52,8 @@ export function WhatsAppButton() {
           transition={prefersReduced ? { duration: 0 } : { delay: 1.5, duration: 0.5, ease: 'easeOut' }}
           whileHover={prefersReduced ? {} : { scale: 1.1 }}
           whileTap={prefersReduced ? {} : { scale: 0.95 }}
+          onBlur={() => setIsHovered(false)}
+          onFocus={() => setIsHovered(true)}
           onHoverStart={() => setIsHovered(true)}
           onHoverEnd={() => setIsHovered(false)}
         >

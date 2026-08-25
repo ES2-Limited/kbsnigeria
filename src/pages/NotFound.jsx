@@ -1,12 +1,16 @@
 // 404 page for unknown routes.
 
+import { motion, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Button from '../components/ui/Button'
 import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
 import PageSeo from '../components/seo/PageSeo'
 import SectionHeader from '../components/ui/SectionHeader'
+import { fadeUpMotion } from '../lib/motion'
 
 function NotFound() {
+  const prefersReducedMotion = useReducedMotion()
+
   return (
     <div className="bg-bg-light px-6 py-20 sm:px-8 sm:py-24 lg:px-10">
       <PageSeo
@@ -15,7 +19,10 @@ function NotFound() {
         title="Page Not Found | KBS Nigeria"
       />
 
-      <div className="mx-auto flex max-w-3xl flex-col items-center gap-8 text-center">
+      <motion.div
+        className="mx-auto flex max-w-3xl flex-col items-center gap-8 text-center"
+        {...fadeUpMotion(prefersReducedMotion)}
+      >
         <IllustrationPlaceholder className="min-h-[200px] w-full max-w-sm bg-white" label="404 illustration placeholder" />
         <SectionHeader
           align="center"
@@ -38,7 +45,7 @@ function NotFound() {
             Visit our admissions page
           </Link>
         </p>
-      </div>
+      </motion.div>
     </div>
   )
 }

@@ -35,6 +35,7 @@ function AdminNewsletter() {
       .from('newsletter_subscribers')
       .select('id, name, email, confirmed, subscribed_at')
       .order('subscribed_at', { ascending: false })
+      .limit(200)
 
     if (requestError) {
       setError(requestError.message)
@@ -98,9 +99,19 @@ function AdminNewsletter() {
     loadSubscribers()
   }
 
-  const handleSend = async () => {
-    setSending(true)
+  const handleSend = async (event) => {
+    event.preventDefault()
     setError('')
+
+    const subject = newsletterForm.subject.trim()
+    const bodyText = newsletterForm.body.replace(/<[^>]*>/g, '').trim()
+
+    if (!subject || !bodyText) {
+      setError('Please add a subject line and a message body before sending.')
+      return
+    }
+
+    setSending(true)
 
     let bannerUrl = newsletterForm.bannerUrl
 
@@ -153,6 +164,7 @@ function AdminNewsletter() {
 
       <div className="flex flex-wrap gap-3">
         <button
+          aria-pressed={activeTab === 'compose'}
           className={`rounded-full px-5 py-3 font-body text-sm transition-colors duration-200 ${
             activeTab === 'compose' ? 'bg-brand-primary text-white' : 'bg-bg-light text-text-secondary'
           }`}
@@ -162,6 +174,7 @@ function AdminNewsletter() {
           Compose
         </button>
         <button
+          aria-pressed={activeTab === 'subscribers'}
           className={`rounded-full px-5 py-3 font-body text-sm transition-colors duration-200 ${
             activeTab === 'subscribers' ? 'bg-brand-primary text-white' : 'bg-bg-light text-text-secondary'
           }`}
@@ -176,30 +189,32 @@ function AdminNewsletter() {
 
       {activeTab === 'compose' ? (
         <div className="space-y-6">
-          <Card className="space-y-5">
-            <Input label="Subject Line" name="subject" onChange={handleNewsletterChange} required value={newsletterForm.subject} />
-            <div>
-              <label className="mb-2 block font-body text-sm font-medium text-text-primary" htmlFor="newsletter-banner">Optional Banner Image</label>
-              <input
-                accept="image/jpeg,image/png,image/webp"
-                className="w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary"
-                id="newsletter-banner"
-                onChange={(event) => setBannerFile(event.target.files?.[0] ?? null)}
-                type="file"
-              />
-            </div>
-            <RichTextEditor content={newsletterForm.body} onChange={(body) => setNewsletterForm((current) => ({ ...current, body }))} />
-            <div className="flex flex-wrap gap-3">
-              <Button onClick={() => setPreviewOpen(true)} variant="secondary">
-                <Eye className="h-4 w-4" />
-                <span>Preview</span>
-              </Button>
-              <Button loading={sending} onClick={handleSend} variant="primary">
-                <Send className="h-4 w-4" />
-                <span>Send Newsletter</span>
-              </Button>
-            </div>
-            {deliveryCount !== null ? <p className="font-body text-sm text-success">Delivered to {deliveryCount} subscribers.</p> : null}
+          <Card className="p-0">
+            <form className="space-y-5 p-6 sm:p-8" onSubmit={handleSend}>
+              <Input label="Subject Line" name="subject" onChange={handleNewsletterChange} required value={newsletterForm.subject} />
+              <div>
+                <label className="mb-2 block font-body text-sm font-medium text-text-primary" htmlFor="newsletter-banner">Optional Banner Image</label>
+                <input
+                  accept="image/jpeg,image/png,image/webp"
+                  className="w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary"
+                  id="newsletter-banner"
+                  onChange={(event) => setBannerFile(event.target.files?.[0] ?? null)}
+                  type="file"
+                />
+              </div>
+              <RichTextEditor content={newsletterForm.body} onChange={(body) => setNewsletterForm((current) => ({ ...current, body }))} />
+              <div className="flex flex-wrap gap-3">
+                <Button onClick={() => setPreviewOpen(true)} type="button" variant="secondary">
+                  <Eye className="h-4 w-4" />
+                  <span>Preview</span>
+                </Button>
+                <Button loading={sending} type="submit" variant="primary">
+                  <Send className="h-4 w-4" />
+                  <span>Send Newsletter</span>
+                </Button>
+              </div>
+              {deliveryCount !== null ? <p className="font-body text-sm text-success">Delivered to {deliveryCount} subscribers.</p> : null}
+            </form>
           </Card>
 
           <Modal onClose={() => setPreviewOpen(false)} open={previewOpen} title="Newsletter Preview">
@@ -222,7 +237,7 @@ function AdminNewsletter() {
             </form>
           </Card>
 
-          {loadingSubscribers ? <div className="h-40 animate-pulse rounded-3xl bg-bg-light" /> : null}
+          {loadingSubscribers ? <div className="h-40 bg-gradient-to-r from-brand-gray/20 via-brand-gray/40 to-brand-gray/20 bg-[length:200%_100%] animate-shimmer rounded-3xl" /> : null}
 
           {!loadingSubscribers ? (
             <Card className="overflow-hidden p-0">
@@ -247,7 +262,7 @@ function AdminNewsletter() {
                         </td>
                         <td className="px-6 py-4 text-text-secondary">{formatAdminDate(subscriber.subscribed_at)}</td>
                         <td className="px-6 py-4">
-                          <button className="text-error transition-colors duration-200 hover:text-error/80" onClick={() => handleRemoveSubscriber(subscriber.id)} type="button">
+                          <button aria-label={`Remove ${subscriber.email} from subscribers`} className="text-error transition-colors duration-200 hover:text-error/80" onClick={() => handleRemoveSubscriber(subscriber.id)} type="button">
                             <Trash2 className="h-4 w-4" />
                           </button>
                         </td>

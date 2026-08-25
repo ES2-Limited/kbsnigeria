@@ -1,5 +1,6 @@
 // Newsletter unsubscribe — processes token from email links.
 
+import { motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import Button from '../components/ui/Button'
@@ -7,12 +8,14 @@ import LoadingSpinner from '../components/ui/LoadingSpinner'
 import PageSeo from '../components/seo/PageSeo'
 import SectionHeader from '../components/ui/SectionHeader'
 import { useNewsletterUnsubscribe } from '../hooks/useNewsletterUnsubscribe'
+import { fadeUpMotion } from '../lib/motion'
 
 function Unsubscribe() {
   const [searchParams] = useSearchParams()
   const token = searchParams.get('token') ?? ''
   const { unsubscribe, loading, error, success } = useNewsletterUnsubscribe()
   const attemptedRef = useRef(false)
+  const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
     if (!token || attemptedRef.current) {
@@ -33,7 +36,10 @@ function Unsubscribe() {
         title="Unsubscribe | KBS Nigeria"
       />
 
-      <div className="mx-auto max-w-3xl rounded-3xl border border-brand-gray/30 bg-white px-6 py-12 text-center shadow-sm sm:px-10">
+      <motion.div
+        className="mx-auto max-w-3xl rounded-3xl border border-brand-gray/30 bg-white px-6 py-12 text-center shadow-sm sm:px-10"
+        {...fadeUpMotion(prefersReducedMotion)}
+      >
         <SectionHeader
           align="center"
           className="mx-auto"
@@ -59,8 +65,8 @@ function Unsubscribe() {
             </p>
           ) : null}
 
-          {error ? <p className="font-body text-sm text-error">{error}</p> : null}
-          {success ? <p className="font-body text-sm text-success">{success}</p> : null}
+          {error ? <p className="font-body text-sm text-error" role="alert">{error}</p> : null}
+          {success ? <p className="font-body text-sm text-success" role="status">{success}</p> : null}
         </div>
 
         <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -81,7 +87,7 @@ function Unsubscribe() {
             .
           </p>
         ) : null}
-      </div>
+      </motion.div>
     </div>
   )
 }

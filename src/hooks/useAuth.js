@@ -1,29 +1,14 @@
-// Hook for Supabase auth state.
+// Hook for shared auth state provided by AuthProvider.
 
-import { useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
+import { useContext } from 'react'
+import { AuthContext } from '../context/AuthContext'
 
 export function useAuth() {
-  const [session, setSession] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const context = useContext(AuthContext)
 
-  useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      setSession(nextSession)
-      setLoading(false)
-    })
-
-    return () => {
-      subscription.unsubscribe()
-    }
-  }, [])
-
-  return {
-    session,
-    user: session?.user ?? null,
-    loading,
-    isAuthenticated: Boolean(session),
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider')
   }
+
+  return context
 }

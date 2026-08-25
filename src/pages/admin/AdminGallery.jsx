@@ -2,7 +2,6 @@
 
 import { Trash2, Upload } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
 import { invalidateQueryCache } from '../../lib/queryCache'
 import { supabase } from '../../lib/supabase'
@@ -19,6 +18,7 @@ function AdminGallery() {
       .from('gallery_images')
       .select('id, storage_path, url, caption, uploaded_at')
       .order('uploaded_at', { ascending: false })
+      .limit(200)
 
     if (requestError) {
       setError(requestError.message)
@@ -126,7 +126,7 @@ function AdminGallery() {
 
       {error ? <p className="font-body text-sm text-error">{error}</p> : null}
 
-      {loading ? <div className="h-40 animate-pulse rounded-3xl bg-bg-light" /> : null}
+      {loading ? <div className="h-40 bg-gradient-to-r from-brand-gray/20 via-brand-gray/40 to-brand-gray/20 bg-[length:200%_100%] animate-shimmer rounded-3xl" /> : null}
 
       {!loading ? (
         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
@@ -135,7 +135,7 @@ function AdminGallery() {
               <img alt={image.caption || 'Gallery image'} className="h-48 w-full rounded-2xl object-cover" src={image.url} />
               <div className="flex items-start justify-between gap-4">
                 <p className="font-body text-sm text-text-secondary">{image.caption || 'Untitled image'}</p>
-                <button className="text-error transition-colors duration-200 hover:text-error/80" onClick={() => handleDelete(image)} type="button">
+                <button aria-label={`Delete image "${image.caption || 'Untitled image'}"`} className="text-error transition-colors duration-200 hover:text-error/80" onClick={() => handleDelete(image)} type="button">
                   <Trash2 className="h-4 w-4" />
                 </button>
               </div>

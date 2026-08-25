@@ -23,6 +23,7 @@ function AdminResources() {
       .from('resources')
       .select('id, title, category, file_url, file_name, uploaded_at')
       .order('uploaded_at', { ascending: false })
+      .limit(200)
 
     if (requestError) {
       setError(requestError.message)
@@ -160,7 +161,7 @@ function AdminResources() {
         {error ? <p className="font-body text-sm text-error">{error}</p> : null}
       </Card>
 
-      {loading ? <div className="h-40 animate-pulse rounded-3xl bg-bg-light" /> : null}
+      {loading ? <div className="h-40 bg-gradient-to-r from-brand-gray/20 via-brand-gray/40 to-brand-gray/20 bg-[length:200%_100%] animate-shimmer rounded-3xl" /> : null}
 
       {!loading ? (
         <Card className="overflow-hidden p-0">
@@ -181,7 +182,7 @@ function AdminResources() {
                     <td className="px-6 py-4 text-text-secondary">{resource.category}</td>
                     <td className="px-6 py-4 text-text-secondary">{formatAdminDate(resource.uploaded_at)}</td>
                     <td className="px-6 py-4">
-                      <button className="text-error transition-colors duration-200 hover:text-error/80" onClick={() => handleDelete(resource)} type="button">
+                      <button aria-label={`Delete "${resource.title}"`} className="text-error transition-colors duration-200 hover:text-error/80" onClick={() => handleDelete(resource)} type="button">
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </td>

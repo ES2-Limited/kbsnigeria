@@ -56,6 +56,7 @@ function AdminNews() {
       .select('id, title, slug, status, created_at, published_at')
       .order('published_at', { ascending: false, nullsFirst: false })
       .order('created_at', { ascending: false })
+      .limit(200)
 
     if (requestError) {
       setError(requestError.message)
@@ -179,6 +180,9 @@ function AdminNews() {
     invalidateQueryCache('news')
     invalidateQueryCache('admin')
     loadPosts()
+  }
+
+  if (isFormMode) {
     return (
       <div className="space-y-8">
         <div className="flex items-center justify-between gap-4">
@@ -253,7 +257,7 @@ function AdminNews() {
       </div>
 
       {error ? <p className="font-body text-sm text-error">{error}</p> : null}
-      {loading ? <div className="h-40 animate-pulse rounded-3xl bg-bg-light" /> : null}
+      {loading ? <div className="h-40 bg-gradient-to-r from-brand-gray/20 via-brand-gray/40 to-brand-gray/20 bg-[length:200%_100%] animate-shimmer rounded-3xl" /> : null}
 
       {!loading ? (
         <Card className="overflow-hidden p-0">
@@ -277,10 +281,10 @@ function AdminNews() {
                     <td className="px-6 py-4 text-text-secondary">{formatAdminDate(post.published_at ?? post.created_at)}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <Link className="text-brand-primary transition-colors duration-200 hover:text-brand-purple" to={`/admin/news/${post.id}/edit`}>
+                        <Link aria-label={`Edit "${post.title}"`} className="text-brand-primary transition-colors duration-200 hover:text-brand-purple" to={`/admin/news/${post.id}/edit`}>
                           <Pencil className="h-4 w-4" />
                         </Link>
-                        <button className="text-error transition-colors duration-200 hover:text-error/80" onClick={() => handleDelete(post.id)} type="button">
+                        <button aria-label={`Delete "${post.title}"`} className="text-error transition-colors duration-200 hover:text-error/80" onClick={() => handleDelete(post.id)} type="button">
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>

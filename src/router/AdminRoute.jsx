@@ -1,13 +1,14 @@
 // Auth guard for protected admin routes.
 
 import { Navigate, Outlet } from 'react-router-dom'
+import { PageLoader } from '../components/ui/Skeleton'
 import { useAuth } from '../hooks/useAuth'
 
 function AdminRoute() {
   const { isAuthenticated, loading } = useAuth()
 
   if (loading) {
-    return null
+    return <PageLoader />
   }
 
   if (!isAuthenticated) {

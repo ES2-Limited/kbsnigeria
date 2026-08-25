@@ -1,31 +1,34 @@
 // News index page implementation following PRD US-05.
 
 import { motion, useReducedMotion } from 'framer-motion'
+import { useState } from 'react'
+import Button from '../components/ui/Button'
 import EmptyState from '../components/ui/EmptyState'
 import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
 import NewsCard from '../components/ui/NewsCard'
 import PageSeo from '../components/seo/PageSeo'
-import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
 import { NewsGridSkeleton } from '../components/ui/Skeleton'
 import { useNews } from '../hooks/useNews'
-import { fadeUpMotion } from '../lib/motion'
+import { formatDate } from '../lib/format'
+import { fadeUpItemVariants, fadeUpMotion, staggerContainerMotion } from '../lib/motion'
+import { scrollToElement } from '../lib/smoothScroll'
 
-function formatDate(value) {
-  if (!value) {
-    return 'Coming soon'
-  }
-
-  return new Intl.DateTimeFormat('en-NG', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).format(new Date(value))
-}
+const NEWS_PAGE_SIZE = 9
 
 function News() {
   const prefersReducedMotion = useReducedMotion()
-  const { news, loading, error, isEmpty } = useNews({ publishedOnly: true })
+  const [page, setPage] = useState(1)
+  const { error, isEmpty, loading, news, totalPages } = useNews({
+    page,
+    pageSize: NEWS_PAGE_SIZE,
+    publishedOnly: true,
+  })
+
+  const goToPage = (nextPage) => {
+    setPage(nextPage)
+    scrollToElement('#news-list')
+  }
 
   return (
     <div className="bg-bg-light">
@@ -52,32 +55,62 @@ function News() {
 
       <motion.section className="py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-          {loading ? <NewsGridSkeleton count={6} /> : null}
-          {!loading && error ? <p className="font-body text-sm text-error">Unable to load news posts right now.</p> : null}
+          <div id="news-list" className="scroll-mt-24">
+            {loading ? <NewsGridSkeleton count={6} /> : null}
+            {!loading && error ? <p className="font-body text-sm text-error">Unable to load news posts right now.</p> : null}
 
-          {!loading && !error && !isEmpty ? (
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {news.map((item) => (
-                <NewsCard
-                  category="News"
-                  coverImage={item.cover_url}
-                  date={formatDate(item.published_at ?? item.created_at)}
-                  excerpt={item.excerpt ?? 'Read the latest update from Knowledgebased Basic Science Schools.'}
-                  key={item.id}
-                  slug={item.slug}
-                  title={item.title}
-                />
-              ))}
-            </div>
-          ) : null}
+            {!loading && !error && !isEmpty ? (
+              <motion.div
+                className="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
+                {...staggerContainerMotion(prefersReducedMotion, 0.12)}
+              >
+                {news.map((item) => (
+                  <motion.div key={item.id} variants={fadeUpItemVariants}>
+                    <NewsCard
+                      category="News"
+                      coverImage={item.cover_url}
+                      date={formatDate(item.published_at ?? item.created_at)}
+                      excerpt={item.excerpt ?? 'Read the latest update from Knowledgebased Basic Science Schools.'}
+                      slug={item.slug}
+                      title={item.title}
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+            ) : null}
 
-          {!loading && !error && isEmpty ? (
-            <EmptyState
-              description="Published school announcements will appear here once they are available from the admin panel."
-              illustration={<IllustrationPlaceholder className="min-h-[180px] bg-bg-light" label="News placeholder" />}
-              title="No news published yet"
-            />
-          ) : null}
+            {!loading && !error && isEmpty ? (
+              <EmptyState
+                description="Published school announcements will appear here once they are available from the admin panel."
+                illustration={<IllustrationPlaceholder className="min-h-[180px] bg-bg-light" label="News placeholder" />}
+                title="No news published yet"
+              />
+            ) : null}
+
+            {!loading && !error && totalPages > 1 ? (
+              <nav aria-label="News pagination" className="mt-12 flex items-center justify-center gap-4">
+                <Button
+                  aria-label="Previous page"
+                  disabled={page === 1}
+                  onClick={() => goToPage(page - 1)}
+                  variant="secondary"
+                >
+                  Previous
+                </Button>
+                <p aria-live="polite" className="font-body text-sm font-medium text-text-secondary">
+                  Page {page} of {totalPages}
+                </p>
+                <Button
+                  aria-label="Next page"
+                  disabled={page >= totalPages}
+                  onClick={() => goToPage(page + 1)}
+                  variant="secondary"
+                >
+                  Next
+                </Button>
+              </nav>
+            ) : null}
+          </div>
         </div>
       </motion.section>
     </div>

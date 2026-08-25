@@ -8,7 +8,14 @@ export function useNewsletterSubscription() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  const subscribe = async ({ email, name }) => {
+  const subscribe = async ({ email, name, website }) => {
+    // Honeypot filled — almost certainly a bot. Pretend success so the bot
+    // learns nothing, and never touch Supabase or Resend.
+    if (website) {
+      setSuccess('Subscription received. Please check your email to confirm.')
+      return true
+    }
+
     setLoading(true)
     setError('')
     setSuccess('')

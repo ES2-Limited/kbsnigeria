@@ -1,10 +1,12 @@
 // Application route definitions.
 
 import { Suspense, lazy } from 'react'
-import { Navigate, createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 import AdminLayout from '../components/layout/AdminLayout'
 import MainLayout from '../components/layout/MainLayout'
-import { useAuth } from '../hooks/useAuth'
+import { PageLoader } from '../components/ui/Skeleton'
+import ErrorPage from '../pages/ErrorPage'
+import AdminEntry from './AdminEntry'
 import AdminRoute from './AdminRoute'
 
 const Home = lazy(() => import('../pages/Home'))
@@ -18,7 +20,6 @@ const Resources = lazy(() => import('../pages/Resources'))
 const Contact = lazy(() => import('../pages/Contact'))
 const Unsubscribe = lazy(() => import('../pages/Unsubscribe'))
 const NotFound = lazy(() => import('../pages/NotFound'))
-const Login = lazy(() => import('../pages/admin/Login'))
 const Dashboard = lazy(() => import('../pages/admin/Dashboard'))
 const AdminGallery = lazy(() => import('../pages/admin/AdminGallery'))
 const AdminNews = lazy(() => import('../pages/admin/AdminNews'))
@@ -26,34 +27,19 @@ const AdminResources = lazy(() => import('../pages/admin/AdminResources'))
 const AdminNewsletter = lazy(() => import('../pages/admin/AdminNewsletter'))
 const ComponentShowcase = lazy(() => import('../pages/dev/ComponentShowcase'))
 
-import { PageLoader } from '../components/ui/Skeleton'
-
-function RouteFallback() {
-  return <PageLoader />
-}
-
 function withSuspense(Component) {
   return (
-    <Suspense fallback={<RouteFallback />}>
+    <Suspense fallback={<PageLoader />}>
       <Component />
     </Suspense>
   )
-}
-
-function AdminEntry() {
-  const { isAuthenticated, loading } = useAuth()
-
-  if (loading) {
-    return null
-  }
-
-  return isAuthenticated ? <Navigate replace to="/admin/dashboard" /> : withSuspense(Login)
 }
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -106,49 +92,61 @@ const router = createBrowserRouter([
         {
           path: '/dev/components',
           element: withSuspense(ComponentShowcase),
+          errorElement: <ErrorPage />,
         },
       ]
     : []),
   {
     path: '/admin',
-    element: <AdminEntry />,
-  },
-  {
-    path: '/admin',
-    element: <AdminRoute />,
+    errorElement: <ErrorPage />,
     children: [
+      // Entry point — unguarded so unauthenticated users reach the login form.
       {
-        element: <AdminLayout />,
+        index: true,
+        element: <AdminEntry />,
+      },
+      // Guarded admin area.
+      {
+        element: <AdminRoute />,
         children: [
           {
-            path: 'dashboard',
-            element: withSuspense(Dashboard),
-          },
-          {
-            path: 'gallery',
-            element: withSuspense(AdminGallery),
-          },
-          {
-            path: 'news',
-            element: withSuspense(AdminNews),
-          },
-          {
-            path: 'news/new',
-            element: withSuspense(AdminNews),
-          },
-          {
-            path: 'news/:id/edit',
-            element: withSuspense(AdminNews),
-          },
-          {
-            path: 'resources',
-            element: withSuspense(AdminResources),
-          },
-          {
-            path: 'newsletter',
-            element: withSuspense(AdminNewsletter),
+            element: <AdminLayout />,
+            children: [
+              {
+                path: 'dashboard',
+                element: withSuspense(Dashboard),
+              },
+              {
+                path: 'gallery',
+                element: withSuspense(AdminGallery),
+              },
+              {
+                path: 'news',
+                element: withSuspense(AdminNews),
+              },
+              {
+                path: 'news/new',
+                element: withSuspense(AdminNews),
+              },
+              {
+                path: 'news/:id/edit',
+                element: withSuspense(AdminNews),
+              },
+              {
+                path: 'resources',
+                element: withSuspense(AdminResources),
+              },
+              {
+                path: 'newsletter',
+                element: withSuspense(AdminNewsletter),
+              },
+            ],
           },
         ],
+      },
+      {
+        path: '*',
+        element: withSuspense(NotFound),
       },
     ],
   },

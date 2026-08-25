@@ -1,17 +1,15 @@
 // Public site footer with newsletter signup and contact links.
 
 import { Mail, MapPin, Phone } from 'lucide-react'
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import Button from '../ui/Button'
 import FallbackImage from '../ui/FallbackImage'
-import Input from '../ui/Input'
-import { useNewsletterSubscription } from '../../hooks/useNewsletterSubscription'
+import NewsletterSignupForm from '../forms/NewsletterSignupForm'
 import {
   ADDRESS,
   EMAIL,
   EXTERNAL_QUICK_LINKS,
   MAPS_URL,
+  NAV_ITEMS,
   OPENING_HOURS,
   PHONES,
   SCHOOL_NAME,
@@ -46,17 +44,6 @@ function WhatsAppIcon(props) {
   )
 }
 
-const navItems = [
-  { label: 'Home', to: '/' },
-  { label: 'About', to: '/about' },
-  { label: 'Academics', to: '/academics' },
-  { label: 'Admissions', to: '/admissions' },
-  { label: 'News', to: '/news' },
-  { label: 'Gallery', to: '/gallery' },
-  { label: 'Resources', to: '/resources' },
-  { label: 'Contact', to: '/contact' },
-]
-
 const socialLinks = SOCIAL_LINKS.map((link) => {
   if (link.label === 'Facebook') {
     return { ...link, icon: FacebookIcon, className: 'text-white' }
@@ -77,23 +64,6 @@ socialLinks.push({
 })
 
 function Footer() {
-  const newsletter = useNewsletterSubscription()
-  const [formData, setFormData] = useState({ email: '', name: '' })
-
-  const handleChange = (event) => {
-    const { name, value } = event.target
-    setFormData((current) => ({ ...current, [name]: value }))
-  }
-
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    const didSubscribe = await newsletter.subscribe(formData)
-
-    if (didSubscribe) {
-      setFormData({ email: '', name: '' })
-    }
-  }
-
   return (
     <footer className="bg-bg-dark text-white">
       <div className="mx-auto max-w-7xl px-6 py-12 sm:px-8 lg:px-10 lg:py-16">
@@ -103,36 +73,9 @@ function Footer() {
               <p className="font-calligraphy text-xl italic text-white/70">Join KBS families receiving school updates</p>
               <h2 className="font-display text-h1 text-white">Subscribe to Our Newsletter</h2>
             </div>
-            <form className="grid gap-4 sm:grid-cols-2 lg:flex lg:min-w-[34rem] lg:items-end" onSubmit={handleSubmit}>
-              <Input
-                className="bg-white/10 text-white placeholder:text-white/40 border border-white/20 rounded-xl px-4 py-2 focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20"
-                label="Name"
-                labelClassName="text-white"
-                name="name"
-                onChange={handleChange}
-                required
-                value={formData.name}
-              />
-              <Input
-                className="bg-white/10 text-white placeholder:text-white/40 border border-white/20 rounded-xl px-4 py-2 focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20"
-                label="Email"
-                labelClassName="text-white"
-                name="email"
-                onChange={handleChange}
-                required
-                type="email"
-                value={formData.email}
-              />
-              <div className="mt-5 space-y-3">
-                <Button loading={newsletter.loading} loadingText="Subscribing..." size="lg" type="submit" variant="primary">
-                  Subscribe
-                </Button>
-                {/* {newsletter.success ? <p className="font-body text-sm text-success">{newsletter.success}</p> : null}
-                {newsletter.error ? <p className="font-body text-sm text-error">{newsletter.error}</p> : null} */}
-              </div>
-            </form>
-            {newsletter.success ? <p className="font-body text-sm text-white/85">{newsletter.success}</p> : null}
-            {newsletter.error ? <p className="font-body text-sm text-red-400">{newsletter.error}</p> : null}
+            <div className="lg:min-w-[34rem]">
+              <NewsletterSignupForm tone="dark" />
+            </div>
           </div>
         </div>
 
@@ -155,7 +98,7 @@ function Footer() {
           <section className="space-y-4">
             <h3 className="font-body font-semibold text-white text-sm uppercase tracking-wider">Quick Links</h3>
             <ul className="space-y-3 font-body text-sm text-white/70">
-              {navItems.map((item) => (
+              {NAV_ITEMS.map((item) => (
                 <li key={item.to}>
                   <Link className="relative inline-flex min-h-11 items-center transition-colors duration-200 hover:text-white after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-brand-primary after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100" to={item.to}>
                     {item.label}
@@ -205,7 +148,7 @@ function Footer() {
               {EXTERNAL_QUICK_LINKS.map((link) => (
                 <li key={link.label}>
                   <a
-                    className="relative inline-flex min-h-11 items-center transition-colors duration-200 hover:text-white"
+                    className="relative inline-flex min-h-11 items-center transition-colors duration-200 hover:text-white after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-brand-accent after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
                     href={link.href}
                     rel="noreferrer"
                     target="_blank"
@@ -222,7 +165,7 @@ function Footer() {
             <div className="flex items-center gap-3">
               {socialLinks.map(({ href, icon: Icon, label }) => (
                 <a
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full text-white/70 transition-colors duration-200 hover:text-brand-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full text-white/70 transition-all duration-200 hover:-translate-y-0.5 hover:text-brand-accent hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20"
                   href={href}
                   key={label}
                   rel="noreferrer"
@@ -240,7 +183,7 @@ function Footer() {
         </div>
 
         <div className="mt-8 border-t border-white/10 pt-6 text-center text-xs text-white/40">
-          <p>© 2026 Knowledgebased Basic Science Schools. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Knowledgebased Basic Science Schools. All rights reserved.</p>
         </div>
       </div>
     </footer>
