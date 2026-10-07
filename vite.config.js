@@ -1,10 +1,10 @@
 import { copyFileSync, existsSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
+const rootDir = dirname(fileURLToPath(import.meta.url))
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -13,8 +13,8 @@ export default defineConfig({
     {
       name: 'copy-htaccess',
       writeBundle() {
-        const source = resolve(__dirname, '.htaccess')
-        const destination = resolve(__dirname, 'dist', '.htaccess')
+        const source = resolve(rootDir, '.htaccess')
+        const destination = resolve(rootDir, 'dist', '.htaccess')
 
         if (existsSync(source)) {
           copyFileSync(source, destination)
@@ -22,6 +22,12 @@ export default defineConfig({
       },
     },
   ],
+  test: {
+    environment: 'jsdom',
+    globals: false,
+    setupFiles: './src/test/setup.js',
+    css: false,
+  },
   build: {
     rollupOptions: {
       output: {
@@ -40,6 +46,10 @@ export default defineConfig({
 
           if (id.includes('framer-motion')) {
             return 'motion'
+          }
+
+          if (id.includes('three')) {
+            return 'three'
           }
 
           if (

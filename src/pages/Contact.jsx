@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from 'framer-motion'
 import { useState } from 'react'
+import NewsletterSignupForm from '../components/forms/NewsletterSignupForm'
 import ContactDetails from '../components/layout/ContactDetails'
 import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
 import Button from '../components/ui/Button'
@@ -12,14 +13,12 @@ import SectionHeader from '../components/ui/SectionHeader'
 import Textarea from '../components/ui/Textarea'
 import WaveDivider from '../components/ui/WaveDivider'
 import { useEnquirySubmission } from '../hooks/useEnquirySubmission'
-import { useNewsletterSubscription } from '../hooks/useNewsletterSubscription'
 import { fadeUpMotion } from '../lib/motion'
 import { MAPS_EMBED_URL } from '../lib/site'
 
 function Contact() {
   const prefersReducedMotion = useReducedMotion()
   const enquiry = useEnquirySubmission()
-  const newsletter = useNewsletterSubscription()
   const [formData, setFormData] = useState({
     parentName: '',
     childName: '',
@@ -29,16 +28,10 @@ function Contact() {
     message: '',
     website: '',
   })
-  const [newsletterData, setNewsletterData] = useState({ name: '', email: '' })
 
   const handleFormChange = (event) => {
     const { name, value } = event.target
     setFormData((current) => ({ ...current, [name]: value }))
-  }
-
-  const handleNewsletterChange = (event) => {
-    const { name, value } = event.target
-    setNewsletterData((current) => ({ ...current, [name]: value }))
   }
 
   const handleEnquirySubmit = async (event) => {
@@ -55,15 +48,6 @@ function Contact() {
         message: '',
         website: '',
       })
-    }
-  }
-
-  const handleNewsletterSubmit = async (event) => {
-    event.preventDefault()
-    const didSubscribe = await newsletter.subscribe(newsletterData)
-
-    if (didSubscribe) {
-      setNewsletterData({ name: '', email: '' })
     }
   }
 
@@ -133,8 +117,8 @@ function Contact() {
                 <Button fullWidth loading={enquiry.loading} loadingText="Sending..." size="lg" type="submit" variant="primary">
                   Submit Enquiry
                 </Button>
-                {enquiry.success ? <p className="font-body text-sm text-success">{enquiry.success}</p> : null}
-                {enquiry.error ? <p className="font-body text-sm text-error">{enquiry.error}</p> : null}
+                {enquiry.success ? <p className="font-body text-sm text-success" role="status">{enquiry.success}</p> : null}
+                {enquiry.error ? <p className="font-body text-sm text-error" role="alert">{enquiry.error}</p> : null}
               </div>
             </form>
 
@@ -150,7 +134,7 @@ function Contact() {
               />
             </div>
 
-            <form className="rounded-3xl border border-brand-gray/30 bg-white p-6 shadow-sm sm:p-8" onSubmit={handleNewsletterSubmit}>
+            <div className="rounded-3xl border border-brand-gray/30 bg-white p-6 shadow-sm sm:p-8">
               <SectionHeader
                 align="left"
                 className="mb-6"
@@ -158,18 +142,8 @@ function Contact() {
                 overline="Newsletter"
                 subtext="Receive important announcements and family updates from the school."
               />
-              <div className="grid gap-5 sm:grid-cols-2">
-                <Input label="Name" name="name" onChange={handleNewsletterChange} required value={newsletterData.name} />
-                <Input label="Email" name="email" onChange={handleNewsletterChange} required type="email" value={newsletterData.email} />
-              </div>
-              <div className="mt-5 space-y-3">
-                <Button fullWidth loading={newsletter.loading} loadingText="Subscribing..." size="lg" type="submit" variant="primary">
-                  Subscribe
-                </Button>
-                {newsletter.success ? <p className="font-body text-sm text-success">{newsletter.success}</p> : null}
-                {newsletter.error ? <p className="font-body text-sm text-error">{newsletter.error}</p> : null}
-              </div>
-            </form>
+              <NewsletterSignupForm />
+            </div>
           </div>
         </div>
       </motion.section>

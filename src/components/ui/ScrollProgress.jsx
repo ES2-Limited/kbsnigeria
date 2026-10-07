@@ -1,13 +1,16 @@
-import { motion, useScroll, useSpring } from 'framer-motion'
+import { motion, useReducedMotion, useScroll, useSpring } from 'framer-motion'
 
 export function ScrollProgress() {
+  const prefersReducedMotion = useReducedMotion()
   const { scrollYProgress } = useScroll()
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
+  // Skip spring animation entirely for users who prefer reduced motion —
+  // the bar still tracks scroll position, just without the springy lag.
+  const animatedScaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
 
   return (
     <motion.div
-      style={{ scaleX, transformOrigin: '0%' }}
-      className="fixed top-0 left-0 right-0 h-[3px] bg-brand-primary z-[100] pointer-events-none"
+      style={{ scaleX: prefersReducedMotion ? scrollYProgress : animatedScaleX, transformOrigin: '0%' }}
+      className="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-brand-primary via-brand-accent to-brand-purple z-[100] pointer-events-none"
       aria-hidden="true"
     />
   )

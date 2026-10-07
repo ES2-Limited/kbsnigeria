@@ -4,43 +4,52 @@ import DOMPurify from 'dompurify'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { Copy, MessageCircle, Newspaper } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Button from '../components/ui/Button'
 import { Skeleton } from '../components/ui/Skeleton'
 import FallbackImage from '../components/ui/FallbackImage'
 import PageSeo from '../components/seo/PageSeo'
 import { useNewsPost } from '../hooks/useNews'
+import { formatDate } from '../lib/format'
 import { fadeUpMotion } from '../lib/motion'
-
-function formatDate(value) {
-  if (!value) {
-    return 'Coming soon'
-  }
-
-  return new Intl.DateTimeFormat('en-NG', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).format(new Date(value))
-}
 
 function NewsPost() {
   const prefersReducedMotion = useReducedMotion()
   const { slug } = useParams()
   const { post, loading, error, notFound } = useNewsPost(slug)
   const [copyState, setCopyState] = useState('')
+  const copyTimerRef = useRef(null)
 
   const articleUrl = typeof window !== 'undefined' ? window.location.href : `https://kbsnigeria.com/news/${slug}`
-  const sanitizedBody = useMemo(() => DOMPurify.sanitize(post?.body ?? ''), [post?.body])
+  const sanitizedBody = useMemo(
+    () => DOMPurify.sanitize(post?.body ?? '', { USE_PROFILES: { html: true } }),
+    [post?.body],
+  )
+
+  // Clear any pending copy-toast timer when the page unmounts.
+  useEffect(
+    () => () => {
+      if (copyTimerRef.current) {
+        window.clearTimeout(copyTimerRef.current)
+      }
+    },
+    [],
+  )
+
+  const showCopyState = (message) => {
+    setCopyState(message)
+    if (copyTimerRef.current) {
+      window.clearTimeout(copyTimerRef.current)
+    }
+    copyTimerRef.current = window.setTimeout(() => setCopyState(''), 2000)
+  }
 
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(articleUrl)
-      setCopyState('Link copied')
-      window.setTimeout(() => setCopyState(''), 2000)
+      showCopyState('Link copied')
     } catch {
-      setCopyState('Could not copy link')
-      window.setTimeout(() => setCopyState(''), 2000)
+      showCopyState('Could not copy link')
     }
   }
 

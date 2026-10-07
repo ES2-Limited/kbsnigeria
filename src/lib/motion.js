@@ -22,11 +22,8 @@ export function staggerContainerMotion(prefersReducedMotion, staggerChildren = 0
       }
 }
 
-export function fadeUpItemVariants(prefersReducedMotion) {
-  return prefersReducedMotion
-    ? undefined
-    : {
-        hidden: { opacity: 0, y: 30 },
-        visible: { opacity: 1, y: 0 },
-      }
+/** Item variant pairing with staggerContainerMotion — fade-up per child. */
+export const fadeUpItemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
 }

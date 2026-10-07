@@ -16,16 +16,7 @@ import SectionHeader from '../components/ui/SectionHeader'
 import Textarea from '../components/ui/Textarea'
 import WaveDivider from '../components/ui/WaveDivider'
 import { useEnquirySubmission } from '../hooks/useEnquirySubmission'
-import { useEvents } from '../hooks/useEvents'
-import { trackEventCtaClick } from '../lib/analytics'
-import {
-  ENQUIRY_INTENT_OPTIONS,
-  admissionsCopy,
-  cta,
-  funnelSteps,
-  intentFromQueryParam,
-  seo,
-} from '../lib/messaging'
+import { fadeUpMotion } from '../lib/motion'
 import { MAPS_EMBED_URL } from '../lib/site'
 
 const requirements = [
@@ -35,32 +26,6 @@ const requirements = [
   'Previous school records where applicable',
   'Parent or guardian contact details',
 ]
-
-const selectBaseClass =
-  'w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary transition-all duration-200 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20'
-
-function fadeUpMotion(prefersReducedMotion) {
-  return prefersReducedMotion
-    ? {}
-    : {
-        initial: { opacity: 0, y: 30 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, margin: '-50px' },
-        transition: { duration: 0.6, ease: 'easeOut' },
-      }
-}
-
-function formatEventDate(value) {
-  if (!value) {
-    return 'Date to be announced'
-  }
-
-  return new Intl.DateTimeFormat('en-NG', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).format(new Date(value))
-}
 
 function Admissions() {
   const prefersReducedMotion = useReducedMotion()
@@ -368,8 +333,8 @@ function Admissions() {
                 <Button fullWidth loading={enquiry.loading} loadingText="Sending..." size="lg" type="submit" variant="primary">
                   {cta.enquireNow}
                 </Button>
-                {enquiry.success ? <p className="font-body text-sm text-success">{enquiry.success}</p> : null}
-                {enquiry.error ? <p className="font-body text-sm text-error">{enquiry.error}</p> : null}
+                {enquiry.success ? <p className="font-body text-sm text-success" role="status">{enquiry.success}</p> : null}
+                {enquiry.error ? <p className="font-body text-sm text-error" role="alert">{enquiry.error}</p> : null}
               </div>
             </form>
           </div>

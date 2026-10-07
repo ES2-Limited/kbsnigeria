@@ -9,8 +9,7 @@ import FallbackImage from '../components/ui/FallbackImage'
 import { LEGACY_STAFF_PHOTOS } from '../lib/legacyGallery'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
-import { useAchievements } from '../hooks/useAchievements'
-import { aboutCopy, pillars, seo } from '../lib/messaging'
+import { fadeUpMotion } from '../lib/motion'
 
 const staff = [
   { name: 'Mrs Amina Yusuf', role: 'Head of School', photo: LEGACY_STAFF_PHOTOS.principal },
@@ -19,16 +18,7 @@ const staff = [
   { name: 'Mr Tunde Adewale', role: 'JSS Programme Lead', photo: LEGACY_STAFF_PHOTOS.staff[1] },
 ]
 
-function fadeUpMotion(prefersReducedMotion) {
-  return prefersReducedMotion
-    ? {}
-    : {
-        initial: { opacity: 0, y: 30 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, margin: '-50px' },
-        transition: { duration: 0.6, ease: 'easeOut' },
-      }
-}
+const affiliations = ['NERDC Aligned Curriculum', 'WAEC Preparation Track', 'Safe School Practices', 'Parent Partnership Focus']
 
 function About() {
   const prefersReducedMotion = useReducedMotion()
@@ -139,7 +129,7 @@ function About() {
               subtext="KBS is committed to raising children who are not only academically prepared, but also grounded in faith, respectful, and ready to lead in a technology-driven world."
             />
             <blockquote className="font-calligraphy text-2xl italic leading-10 text-brand-purple sm:text-[1.75rem]">
-              &ldquo;Every child deserves a school experience that sees their potential clearly and guides it with Islamic values and modern learning. That is the heart of our work at KBS.&rdquo;
+              &ldquo;Every child deserves a school experience that sees their potential clearly and guides it patiently. That is the heart of our work at KBS.&rdquo;
             </blockquote>
             <p className="font-body text-base leading-8 text-text-secondary">
               Our leadership team works closely with staff and families to ensure that pupils are supported academically, spiritually, emotionally, and socially through every phase of their learning journey.

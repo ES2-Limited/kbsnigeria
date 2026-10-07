@@ -6,7 +6,10 @@ export function Skeleton({ className }) {
   return (
     <div
       aria-hidden="true"
-      className={cn('animate-pulse rounded-xl bg-gradient-to-r from-brand-gray/25 via-brand-gray/40 to-brand-gray/25', className)}
+      className={cn(
+        'rounded-xl bg-gradient-to-r from-brand-gray/20 via-brand-gray/45 to-brand-gray/20 bg-[length:200%_100%] animate-shimmer',
+        className,
+      )}
     />
   )
 }

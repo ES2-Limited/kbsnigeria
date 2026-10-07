@@ -1,16 +1,6 @@
 // Shared helpers for admin pages.
 
-export function formatAdminDate(value) {
-  if (!value) {
-    return 'Not set'
-  }
-
-  return new Intl.DateTimeFormat('en-NG', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  }).format(new Date(value))
-}
+export { formatAdminDate } from '../../lib/format'
 
 export function getPublicStoragePath(fileUrl, bucket) {
   try {

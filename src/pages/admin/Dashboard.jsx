@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
 import { StatCardSkeleton } from '../../components/ui/Skeleton'
-import { fetchWithCache } from '../../lib/queryCache'
+import { fetchWithCache, invalidateQueryCache } from '../../lib/queryCache'
 import { supabase } from '../../lib/supabase'
 
 const summaryItems = [
@@ -32,11 +32,14 @@ function Dashboard() {
     testimonials: 0,
   })
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [reloadToken, setReloadToken] = useState(0)
 
   useEffect(() => {
     let mounted = true
 
     setLoading(true)
+    setError(null)
 
     fetchWithCache(DASHBOARD_CACHE_KEY, async () => {
       const [
@@ -57,6 +60,13 @@ function Dashboard() {
         supabase.from('newsletter_subscribers').select('*', { count: 'exact', head: true }),
       ])
 
+      const firstError =
+        newsResult.error ?? galleryResult.error ?? resourcesResult.error ?? subscribersResult.error
+
+      if (firstError) {
+        throw firstError
+      }
+
       return {
         achievements: achievementsResult.count ?? 0,
         events: eventsResult.count ?? 0,
@@ -73,8 +83,9 @@ function Dashboard() {
           setLoading(false)
         }
       })
-      .catch(() => {
+      .catch((requestError) => {
         if (mounted) {
+          setError(requestError?.message ?? 'Unable to load dashboard counts.')
           setLoading(false)
         }
       })
@@ -82,7 +93,12 @@ function Dashboard() {
     return () => {
       mounted = false
     }
-  }, [])
+  }, [reloadToken])
+
+  const handleRetry = () => {
+    invalidateQueryCache(DASHBOARD_CACHE_KEY)
+    setReloadToken((token) => token + 1)
+  }
 
   return (
     <div className="space-y-8">
@@ -101,6 +117,17 @@ function Dashboard() {
           </Button>
         </div>
       </div>
+
+      {error ? (
+        <Card className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+          <p className="font-body text-sm text-error" role="alert">
+            {error}
+          </p>
+          <Button onClick={handleRetry} variant="secondary">
+            Try Again
+          </Button>
+        </Card>
+      ) : null}
 
       <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4">
         {loading

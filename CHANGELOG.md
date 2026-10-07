@@ -1,5 +1,49 @@
 # Changelog
 
+## 2026-08-24
+
+### Premium Polish Pass
+
+#### Foundation
+- Added missing `boxShadow.card`, `shadow-card-hover`, and `shadow-glow` Tailwind tokens (fixes the silently broken `shadow-card` class in `Card.jsx`).
+- Added Tailwind keyframes and animations: `shimmer`, `float-slow`, `marquee`.
+- Added brand-tinted `::selection`, styled slim scrollbar (WebKit + Firefox), native smooth-scroll, and a global `prefers-reduced-motion` media query that kills CSS animations/transitions for reduced-motion users.
+- Fixed `WaveDivider` `colour`/`color` prop inconsistency.
+- Removed dead code: `PageTransition.jsx`, `fadeUpItemVariants` function signature simplified to a static variant object; adopted `staggerContainerMotion` + `fadeUpItemVariants` for stagger cascade grids on Home, News, and Academics.
+
+#### Lenis Smooth Scrolling
+- Installed `lenis` (~4 kB) and added `SmoothScrollProvider` in `MainLayout` with automatic reduced-motion disable; exposed `scrollToElement` helper used by hero scroll-cue and News pagination.
+
+#### Three.js Hero Scene
+- Installed `three` (lazy-loaded into its own 190 kB gzipped vendor chunk via `manualChunks`) and added `HeroScene3D` — a self-contained floating-shapes scene in brand colours (cyan, navy, purple, lavender, gray) with pointer parallax, DPR cap, visibility-gated rendering, and graceful fallback to the static illustration when WebGL is unavailable or reduced motion is active.
+
+#### Skeleton Shimmer
+- Upgraded all loading skeletons from `animate-pulse` to a brand-gradient shimmer sweep (`bg-[length:200%_100%] animate-shimmer`) across public pages and all admin loading states.
+
+#### Card & Micro-interactions
+- Aligned `Card.jsx` hover to DESIGN.md (`y:-4`), added `shadow-card-hover` CSS class.
+- Upgraded `ScrollProgress` bar to a three-tone brand gradient (`brand-primary → brand-accent → brand-purple`).
+- Shrank Header padding + strengthened backdrop blur on scroll (shrink-on-scroll effect).
+- Footer: added slide-in underline hover effect on Useful Links; social icons get hover lift + translucent background.
+
+#### Gallery Lightbox
+- Added directional `AnimatePresence` crossfade between lightbox images (left/right slide based on navigation direction); styled counter as a branded pill badge; arrow buttons now have `whileHover`/`whileTap` spring micro-interactions.
+- Gallery grid thumbnails get zoom-on-hover (`scale-105`) + caption overlay slide-up.
+
+#### Testimonial Carousel
+- Converted `TestimonialsSection` to an auto-advancing crossfade carousel (6 s interval, pauses on hover/touch, arrow + dot navigation, keyboard accessible); falls back to the original 3-column static grid for reduced-motion users.
+
+#### Marquee Values Strip
+- Added `MarqueeStrip` (pure CSS infinite marquee) between stats bar and About teaser; lists NERDC Aligned, Safe School Practices, WAEC Prep, etc.; pauses on hover; stops under reduced motion.
+
+#### Page Passes
+- Added entrance animations to NotFound (404), ErrorPage, and Unsubscribe (previously zero-motion).
+- Replaced per-item `ScrollReveal` delays on News card grid and Academics cards with `staggerContainerMotion` + `fadeUpItemVariants` for a smoother cascade reveal.
+
+### Verification
+- Lint clean (0 problems), build ✓, `npm test` 5 files / 16 passing.
+- Three.js vendor chunk isolated at 734 kB raw / 190 kB gzip, lazy-loaded only on homepage after first paint.
+
 ## 2026-05-20
 
 ### Project Scaffold

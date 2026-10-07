@@ -26,6 +26,7 @@ function ToolbarButton({ active, children, onClick, title }) {
 }
 
 function RichTextEditor({ content = '', onChange }) {
+  const [imageError, setImageError] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [uploadingImage, setUploadingImage] = useState(false)
   const [uploadError, setUploadError] = useState('')
@@ -63,11 +64,20 @@ function RichTextEditor({ content = '', onChange }) {
   }
 
   const addImage = () => {
-    if (!imageUrl.trim()) {
+    const trimmedUrl = imageUrl.trim()
+
+    if (!trimmedUrl) {
       return
     }
 
-    editor.chain().focus().setImage({ src: imageUrl.trim() }).run()
+    // Only allow secure image sources — blocks javascript: and other schemes.
+    if (!trimmedUrl.startsWith('https://')) {
+      setImageError('Only secure https:// image URLs can be embedded.')
+      return
+    }
+
+    setImageError('')
+    editor.chain().focus().setImage({ src: trimmedUrl }).run()
     setImageUrl('')
     setUploadError('')
   }
@@ -122,38 +132,23 @@ function RichTextEditor({ content = '', onChange }) {
 
       <EditorContent editor={editor} />
 
-      <div className="mt-3 space-y-2">
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <input
-            className="w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary outline-none transition-all duration-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20"
-            onChange={(event) => setImageUrl(event.target.value)}
-            placeholder="Paste image URL to embed"
-            type="url"
-            value={imageUrl}
-          />
-          <Button onClick={addImage} type="button" variant="secondary">
-            <ImageIcon className="h-4 w-4" />
-            <span>Embed URL</span>
-          </Button>
-
-          <input
-            accept="image/jpeg,image/png,image/webp,image/gif"
-            className="hidden"
-            onChange={handleFileUpload}
-            ref={fileInputRef}
-            type="file"
-          />
-          <Button
-            loading={uploadingImage}
-            onClick={() => fileInputRef.current?.click()}
-            type="button"
-            variant="outline"
-          >
-            <Upload className="h-4 w-4" />
-            <span>Upload Image</span>
-          </Button>
-        </div>
-        {uploadError ? <p className="font-body text-xs text-error">{uploadError}</p> : null}
+      <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+        <input
+          className="w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary outline-none transition-all duration-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20"
+          onChange={(event) => setImageUrl(event.target.value)}
+          placeholder="Paste image URL to embed"
+          type="url"
+          value={imageUrl}
+        />
+        <Button onClick={addImage} variant="secondary">
+          <ImageIcon className="h-4 w-4" />
+          <span>Embed Image</span>
+        </Button>
+        {imageError ? (
+          <p className="font-body text-sm text-red-600 sm:w-full" role="alert">
+            {imageError}
+          </p>
+        ) : null}
       </div>
     </div>
   )

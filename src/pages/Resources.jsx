@@ -10,21 +10,10 @@ import { ResourceListSkeleton } from '../components/ui/Skeleton'
 import WaveDivider from '../components/ui/WaveDivider'
 import { useResources } from '../hooks/useResources'
 import { cn } from '../lib/cn'
+import { formatDate } from '../lib/format'
 import { fadeUpMotion } from '../lib/motion'
 
 const filters = ['All', 'Term Dates', 'Circulars', 'Forms & Documents']
-
-function formatDate(value) {
-  if (!value) {
-    return 'Coming soon'
-  }
-
-  return new Intl.DateTimeFormat('en-NG', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).format(new Date(value))
-}
 
 function getFileType(fileName) {
   return fileName?.split('.').pop()?.toLowerCase() ?? ''
@@ -69,6 +58,7 @@ function Resources() {
           <div className="mb-10 flex flex-wrap gap-3">
             {filters.map((filter) => (
               <button
+                aria-pressed={activeFilter === filter}
                 className={cn(
                   'min-h-11 rounded-full px-5 py-3 font-body text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20',
                   activeFilter === filter ? 'bg-brand-primary text-white' : 'bg-bg-light text-text-secondary hover:text-brand-primary',
