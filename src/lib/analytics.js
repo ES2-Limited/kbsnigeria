@@ -37,3 +37,31 @@ export function trackPageView(path) {
     page_location: `${window.location.origin}${path}`,
   })
 }
+
+function trackEvent(eventName, params = {}) {
+  if (!initialised || typeof window.gtag !== 'function') {
+    return
+  }
+
+  window.gtag('event', eventName, params)
+}
+
+export function trackScheduleVisitClick(location = 'unknown') {
+  trackEvent('schedule_visit_click', { cta_location: location })
+}
+
+export function trackCallClick(location = 'unknown') {
+  trackEvent('call_click', { cta_location: location })
+}
+
+export function trackApplyClick(location = 'unknown') {
+  trackEvent('apply_click', { cta_location: location })
+}
+
+export function trackVideoPlay(location = 'unknown') {
+  trackEvent('video_play', { video_location: location })
+}
+
+export function trackEventCtaClick(eventName, location = 'unknown') {
+  trackEvent('event_cta_click', { event_name: eventName, cta_location: location })
+}
