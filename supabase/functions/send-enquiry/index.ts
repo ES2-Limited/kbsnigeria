@@ -28,11 +28,15 @@ Deno.serve(async (request) => {
     return json(request, 400, { error: 'Invalid JSON payload.' })
   }
 
-  const { parentName, childName, classLevel, phone, email, message, website } = payload
+  const { parentName, childName, classLevel, phone, email, message, website, intent } = payload
 
   if (typeof website === 'string' && website.trim().length > 0) {
     return json(request, 200, { success: true, message: 'Enquiry sent successfully.' })
   }
+
+  const allowedIntents = ['general', 'tour', 'open_day', 'assessment', 'apply']
+  const cleanIntent =
+    typeof intent === 'string' && allowedIntents.includes(intent) ? intent : 'general'
 
   if (
     !isNonEmptyString(parentName, 120) ||
@@ -66,13 +70,18 @@ Deno.serve(async (request) => {
   const cleanPhone = sanitizeString(phone)
   const cleanEmail = sanitizeString(email)
   const cleanMessage = sanitizeString(message)
+  const intentLabel = cleanIntent
+    .split('_')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ')
 
   try {
     await sendEmail({
       to: adminEmail,
-      subject: `New admissions enquiry from ${cleanParentName}`,
+      subject: `New admissions enquiry (${intentLabel}) from ${cleanParentName}`,
       html: `
         <h2>New Admissions Enquiry</h2>
+        <p><strong>Enquiry Type:</strong> ${intentLabel}</p>
         <p><strong>Parent Name:</strong> ${cleanParentName}</p>
         <p><strong>Child Name:</strong> ${cleanChildName}</p>
         <p><strong>Class Level:</strong> ${cleanClassLevel}</p>
@@ -88,7 +97,7 @@ Deno.serve(async (request) => {
       subject: 'We received your KBS Nigeria enquiry',
       html: `
         <p>Hello ${cleanParentName},</p>
-        <p>Thank you for contacting KBS Nigeria. Our admissions team has received your enquiry and will get back to you shortly.</p>
+        <p>Thank you for contacting KBS Nigeria. Our admissions team has received your <strong>${intentLabel}</strong> enquiry and will get back to you shortly.</p>
         <p><strong>Child:</strong> ${cleanChildName}</p>
         <p><strong>Requested Class Level:</strong> ${cleanClassLevel}</p>
         <p>Warm regards,<br />KBS Nigeria Admissions</p>
