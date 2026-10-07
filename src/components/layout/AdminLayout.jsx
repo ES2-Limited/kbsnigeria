@@ -1,6 +1,6 @@
 // Admin layout with desktop sidebar and mobile top tabs.
 
-import { FolderOpen, Image, LayoutDashboard, LogOut, Newspaper, Send } from 'lucide-react'
+import { Award, Calendar, FolderOpen, Image, LayoutDashboard, LogOut, MessageSquareQuote, Newspaper, Send, Video } from 'lucide-react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { cn } from '../../lib/cn'
 import { supabase } from '../../lib/supabase'
@@ -9,6 +9,10 @@ const adminItems = [
   { label: 'Dashboard', to: '/admin/dashboard', icon: LayoutDashboard },
   { label: 'Gallery', to: '/admin/gallery', icon: Image },
   { label: 'News', to: '/admin/news', icon: Newspaper },
+  { label: 'Events', to: '/admin/events', icon: Calendar },
+  { label: 'Testimonials', to: '/admin/testimonials', icon: MessageSquareQuote },
+  { label: 'Achievements', to: '/admin/achievements', icon: Award },
+  { label: 'Media', to: '/admin/media', icon: Video },
   { label: 'Resources', to: '/admin/resources', icon: FolderOpen },
   { label: 'Newsletter', to: '/admin/newsletter', icon: Send },
 ]
@@ -81,7 +85,7 @@ function AdminLayout({ children }) {
         <aside className="hidden bg-bg-light lg:block lg:min-h-screen lg:rounded-r-3xl lg:px-5 lg:py-8">
           <div className="mb-8 px-3">
             <p className="font-body text-3xl font-semibold text-text-primary">KBS Admin</p>
-            <p className="mt-2 font-body text-sm text-text-secondary">Manage news, resources, gallery, and newsletters.</p>
+            <p className="mt-2 font-body text-sm text-text-secondary">Manage news, events, testimonials, media, and more.</p>
           </div>
           <nav aria-label="Admin sidebar navigation" className="space-y-2">
             {adminItems.map((item) => (

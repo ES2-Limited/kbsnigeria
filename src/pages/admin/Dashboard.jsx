@@ -1,6 +1,6 @@
 // Admin dashboard page.
 
-import { FolderOpen, Image, Mail, Newspaper, Users } from 'lucide-react'
+import { Award, Calendar, FolderOpen, Image, Mail, MessageSquareQuote, Newspaper, Users } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../../components/ui/Button'
@@ -11,7 +11,10 @@ import { supabase } from '../../lib/supabase'
 
 const summaryItems = [
   { key: 'news_posts', label: 'News Posts', icon: Newspaper },
+  { key: 'events', label: 'Events', icon: Calendar },
   { key: 'gallery_images', label: 'Gallery Images', icon: Image },
+  { key: 'testimonials', label: 'Testimonials', icon: MessageSquareQuote },
+  { key: 'achievements', label: 'Achievements', icon: Award },
   { key: 'resources', label: 'Resources', icon: FolderOpen },
   { key: 'newsletter_subscribers', label: 'Subscribers', icon: Users },
 ]
@@ -20,10 +23,13 @@ const DASHBOARD_CACHE_KEY = 'admin:dashboard-counts'
 
 function Dashboard() {
   const [counts, setCounts] = useState({
+    achievements: 0,
+    events: 0,
     gallery_images: 0,
     newsletter_subscribers: 0,
     news_posts: 0,
     resources: 0,
+    testimonials: 0,
   })
   const [loading, setLoading] = useState(true)
 
@@ -33,18 +39,32 @@ function Dashboard() {
     setLoading(true)
 
     fetchWithCache(DASHBOARD_CACHE_KEY, async () => {
-      const [newsResult, galleryResult, resourcesResult, subscribersResult] = await Promise.all([
+      const [
+        newsResult,
+        eventsResult,
+        galleryResult,
+        testimonialsResult,
+        achievementsResult,
+        resourcesResult,
+        subscribersResult,
+      ] = await Promise.all([
         supabase.from('news_posts').select('*', { count: 'exact', head: true }),
+        supabase.from('events').select('*', { count: 'exact', head: true }),
         supabase.from('gallery_images').select('*', { count: 'exact', head: true }),
+        supabase.from('testimonials').select('*', { count: 'exact', head: true }),
+        supabase.from('achievements').select('*', { count: 'exact', head: true }),
         supabase.from('resources').select('*', { count: 'exact', head: true }),
         supabase.from('newsletter_subscribers').select('*', { count: 'exact', head: true }),
       ])
 
       return {
+        achievements: achievementsResult.count ?? 0,
+        events: eventsResult.count ?? 0,
         gallery_images: galleryResult.count ?? 0,
         newsletter_subscribers: subscribersResult.count ?? 0,
         news_posts: newsResult.count ?? 0,
         resources: resourcesResult.count ?? 0,
+        testimonials: testimonialsResult.count ?? 0,
       }
     })
       .then((nextCounts) => {
@@ -106,6 +126,18 @@ function Dashboard() {
           </Link>
           <Link className="min-h-11 rounded-xl bg-bg-light px-4 py-3 font-body text-sm text-text-secondary transition-colors duration-200 hover:bg-brand-accent/10 hover:text-brand-primary" to="/admin/news">
             Manage News
+          </Link>
+          <Link className="min-h-11 rounded-xl bg-bg-light px-4 py-3 font-body text-sm text-text-secondary transition-colors duration-200 hover:bg-brand-accent/10 hover:text-brand-primary" to="/admin/events">
+            Manage Events
+          </Link>
+          <Link className="min-h-11 rounded-xl bg-bg-light px-4 py-3 font-body text-sm text-text-secondary transition-colors duration-200 hover:bg-brand-accent/10 hover:text-brand-primary" to="/admin/testimonials">
+            Testimonials
+          </Link>
+          <Link className="min-h-11 rounded-xl bg-bg-light px-4 py-3 font-body text-sm text-text-secondary transition-colors duration-200 hover:bg-brand-accent/10 hover:text-brand-primary" to="/admin/achievements">
+            Achievements
+          </Link>
+          <Link className="min-h-11 rounded-xl bg-bg-light px-4 py-3 font-body text-sm text-text-secondary transition-colors duration-200 hover:bg-brand-accent/10 hover:text-brand-primary" to="/admin/media">
+            Site Media
           </Link>
           <Link className="min-h-11 rounded-xl bg-bg-light px-4 py-3 font-body text-sm text-text-secondary transition-colors duration-200 hover:bg-brand-accent/10 hover:text-brand-primary" to="/admin/resources">
             Manage Resources
