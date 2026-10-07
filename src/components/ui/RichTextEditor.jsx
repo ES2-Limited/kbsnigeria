@@ -3,10 +3,11 @@
 import Image from '@tiptap/extension-image'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { ImageIcon, List, ListOrdered, Pilcrow, Type, Bold, Italic } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { ImageIcon, List, ListOrdered, Pilcrow, Type, Bold, Italic, Upload } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import Button from './Button'
 import { cn } from '../../lib/cn'
+import { uploadFile } from '../../lib/storage'
 
 function ToolbarButton({ active, children, onClick, title }) {
   return (
@@ -27,6 +28,10 @@ function ToolbarButton({ active, children, onClick, title }) {
 function RichTextEditor({ content = '', onChange }) {
   const [imageError, setImageError] = useState('')
   const [imageUrl, setImageUrl] = useState('')
+  const [uploadingImage, setUploadingImage] = useState(false)
+  const [uploadError, setUploadError] = useState('')
+  const fileInputRef = useRef(null)
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -74,6 +79,27 @@ function RichTextEditor({ content = '', onChange }) {
     setImageError('')
     editor.chain().focus().setImage({ src: trimmedUrl }).run()
     setImageUrl('')
+    setUploadError('')
+  }
+
+  const handleFileUpload = async (event) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    setUploadingImage(true)
+    setUploadError('')
+
+    const uploadResult = await uploadFile({ file, bucket: 'news-covers' })
+
+    if (uploadResult.error) {
+      setUploadError(uploadResult.error.message || 'Image upload failed')
+      setUploadingImage(false)
+      return
+    }
+
+    editor.chain().focus().setImage({ src: uploadResult.url }).run()
+    setUploadingImage(false)
+    event.target.value = ''
   }
 
   return (

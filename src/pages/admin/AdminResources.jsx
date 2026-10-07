@@ -6,6 +6,7 @@ import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
 import Input from '../../components/ui/Input'
 import { invalidateQueryCache } from '../../lib/queryCache'
+import { deleteFile, uploadFile } from '../../lib/storage'
 import { supabase } from '../../lib/supabase'
 import { formatAdminDate, getPublicStoragePath } from './_helpers'
 
@@ -61,20 +62,18 @@ function AdminResources() {
     setSaving(true)
     setError('')
 
-    const filePath = `${Date.now()}-${file.name.replace(/\s+/g, '-')}`
-    const uploadResult = await supabase.storage.from('resources').upload(filePath, file)
+    const uploadResult = await uploadFile({ file, bucket: 'resources' })
 
     if (uploadResult.error) {
-      setError(uploadResult.error.message)
+      setError(uploadResult.error.message || 'File upload failed')
       setSaving(false)
       return
     }
 
-    const { data: publicUrlData } = supabase.storage.from('resources').getPublicUrl(filePath)
     const insertResult = await supabase.from('resources').insert({
       category: formData.category,
       file_name: file.name,
-      file_url: publicUrlData.publicUrl,
+      file_url: uploadResult.url,
       title: formData.title,
     })
 
@@ -99,13 +98,11 @@ function AdminResources() {
 
     const storagePath = getPublicStoragePath(resource.file_url, 'resources')
 
-    if (storagePath) {
-      const storageResult = await supabase.storage.from('resources').remove([storagePath])
-      if (storageResult.error) {
-        setError(storageResult.error.message)
-        return
-      }
-    }
+    await deleteFile({
+      storagePath: storagePath || resource.file_url,
+      bucket: 'resources',
+      url: resource.file_url,
+    })
 
     const deleteResult = await supabase.from('resources').delete().eq('id', resource.id)
     if (deleteResult.error) {

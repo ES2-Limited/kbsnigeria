@@ -10,6 +10,8 @@ const variantClasses = {
     'bg-brand-accent text-white shadow-md hover:bg-brand-accent/90 hover:shadow-lg active:scale-[0.98] disabled:hover:bg-brand-accent',
   secondary:
     'border-2 border-brand-accent bg-white text-brand-primary hover:bg-brand-accent/10 active:scale-[0.98]',
+  inverse:
+    'border-2 border-white bg-transparent text-white hover:bg-white hover:text-brand-primary active:scale-[0.98]',
   ghost:
     'bg-transparent text-brand-primary hover:bg-brand-accent/10 active:scale-[0.98]',
   danger:

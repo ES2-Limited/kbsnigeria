@@ -10,7 +10,7 @@ export const TAGLINE = 'Nurturing great minds'
 
 export const TAGLINE_SINCE = 'Nurturing great minds since 1999'
 
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/kbs-logo.png`
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/illustrations/og-social.png`
 
 export const EMAIL = 'info@kbsnigeria.com'
 

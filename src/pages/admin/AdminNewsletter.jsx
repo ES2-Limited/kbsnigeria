@@ -9,6 +9,7 @@ import Card from '../../components/ui/Card'
 import Input from '../../components/ui/Input'
 import Modal from '../../components/ui/Modal'
 import RichTextEditor from '../../components/ui/RichTextEditor'
+import { uploadFile } from '../../lib/storage'
 import { supabase } from '../../lib/supabase'
 import { formatAdminDate } from './_helpers'
 
@@ -116,17 +117,15 @@ function AdminNewsletter() {
     let bannerUrl = newsletterForm.bannerUrl
 
     if (bannerFile) {
-      const filePath = `${Date.now()}-${bannerFile.name.replace(/\s+/g, '-')}`
-      const uploadResult = await supabase.storage.from('newsletter-banners').upload(filePath, bannerFile)
+      const uploadResult = await uploadFile({ file: bannerFile, bucket: 'newsletter-banners' })
 
       if (uploadResult.error) {
-        setError(uploadResult.error.message)
+        setError(uploadResult.error.message || 'Banner upload failed')
         setSending(false)
         return
       }
 
-      const { data: publicUrlData } = supabase.storage.from('newsletter-banners').getPublicUrl(filePath)
-      bannerUrl = publicUrlData.publicUrl
+      bannerUrl = uploadResult.url
     }
 
     const { data, error: requestError } = await supabase.functions.invoke('send-newsletter', {

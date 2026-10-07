@@ -1,0 +1,92 @@
+{
+  "source": "kbsnigeria.com WordPress gallery (2019) + public Facebook OG image",
+  "note": "Replace with fresh photos from Instagram @kbs_abuja when available.",
+  "images": [
+    {
+      "file": "/assets/legacy-gallery/head-teacher-and-pupils.jpg",
+      "caption": "Head teacher with pupils on campus.",
+      "category": "staff"
+    },
+    {
+      "file": "/assets/legacy-gallery/teachers-classroom.jpg",
+      "caption": "Teachers with their class.",
+      "category": "staff"
+    },
+    {
+      "file": "/assets/legacy-gallery/classroom-01.jpg",
+      "caption": "Pupils learning in the classroom.",
+      "category": "classroom"
+    },
+    {
+      "file": "/assets/legacy-gallery/classroom-02.jpg",
+      "caption": "Focused classroom activity.",
+      "category": "classroom"
+    },
+    {
+      "file": "/assets/legacy-gallery/classroom-03.jpg",
+      "caption": "Collaborative learning in class.",
+      "category": "classroom"
+    },
+    {
+      "file": "/assets/legacy-gallery/classroom-04.jpg",
+      "caption": "Pupils engaged in a lesson.",
+      "category": "classroom"
+    },
+    {
+      "file": "/assets/legacy-gallery/classroom-05.jpg",
+      "caption": "Interactive classroom session.",
+      "category": "classroom"
+    },
+    {
+      "file": "/assets/legacy-gallery/classroom-presentation.jpg",
+      "caption": "Pupils presenting in front of class.",
+      "category": "classroom"
+    },
+    {
+      "file": "/assets/legacy-gallery/playground-01.jpg",
+      "caption": "Children playing outdoors.",
+      "category": "playground"
+    },
+    {
+      "file": "/assets/legacy-gallery/playground-02.jpg",
+      "caption": "Playtime on the school grounds.",
+      "category": "playground"
+    },
+    {
+      "file": "/assets/legacy-gallery/playground-03.jpg",
+      "caption": "Pupils enjoying the playground.",
+      "category": "playground"
+    },
+    {
+      "file": "/assets/legacy-gallery/learn-and-play.jpg",
+      "caption": "Learning through play.",
+      "category": "nursery"
+    },
+    {
+      "file": "/assets/legacy-gallery/fruit-day-01.jpg",
+      "caption": "Fruit day — healthy eating activity.",
+      "category": "events"
+    },
+    {
+      "file": "/assets/legacy-gallery/fruit-day-02.jpg",
+      "caption": "Fruit day celebration.",
+      "category": "events"
+    },
+    {
+      "file": "/assets/legacy-gallery/fruit-day-03.jpg",
+      "caption": "Pupils during fruit day.",
+      "category": "events"
+    },
+    {
+      "file": "/assets/legacy-gallery/campus-01.jpg",
+      "caption": "KBS campus life.",
+      "category": "campus"
+    }
+  ],
+  "social": [
+    {
+      "file": "/assets/social/facebook-profile.jpg",
+      "caption": "KBS Abuja — Facebook profile photo."
+    }
+  ]
+}

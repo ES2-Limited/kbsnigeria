@@ -6,6 +6,11 @@
 // - no args        — legacy unbounded fetch (kept for compatibility)
 
 import { useEffect, useState } from 'react'
+import {
+  getLegacyGalleryImages,
+  isPlaceholderGalleryUrl,
+  mergeGalleryWithLegacy,
+} from '../lib/legacyGallery'
 import { fetchWithCache } from '../lib/queryCache'
 import { supabase } from '../lib/supabase'
 

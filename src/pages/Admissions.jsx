@@ -1,11 +1,15 @@
 // Admissions page implementation following PRD US-04.
 
 import { motion, useReducedMotion } from 'framer-motion'
-import { useState } from 'react'
+import { Calendar, ChevronRight } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import ContactDetails from '../components/layout/ContactDetails'
 import Button from '../components/ui/Button'
+import Card from '../components/ui/Card'
+import EmptyState from '../components/ui/EmptyState'
 import HoneypotField from '../components/ui/HoneypotField'
-import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
+import BrandIllustration from '../components/ui/BrandIllustration'
 import Input from '../components/ui/Input'
 import PageSeo from '../components/seo/PageSeo'
 import SectionHeader from '../components/ui/SectionHeader'
@@ -14,25 +18,6 @@ import WaveDivider from '../components/ui/WaveDivider'
 import { useEnquirySubmission } from '../hooks/useEnquirySubmission'
 import { fadeUpMotion } from '../lib/motion'
 import { MAPS_EMBED_URL } from '../lib/site'
-
-const processSteps = [
-  {
-    title: 'Send an Enquiry',
-    description: 'Tell us about your child and the class level you are considering through the admissions form below.',
-  },
-  {
-    title: 'Speak With Our Team',
-    description: 'Our admissions team will contact you to answer questions, explain availability, and guide you through next steps.',
-  },
-  {
-    title: 'Visit the School',
-    description: 'Families can visit the campus, see the learning environment, and better understand what everyday life at KBS feels like.',
-  },
-  {
-    title: 'Complete Registration',
-    description: 'Once you are ready to proceed, we guide you through documentation, placement, and enrolment confirmation.',
-  },
-]
 
 const requirements = [
   'Completed admissions enquiry and follow-up discussion with the school',
@@ -44,7 +29,13 @@ const requirements = [
 
 function Admissions() {
   const prefersReducedMotion = useReducedMotion()
+  const [searchParams] = useSearchParams()
   const enquiry = useEnquirySubmission()
+  const { events, loading: eventsLoading, isEmpty: eventsEmpty } = useEvents({
+    publishedOnly: true,
+    upcoming: true,
+    limit: 3,
+  })
   const [formData, setFormData] = useState({
     parentName: '',
     childName: '',
@@ -52,8 +43,19 @@ function Admissions() {
     phone: '',
     email: '',
     message: '',
+    intent: 'general',
     website: '',
   })
+
+  useEffect(() => {
+    const queryIntent = searchParams.get('intent')
+    if (queryIntent) {
+      setFormData((current) => ({
+        ...current,
+        intent: intentFromQueryParam(queryIntent),
+      }))
+    }
+  }, [searchParams])
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -72,6 +74,7 @@ function Admissions() {
         phone: '',
         email: '',
         message: '',
+        intent: intentFromQueryParam(searchParams.get('intent')),
         website: '',
       })
     }
@@ -81,19 +84,19 @@ function Admissions() {
     <div className="bg-bg-light">
       <PageSeo
         canonicalPath="/admissions"
-        description="Find admissions steps, requirements, contact details, and enquiry options for enrolling at KBS Nigeria."
-        title="Admissions | KBS Nigeria"
+        description={seo.admissions.description}
+        title={seo.admissions.title}
       />
 
       <section className="overflow-hidden bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
           <motion.div className="max-w-3xl space-y-5" {...fadeUpMotion(prefersReducedMotion)}>
-            <p className="font-calligraphy text-xl italic text-brand-gray">Admissions</p>
+            <p className="font-calligraphy text-xl italic text-brand-gray">{admissionsCopy.hero.overline}</p>
             <h1 className="font-display text-h1 sm:text-display text-white">
-              Start Your Child&apos;s KBS Journey With Confidence
+              {admissionsCopy.hero.heading}
             </h1>
             <p className="font-body text-lg leading-8 text-white/85">
-              Learn how admissions work, what we require, and how to contact us directly for guidance on the best next step for your family.
+              {admissionsCopy.hero.subtext}
             </p>
           </motion.div>
         </div>
@@ -105,22 +108,115 @@ function Admissions() {
           <SectionHeader
             align="center"
             className="mx-auto mb-12"
-            heading="How Admissions Work"
-            overline="Step by Step"
-            subtext="Our admissions process is simple, personal, and designed to help parents make informed decisions."
+            heading={admissionsCopy.process.heading}
+            overline={admissionsCopy.process.overline}
+            subtext={admissionsCopy.process.subtext}
           />
           <div className="grid gap-6 lg:grid-cols-4">
-            {processSteps.map((step, index) => (
+            {funnelSteps.map((step, index) => (
               <motion.div key={step.title} {...fadeUpMotion(prefersReducedMotion)}>
                 <div className="h-full rounded-2xl border border-brand-gray/30 bg-white p-6 shadow-sm">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-brand-primary font-display text-2xl text-white">
                     {index + 1}
                   </div>
-                  <h2 className="font-body text-lg font-semibold text-text-primary">{step.title}</h2>
+                  <h2 className="font-body text-lg font-semibold capitalize text-text-primary">{step.title}</h2>
                   <p className="mt-3 font-body text-base leading-8 text-text-secondary">{step.description}</p>
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </motion.section>
+
+      <motion.section className="bg-white py-20 sm:py-24" {...fadeUpMotion(prefersReducedMotion)}>
+        <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
+          <SectionHeader
+            align="center"
+            className="mx-auto mb-12"
+            heading={admissionsCopy.events.heading}
+            overline={admissionsCopy.events.overline}
+            subtext={admissionsCopy.events.subtext}
+          />
+
+          {eventsLoading ? (
+            <div className="grid gap-6 md:grid-cols-3">
+              {[1, 2, 3].map((key) => (
+                <div className="h-44 animate-pulse rounded-3xl bg-bg-light" key={key} />
+              ))}
+            </div>
+          ) : null}
+
+          {!eventsLoading && eventsEmpty ? (
+            <EmptyState
+              description="Open classroom days, STEM discovery sessions, and assessment weeks will appear here once published."
+              illustration={<Calendar className="h-12 w-12 text-brand-primary" />}
+              title="No upcoming events yet"
+            />
+          ) : null}
+
+          {!eventsLoading && !eventsEmpty ? (
+            <div className="grid gap-6 md:grid-cols-3">
+              {events.map((event) => (
+                <Card className="flex h-full flex-col justify-between gap-4" key={event.id}>
+                  <div className="space-y-3">
+                    {event.type ? (
+                      <p className="font-body text-xs font-semibold uppercase tracking-wide text-brand-primary">
+                        {event.type}
+                      </p>
+                    ) : null}
+                    <h2 className="font-display text-xl text-text-primary">{event.title}</h2>
+                    <p className="flex items-center gap-2 font-body text-sm text-text-secondary">
+                      <Calendar className="h-4 w-4 shrink-0 text-brand-primary" />
+                      {formatEventDate(event.event_date)}
+                    </p>
+                    {event.description ? (
+                      <p className="font-body text-sm leading-7 text-text-secondary line-clamp-3">
+                        {event.description}
+                      </p>
+                    ) : null}
+                  </div>
+                  <div className="flex flex-wrap items-center gap-3">
+                    {event.cta_label && event.cta_url ? (
+                      /^https?:\/\//i.test(event.cta_url) ? (
+                        <a
+                          className="inline-flex min-h-11 items-center rounded-full bg-brand-primary px-5 py-2 font-body text-sm font-medium text-white transition-colors hover:bg-brand-secondary"
+                          href={event.cta_url}
+                          onClick={() => trackEventCtaClick(event.title, 'admissions')}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          {event.cta_label}
+                        </a>
+                      ) : (
+                        <Button
+                          as="link"
+                          onClick={() => trackEventCtaClick(event.title, 'admissions')}
+                          size="sm"
+                          to={event.cta_url}
+                          variant="primary"
+                        >
+                          {event.cta_label}
+                        </Button>
+                      )
+                    ) : (
+                      <Button as="link" size="sm" to="/admissions?intent=open-day" variant="primary">
+                        Register Interest
+                      </Button>
+                    )}
+                  </div>
+                </Card>
+              ))}
+            </div>
+          ) : null}
+
+          <div className="mt-10 text-center">
+            <Link
+              className="inline-flex items-center gap-1 font-body text-sm font-semibold text-brand-primary hover:text-brand-purple"
+              to="/events"
+            >
+              <span>View all school events</span>
+              <ChevronRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </motion.section>
@@ -140,7 +236,11 @@ function Admissions() {
               ))}
             </ul>
           </div>
-          <IllustrationPlaceholder className="min-h-[320px] bg-white" label="Admissions illustration placeholder" />
+          <BrandIllustration
+            alt="Parent and child arriving at KBS for admissions"
+            className="min-h-[320px] rounded-3xl bg-white p-6"
+            name="admissions"
+          />
         </div>
       </motion.section>
 
@@ -158,6 +258,26 @@ function Admissions() {
             <form className="relative space-y-5 rounded-3xl border border-brand-gray/30 bg-white p-6 shadow-sm sm:p-8" onSubmit={handleSubmit}>
               <HoneypotField name="website" onChange={handleChange} value={formData.website} />
               <div className="grid gap-5 sm:grid-cols-2">
+                <div className="sm:col-span-2">
+                  <label className="mb-2 block font-body text-sm font-semibold text-text-primary" htmlFor="intent">
+                    Enquiry Type
+                    <span className="ml-1 text-red-400">*</span>
+                  </label>
+                  <select
+                    className={selectBaseClass}
+                    id="intent"
+                    name="intent"
+                    onChange={handleChange}
+                    required
+                    value={formData.intent}
+                  >
+                    {ENQUIRY_INTENT_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <Input
                   label="Parent Name"
                   name="parentName"
@@ -211,7 +331,7 @@ function Admissions() {
 
               <div className="space-y-3">
                 <Button fullWidth loading={enquiry.loading} loadingText="Sending..." size="lg" type="submit" variant="primary">
-                  Submit Enquiry
+                  {cta.enquireNow}
                 </Button>
                 {enquiry.success ? <p className="font-body text-sm text-success" role="status">{enquiry.success}</p> : null}
                 {enquiry.error ? <p className="font-body text-sm text-error" role="alert">{enquiry.error}</p> : null}

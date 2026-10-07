@@ -1,6 +1,6 @@
 # Product Requirements Document
 ## KBS Nigeria Website Revamp
-**Version:** 1.2 | **Date:** 2026-05-20 | **Status:** Approved
+**Version:** 1.5 | **Date:** 2026-07-02 | **Status:** Approved
 
 ---
 
@@ -25,7 +25,7 @@ kbsnigeria.com is a 2017 WordPress build that is visually dated, slow on mobile,
 - Student / parent dashboard or LMS
 - Multi-language support (English only)
 - Per-class homework or assignment portal
-- Event ticketing or booking system
+- **Event ticketing or booking system** — events are promotional listings with optional external CTAs (contact, registration links), not in-app ticket sales
 
 ---
 
@@ -50,15 +50,17 @@ Any parent or interested party who signed up via the site. Expects relevant, wel
 ```
 Public Site
 ├── /                     Home
-│     Hero · School highlights · Animated stats · Latest news · CTA
+│     Hero · Stats · School tour video · About teaser · Academics · Achievements · News · Gallery · Testimonials · Events · CTA
 ├── /about                About the School
-│     History · Mission & Vision · Principal's message · Staff
+│     History · Mission & Vision · Pillars · Principal's message · Staff · Achievements · Affiliations
 ├── /academics            Academics & Curriculum
 │     Nursery · Primary · JSS — subjects, activities, structure
 ├── /admissions           Admissions
 │     Process · Requirements · Enquiry form · WhatsApp CTA
 ├── /news                 News & Announcements (index)
 │   └── /news/[slug]      Individual news post
+├── /events               School Events (promotional listings — no ticketing)
+│     Published events · Featured on homepage · CTA links to contact or external registration
 ├── /gallery              Photo Gallery
 │     Masonry grid · Lightbox · Lazy-loaded
 ├── /resources            Downloads
@@ -70,6 +72,10 @@ Admin Panel (authenticated — /admin/*)
 ├── /admin                Dashboard overview
 ├── /admin/gallery        Upload & manage gallery photos
 ├── /admin/news           Create, edit, publish, delete news posts
+├── /admin/events         Create, edit, publish school events (promotion, not ticketing)
+├── /admin/testimonials   Manage parent testimonials (featured for homepage)
+├── /admin/achievements   Manage outcomes & milestones (featured strip)
+├── /admin/media          Configure site media (e.g. hero tour video)
 ├── /admin/resources      Upload & manage downloadable files
 └── /admin/newsletter     Compose, send newsletter; manage subscriber list
 ```
@@ -90,6 +96,40 @@ As a prospective parent landing on the homepage, I want to immediately feel the 
 - [ ] At least 3 homepage sections feature scroll-triggered entrance animations
 - [ ] Illustrated graphic or mascot is visible in the hero
 - [ ] Animated counters (e.g. years of operation, number of students) on the stats section
+- [ ] School tour video section with lazy-loaded embed (YouTube, Vimeo, or MP4)
+- [ ] Featured achievements strip showing outcomes from admin CMS
+- [ ] Featured testimonials loaded from admin CMS (not hardcoded)
+- [ ] Featured upcoming events teaser with link to `/events`
+
+---
+
+**US-01b — School tour video**
+As a prospective parent, I want to watch a short school tour video so I can experience the campus before visiting.
+
+- [ ] Homepage displays hero tour video from `site_media` key `hero_tour_video`
+- [ ] Video supports YouTube, Vimeo, or direct MP4 with optional poster image
+- [ ] Lazy loading and reduced-motion respected
+- [ ] Admin can update video URL and poster via `/admin/media`
+
+---
+
+**US-01c — Outcomes & trust proof**
+As a prospective parent, I want to see real outcomes and parent voices so I trust the school's results.
+
+- [ ] Achievements (exams, competitions, milestones) manageable in admin and shown on homepage + About page
+- [ ] Testimonials with name, role, quote, optional photo/video; featured items on homepage
+- [ ] Empty states when no CMS content is published yet
+
+---
+
+**US-01d — Event promotion**
+As a prospective or current parent, I want to see upcoming school events and know how to participate.
+
+- [ ] `/events` lists published events with date, type, description
+- [ ] Each event may have an optional CTA label + URL (contact page or external registration link)
+- [ ] **Not in scope:** ticket sales, seat booking, or payment within the site
+- [ ] Featured upcoming events shown on homepage
+- [ ] Event CTA clicks tracked in analytics when GA is configured
 
 ---
 
@@ -228,6 +268,42 @@ As the school admin, I want to send newsletters to all subscribers without exter
 
 ---
 
+**US-15 — Testimonials management**
+As the school admin, I want to add and feature parent testimonials without developer help.
+
+- [ ] Create, edit, delete testimonials with name, role, quote, optional photo/video URL
+- [ ] Featured toggle and sort order for homepage display
+- [ ] Changes reflect on homepage immediately after save
+
+---
+
+**US-16 — Achievements management**
+As the school admin, I want to publish school outcomes and milestones.
+
+- [ ] Create, edit, delete achievements with title, category, year, description, optional image
+- [ ] Featured toggle for homepage strip and About page showcase
+- [ ] Sort order control
+
+---
+
+**US-17 — Events management**
+As the school admin, I want to promote school events on the website.
+
+- [ ] Create, edit, delete events with title, slug, type, date, description
+- [ ] Draft / Published status — drafts hidden from public site
+- [ ] Optional CTA label + URL per event (links out; no in-app ticketing)
+- [ ] Featured toggle for homepage upcoming events section
+
+---
+
+**US-18 — Site media management**
+As the school admin, I want to update the homepage tour video without code changes.
+
+- [ ] Edit `hero_tour_video` embed URL, poster image, and caption
+- [ ] Supports YouTube, Vimeo, or MP4 URLs
+
+---
+
 ## 6. Success Metrics
 
 | Metric | Target (90 days post-launch) |
@@ -265,6 +341,10 @@ As the school admin, I want to send newsletters to all subscribers without exter
 | 4 | Can the school provide photography, or does it need to be arranged? | School | Open |
 | 5 | Who is the designated admin user (name + email) for account setup? | School | Open |
 | 6 | What are the current school stats for animated counters? (Years operating, no. of students, staff count, etc.) | School | Open |
+| 7 | School tour video URL (YouTube/Vimeo) and poster image for homepage | School | Open |
+| 8 | Parent testimonials (name, role, quote, photo) for CMS upload | School | Open |
+| 9 | Achievements list (exams, competitions, milestones) with years | School | Open |
+| 10 | Upcoming events with dates and registration/contact CTAs | School | Open |
 
 ---
 
