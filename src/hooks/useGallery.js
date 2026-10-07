@@ -1,14 +1,29 @@
 // Hook for reading gallery images from Supabase.
 
 import { useEffect, useState } from 'react'
+import {
+  getLegacyGalleryImages,
+  isPlaceholderGalleryUrl,
+  mergeGalleryWithLegacy,
+} from '../lib/legacyGallery'
 import { fetchWithCache } from '../lib/queryCache'
 import { supabase } from '../lib/supabase'
+
+function resolveGalleryImages(data, { limit } = {}) {
+  const usable = (data ?? []).filter((image) => image.url && !isPlaceholderGalleryUrl(image.url))
+
+  if (usable.length === 0) {
+    return getLegacyGalleryImages({ limit: limit === 'all' ? undefined : limit })
+  }
+
+  return mergeGalleryWithLegacy(usable, { limit: limit === 'all' ? undefined : limit })
+}
 
 export function useGallery({ limit = 6 } = {}) {
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const cacheKey = `gallery:${typeof limit === 'number' ? limit : 'all'}`
+  const cacheKey = `gallery:v3:${limit === 'all' ? 'all' : limit}`
 
   useEffect(() => {
     let mounted = true
@@ -23,7 +38,7 @@ export function useGallery({ limit = 6 } = {}) {
         .order('uploaded_at', { ascending: false })
 
       if (typeof limit === 'number') {
-        query = query.limit(limit)
+        query = query.limit(Math.max(limit, 24))
       }
 
       const { data, error: requestError } = await query
@@ -36,9 +51,9 @@ export function useGallery({ limit = 6 } = {}) {
 
         if (requestError) {
           setError(null)
-          setImages([])
+          setImages(getLegacyGalleryImages({ limit: limit === 'all' ? undefined : limit }))
         } else {
-          setImages(data)
+          setImages(resolveGalleryImages(data, { limit }))
         }
 
         setLoading(false)
@@ -48,7 +63,7 @@ export function useGallery({ limit = 6 } = {}) {
           return
         }
 
-        setImages([])
+        setImages(getLegacyGalleryImages({ limit: limit === 'all' ? undefined : limit }))
         setLoading(false)
       })
 
