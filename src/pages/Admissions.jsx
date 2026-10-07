@@ -16,6 +16,16 @@ import SectionHeader from '../components/ui/SectionHeader'
 import Textarea from '../components/ui/Textarea'
 import WaveDivider from '../components/ui/WaveDivider'
 import { useEnquirySubmission } from '../hooks/useEnquirySubmission'
+import { useEvents } from '../hooks/useEvents'
+import { trackEventCtaClick } from '../lib/analytics'
+import {
+  ENQUIRY_INTENT_OPTIONS,
+  admissionsCopy,
+  cta,
+  funnelSteps,
+  intentFromQueryParam,
+  seo,
+} from '../lib/messaging'
 import { fadeUpMotion } from '../lib/motion'
 import { MAPS_EMBED_URL } from '../lib/site'
 
@@ -26,6 +36,21 @@ const requirements = [
   'Previous school records where applicable',
   'Parent or guardian contact details',
 ]
+
+const selectBaseClass =
+  'w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary transition-all duration-200 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20'
+
+function formatEventDate(value) {
+  if (!value) {
+    return 'Date to be announced'
+  }
+
+  return new Intl.DateTimeFormat('en-NG', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(value))
+}
 
 function Admissions() {
   const prefersReducedMotion = useReducedMotion()

@@ -11,6 +11,7 @@ import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
 import { trackScheduleVisitClick } from '../lib/analytics'
 import { cn } from '../lib/cn'
+import { academicsCopy, cta, ctaLinks, seo, tiers } from '../lib/messaging'
 import { fadeUpMotion } from '../lib/motion'
 
 const tierList = [

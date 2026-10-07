@@ -14,6 +14,16 @@ import {
 import { fetchWithCache } from '../lib/queryCache'
 import { supabase } from '../lib/supabase'
 
+function resolveGalleryImages(data, { limit } = {}) {
+  const usable = (data ?? []).filter((image) => image.url && !isPlaceholderGalleryUrl(image.url))
+
+  if (usable.length === 0) {
+    return getLegacyGalleryImages({ limit: limit === 'all' ? undefined : limit })
+  }
+
+  return mergeGalleryWithLegacy(usable, { limit: limit === 'all' ? undefined : limit })
+}
+
 const GALLERY_COLUMNS = 'id, url, caption, uploaded_at'
 
 function buildGalleryQuery({ limit, pageSize, pageIndex = 0 }) {
@@ -73,8 +83,8 @@ export function useGallery({ limit = 6, pageSize } = {}) {
       const firstError = results.find((result) => result.error)?.error ?? null
 
       if (firstError) {
-        setError(firstError)
-        setImages([])
+        setError(null)
+        setImages(getLegacyGalleryImages({ limit: typeof limit === 'number' ? limit : undefined }))
         setLastPageCount(null)
       } else {
         // Dedupe by id in case range windows ever overlap between pages.
@@ -86,7 +96,7 @@ export function useGallery({ limit = 6, pageSize } = {}) {
           seen.add(image.id)
           return true
         })
-        setImages(combined)
+        setImages(resolveGalleryImages(combined, { limit }))
         setLastPageCount(results[results.length - 1].data.length)
       }
 
@@ -95,7 +105,7 @@ export function useGallery({ limit = 6, pageSize } = {}) {
 
     loadPages().catch(() => {
       if (!cancelled && mounted) {
-        setImages([])
+        setImages(getLegacyGalleryImages({ limit: typeof limit === 'number' ? limit : undefined }))
         setLastPageCount(null)
         setLoading(false)
       }
