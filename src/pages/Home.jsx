@@ -1,5 +1,7 @@
 // Homepage — composed of animated sections living in src/components/home/.
 
+import { Award, Calendar, ChevronRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import NewsletterSignupForm from '../components/forms/NewsletterSignupForm'
 import AboutTeaser from '../components/home/AboutTeaser'
 import AcademicsSection from '../components/home/AcademicsSection'
@@ -10,12 +12,33 @@ import MarqueeStrip from '../components/home/MarqueeStrip'
 import NewsSection from '../components/home/NewsSection'
 import StatsSection from '../components/home/StatsSection'
 import TestimonialsSection from '../components/home/TestimonialsSection'
+import VideoEmbed from '../components/media/VideoEmbed'
 import PageSeo from '../components/seo/PageSeo'
+import Badge from '../components/ui/Badge'
+import Button from '../components/ui/Button'
+import Card from '../components/ui/Card'
 import { ScrollReveal } from '../components/ui/ScrollReveal'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
+import { useAchievements } from '../hooks/useAchievements'
+import { useEvents } from '../hooks/useEvents'
+import { useSiteMedia } from '../hooks/useSiteMedia'
+import { formatDate } from '../lib/format'
+import { DEFAULT_TOUR_POSTER, TOUR_VIDEO_FALLBACK_CAPTION } from '../lib/illustrations'
+import { seo } from '../lib/messaging'
 
 function Home() {
+  const { media: tourVideo, loading: tourLoading } = useSiteMedia('hero_tour_video')
+  const { achievements, loading: achievementsLoading, isEmpty: achievementsEmpty } = useAchievements({
+    featured: true,
+    limit: 6,
+  })
+  const { events, loading: eventsLoading, isEmpty: eventsEmpty } = useEvents({
+    publishedOnly: true,
+    featured: true,
+    upcoming: true,
+    limit: 3,
+  })
   return (
     <div className="bg-bg-light">
       <PageSeo

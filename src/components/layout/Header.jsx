@@ -7,7 +7,8 @@ import Button from '../ui/Button'
 import FallbackImage from '../ui/FallbackImage'
 import { trackApplyClick, trackCallClick, trackScheduleVisitClick } from '../../lib/analytics'
 import { cn } from '../../lib/cn'
-import { NAV_ITEMS } from '../../lib/site'
+import { cta, ctaLinks } from '../../lib/messaging'
+import { NAV_ITEMS, PHONES } from '../../lib/site'
 
 const DRAWER_ID = 'mobile-navigation-drawer'
 

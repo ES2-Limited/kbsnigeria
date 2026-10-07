@@ -132,23 +132,43 @@ function RichTextEditor({ content = '', onChange }) {
 
       <EditorContent editor={editor} />
 
-      <div className="mt-3 flex flex-col gap-3 sm:flex-row">
-        <input
-          className="w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary outline-none transition-all duration-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20"
-          onChange={(event) => setImageUrl(event.target.value)}
-          placeholder="Paste image URL to embed"
-          type="url"
-          value={imageUrl}
-        />
-        <Button onClick={addImage} variant="secondary">
-          <ImageIcon className="h-4 w-4" />
-          <span>Embed Image</span>
-        </Button>
+      <div className="mt-3 space-y-2">
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <input
+            className="w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary outline-none transition-all duration-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20"
+            onChange={(event) => setImageUrl(event.target.value)}
+            placeholder="Paste image URL to embed"
+            type="url"
+            value={imageUrl}
+          />
+          <Button onClick={addImage} type="button" variant="secondary">
+            <ImageIcon className="h-4 w-4" />
+            <span>Embed URL</span>
+          </Button>
+
+          <input
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="hidden"
+            onChange={handleFileUpload}
+            ref={fileInputRef}
+            type="file"
+          />
+          <Button
+            loading={uploadingImage}
+            onClick={() => fileInputRef.current?.click()}
+            type="button"
+            variant="outline"
+          >
+            <Upload className="h-4 w-4" />
+            <span>Upload Image</span>
+          </Button>
+        </div>
         {imageError ? (
           <p className="font-body text-sm text-red-600 sm:w-full" role="alert">
             {imageError}
           </p>
         ) : null}
+        {uploadError ? <p className="font-body text-xs text-error">{uploadError}</p> : null}
       </div>
     </div>
   )

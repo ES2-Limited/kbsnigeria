@@ -9,6 +9,8 @@ import FallbackImage from '../components/ui/FallbackImage'
 import { LEGACY_STAFF_PHOTOS } from '../lib/legacyGallery'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
+import { useAchievements } from '../hooks/useAchievements'
+import { aboutCopy, pillars, seo } from '../lib/messaging'
 import { fadeUpMotion } from '../lib/motion'
 
 const staff = [
@@ -17,8 +19,6 @@ const staff = [
   { name: 'Mrs Zainab Bello', role: 'Nursery Coordinator', photo: LEGACY_STAFF_PHOTOS.staff[0] },
   { name: 'Mr Tunde Adewale', role: 'JSS Programme Lead', photo: LEGACY_STAFF_PHOTOS.staff[1] },
 ]
-
-const affiliations = ['NERDC Aligned Curriculum', 'WAEC Preparation Track', 'Safe School Practices', 'Parent Partnership Focus']
 
 function About() {
   const prefersReducedMotion = useReducedMotion()
