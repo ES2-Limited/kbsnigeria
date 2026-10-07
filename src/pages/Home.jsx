@@ -2,7 +2,9 @@
 
 import { animate, motion, useInView, useReducedMotion } from 'framer-motion'
 import {
+  Award,
   BookOpen,
+  Calendar,
   ChevronDown,
   ChevronRight,
   Image as ImageIcon,
@@ -27,42 +29,50 @@ import { ScrollReveal } from '../components/ui/ScrollReveal'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
 import Badge from '../components/ui/Badge'
+import BrandIllustration from '../components/ui/BrandIllustration'
+import VideoEmbed from '../components/media/VideoEmbed'
+import { DEFAULT_TOUR_POSTER, TOUR_VIDEO_FALLBACK_CAPTION } from '../lib/illustrations'
 import FallbackImage from '../components/ui/FallbackImage'
+import { useAchievements } from '../hooks/useAchievements'
+import { useEvents } from '../hooks/useEvents'
 import { useGallery } from '../hooks/useGallery'
 import { useNews } from '../hooks/useNews'
 import { useNewsletterSubscription } from '../hooks/useNewsletterSubscription'
+import { useSiteMedia } from '../hooks/useSiteMedia'
+import { useTestimonials } from '../hooks/useTestimonials'
+import { trackApplyClick, trackScheduleVisitClick } from '../lib/analytics'
 import { cn } from '../lib/cn'
+import {
+  cta,
+  ctaLinks,
+  hero,
+  homeHighlights,
+  seo,
+  stats as messagingStats,
+  tiers,
+} from '../lib/messaging'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-const heroWords = ['Where', 'Every', 'Child', 'Discovers', 'Their', 'Potential']
-
-const stats = [
-  { label: 'Years Operating',  value: 25  },
-  { label: 'Students Enrolled', value: 400 },
-  { label: 'Staff Members',    value: 40  },
-  { label: 'Classes',          value: 12  },
-]
-
 const academics = [
   {
-    title: 'Nursery',
-    ages: 'Ages 3–5',
-    description: 'A warm first classroom built around play, literacy, and the confidence to ask big questions.',
+    title: tiers.nursery.name,
+    ages: tiers.nursery.ages,
+    description: tiers.nursery.tagline,
     variant: 'cyan',
     icon: TreeDeciduous,
   },
   {
-    title: 'Primary',
-    ages: 'Ages 6–11',
-    description: 'Strong foundations in core subjects, creativity, and structured curiosity that grows every term.',
+    title: tiers.primary.name,
+    ages: tiers.primary.ages,
+    description: tiers.primary.tagline,
     variant: 'purple',
     icon: BookOpen,
   },
   {
-    title: 'JSS',
-    ages: 'Ages 12–15',
-    description: 'Focused preparation for higher study through science, leadership, discipline, and discovery.',
+    title: tiers.jss.name,
+    ages: tiers.jss.ages,
+    description: tiers.jss.tagline,
     variant: 'navy',
     icon: Target,
   },
@@ -78,27 +88,6 @@ const tileGradients = [
 ]
 
 const tileHeights = ['h-56', 'h-40', 'h-48', 'h-40', 'h-56', 'h-44']
-
-const testimonials = [
-  {
-    name: 'Chioma Ibrahim',
-    role: 'Parent, Primary student',
-    quote: 'KBS has transformed how my child sees learning. The warmth and individual attention is remarkable — she genuinely looks forward to school.',
-    avatar: Users,
-  },
-  {
-    name: 'Mr. Adeyemi',
-    role: 'Parent, JSS student',
-    quote: 'Discipline, character, and academics in perfect balance. My son has become more confident and independent in the past year at KBS.',
-    avatar: User,
-  },
-  {
-    name: 'Blessing Okafor',
-    role: 'Parent, Nursery & Primary',
-    quote: 'Two children in school, two different experiences shaped with care. KBS is not just a school — it\'s a family that nurtures potential.',
-    avatar: Users,
-  },
-]
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -194,6 +183,10 @@ function Home() {
 
   const { news, loading: newsLoading, error: newsError, isEmpty: newsEmpty } = useNews({ limit: 3 })
   const { images, loading: galleryLoading, error: galleryError, isEmpty: galleryEmpty } = useGallery({ limit: 6 })
+  const { media: tourVideo, loading: tourLoading } = useSiteMedia('hero_tour_video')
+  const { achievements, loading: achievementsLoading, isEmpty: achievementsEmpty } = useAchievements({ featured: true, limit: 6 })
+  const { testimonials, loading: testimonialsLoading, isEmpty: testimonialsEmpty } = useTestimonials({ featured: true, limit: 3 })
+  const { events, loading: eventsLoading, isEmpty: eventsEmpty } = useEvents({ featured: true, upcoming: true, limit: 3 })
   const newsletter = useNewsletterSubscription()
   const [formData, setFormData] = useState({ name: '', email: '' })
 
@@ -236,8 +229,8 @@ function Home() {
     <div className="bg-bg-light">
       <PageSeo
         canonicalPath="/"
-        description="Discover Knowledgebased Basic Science Schools, FHA Lugbe, Abuja — a warm, modern nursery to JSS school for growing minds."
-        title="KBS Nigeria | Knowledgebased Basic Science Schools"
+        description={seo.home.description}
+        title={seo.home.title}
       />
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
@@ -262,7 +255,7 @@ function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
             >
-              Nurturing great minds since 1999
+              {hero.overline}
             </motion.p>
 
             {/* Heading — word by word, stagger from delay 0.4s */}
@@ -272,7 +265,7 @@ function Home() {
               initial={prefersReducedMotion ? false : 'hidden'}
               animate="visible"
             >
-              {heroWords.map((word) => (
+              {hero.headlineWords.map((word) => (
                 <motion.span
                   key={word}
                   className="mr-3 inline-block"
@@ -290,7 +283,7 @@ function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.9, ease: 'easeOut' }}
             >
-              At KBS Nigeria, every child is guided with warmth, structure, and curiosity through a school experience that feels joyful, modern, and deeply grounded.
+              {hero.subhead}
             </motion.p>
 
             {/* Buttons — spring pop, stagger from delay 1.1s */}
@@ -301,8 +294,16 @@ function Home() {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 18, delay: 1.1 }}
               >
-                <Button as="link" fullWidth className="sm:w-auto" size="lg" to="/admissions" variant="primary">
-                  Enquire Now
+                <Button
+                  as="link"
+                  fullWidth
+                  className="sm:w-auto"
+                  onClick={() => trackScheduleVisitClick('home_hero')}
+                  size="lg"
+                  to={ctaLinks.scheduleVisit}
+                  variant="primary"
+                >
+                  {cta.scheduleVisit}
                 </Button>
               </motion.div>
               <motion.div
@@ -313,13 +314,14 @@ function Home() {
               >
                 <Button
                   as="link"
-                  className="border-2 border-white text-white hover:bg-white hover:text-brand-primary sm:w-auto"
                   fullWidth
+                  onClick={() => trackApplyClick('home_hero')}
                   size="lg"
-                  to="/about"
-                  variant="secondary"
+                  to={ctaLinks.applyNow}
+                  variant="inverse"
+                  className="sm:w-auto"
                 >
-                  Learn More
+                  {cta.applyNow}
                 </Button>
               </motion.div>
             </div>
@@ -362,9 +364,10 @@ function Home() {
                 animate={prefersReducedMotion ? {} : { y: [0, -12, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
               >
-                <PlaceholderIllustration
+                <BrandIllustration
+                  alt="Children studying with a teacher at KBS school"
                   className="h-80 sm:h-[420px]"
-                  label="hero-scene.svg"
+                  name="hero"
                 />
               </motion.div>
             </motion.div>
@@ -406,7 +409,7 @@ function Home() {
           initial={prefersReducedMotion ? false : 'hidden'}
           animate={statsInView ? 'visible' : 'hidden'}
         >
-          {stats.map((stat) => (
+          {messagingStats.map((stat) => (
             <motion.div key={stat.label} variants={statCardVariants}>
               <Counter label={stat.label} value={stat.value} />
             </motion.div>
@@ -415,6 +418,41 @@ function Home() {
       </section>
 
       <WaveDivider className="text-white" />
+
+      {/* ── 2b. SCHOOL TOUR VIDEO ───────────────────────────────────────────── */}
+      <section className="bg-white py-24 sm:py-32">
+        <div className="mx-auto grid max-w-7xl gap-12 px-6 sm:px-8 lg:grid-cols-2 lg:items-center lg:px-10">
+          <ScrollReveal direction="left">
+            {tourLoading ? (
+              <div className="aspect-video animate-pulse rounded-3xl bg-bg-light" />
+            ) : (
+              <VideoEmbed
+                analyticsLocation="homepage_tour"
+                caption={tourVideo?.caption || (!tourVideo?.embed_url ? TOUR_VIDEO_FALLBACK_CAPTION : undefined)}
+                poster={tourVideo?.poster_url || DEFAULT_TOUR_POSTER}
+                title="KBS School Tour"
+                url={tourVideo?.embed_url}
+              />
+            )}
+          </ScrollReveal>
+          <div className="space-y-6">
+            <ScrollReveal direction="right" delay={0.2}>
+              <SectionHeader
+                align="left"
+                heading="See KBS Before You Visit"
+                overline="Virtual Tour"
+                subtext="Walk through our classrooms, facilities, and everyday school life. A warm first look at the environment where your child will learn and grow."
+              />
+            </ScrollReveal>
+            <ScrollReveal direction="right" delay={0.35}>
+              <Button as="link" to="/admissions" variant="primary">
+                Book a Visit
+              </Button>
+            </ScrollReveal>
+          </div>
+        </div>
+        <WaveDivider className="text-bg-light" />
+      </section>
 
       {/* ── 3. ABOUT TEASER ─────────────────────────────────────────────────── */}
       <section className="py-24 sm:py-32">
@@ -431,9 +469,9 @@ function Home() {
             <ScrollReveal direction="right" delay={0.2}>
               <SectionHeader
                 align="left"
-                heading="A School Experience Built Around Care, Character, and Curiosity"
-                overline="Welcome to KBS"
-                subtext="From nursery through junior secondary, we combine nurturing guidance with strong academic foundations so children grow in confidence, discipline, and discovery."
+                heading={homeHighlights.about.heading}
+                overline={homeHighlights.about.overline}
+                subtext={homeHighlights.about.subtext}
               />
             </ScrollReveal>
             <ScrollReveal direction="right" delay={0.35}>
@@ -453,9 +491,9 @@ function Home() {
   <div className="mx-auto max-w-3xl text-center">
     <SectionHeader
       align="center"
-      heading="Learning Pathways for Every Stage"
-      overline="Academics"
-      subtext="Each level is thoughtfully structured to meet children where they are and prepare them for what comes next."
+      heading={homeHighlights.academics.heading}
+      overline={homeHighlights.academics.overline}
+      subtext={homeHighlights.academics.subtext}
     />
   </div>
 </ScrollReveal>
@@ -489,6 +527,44 @@ function Home() {
         </div>
         <WaveDivider className="text-white" />
       </section>
+
+      {/* ── 4b. ACHIEVEMENTS STRIP ──────────────────────────────────────────── */}
+      {!achievementsLoading && !achievementsEmpty ? (
+        <section className="bg-brand-primary py-16 text-white sm:py-20">
+          <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
+            <ScrollReveal direction="up" className="mb-10">
+              <SectionHeader
+                align="center"
+                className="mx-auto [&_h2]:text-white [&_p]:text-white/80"
+                heading="Outcomes That Speak for Themselves"
+                overline="Achievements"
+                subtext="Highlights from examinations, competitions, and milestones across the KBS community."
+              />
+            </ScrollReveal>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {achievements.map((item, i) => (
+                <ScrollReveal direction="up" delay={i * 0.1} key={item.id}>
+                  <div className="rounded-2xl bg-white/10 px-5 py-6 backdrop-blur-sm">
+                    <div className="mb-3 flex items-center gap-2">
+                      <Award className="h-5 w-5 text-brand-gray" />
+                      {item.category ? (
+                        <span className="font-body text-xs font-semibold uppercase tracking-wide text-brand-gray">{item.category}</span>
+                      ) : null}
+                    </div>
+                    <h3 className="font-display text-xl text-white">{item.title}</h3>
+                    {item.year ? (
+                      <p className="mt-1 font-body text-sm text-white/70">{item.year}</p>
+                    ) : null}
+                    {item.description ? (
+                      <p className="mt-3 font-body text-sm leading-7 text-white/80">{item.description}</p>
+                    ) : null}
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {/* ── 5. NEWS ─────────────────────────────────────────────────────────── */}
       <section className="py-24 sm:py-32">
@@ -594,22 +670,44 @@ function Home() {
   <div className="mx-auto max-w-3xl text-center">
     <SectionHeader
       align="center"
-      heading="What KBS Families Say"
-      overline="Testimonials"
-      subtext="Hear from parents and guardians whose children are thriving at Knowledgebased Basic Science Schools."
+      heading={homeHighlights.testimonials.heading}
+      overline={homeHighlights.testimonials.overline}
+      subtext={homeHighlights.testimonials.subtext}
     />
   </div>
 </ScrollReveal>
 
           <div className="grid gap-8 lg:grid-cols-3">
-            {testimonials.map((testimonial, i) => (
-              <ScrollReveal key={testimonial.name} direction="up" delay={i * 0.15}>
+            {testimonialsLoading ? (
+              [0, 1, 2].map((i) => (
+                <div className="h-48 animate-pulse rounded-2xl bg-brand-gray/20" key={i} />
+              ))
+            ) : null}
+            {!testimonialsLoading && testimonialsEmpty ? (
+              <EmptyState
+                className="lg:col-span-3"
+                description="Parent stories will appear here as they are added."
+                illustration={<Users className="h-12 w-12" />}
+                title="Testimonials coming soon"
+              />
+            ) : null}
+            {!testimonialsLoading && !testimonialsEmpty ? testimonials.map((testimonial, i) => (
+              <ScrollReveal direction="up" delay={i * 0.15} key={testimonial.id}>
                 <Card className="h-full space-y-5">
                   <p className="font-calligraphy text-lg italic text-text-primary">&ldquo;{testimonial.quote}&rdquo;</p>
-                  <div className="flex items-center gap-3 pt-2 border-t border-brand-gray/30">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-gray/10 text-brand-primary">
-                      {testimonial.avatar ? <testimonial.avatar className="h-6 w-6" /> : null}
-                    </div>
+                  <div className="flex items-center gap-3 border-t border-brand-gray/30 pt-2">
+                    {testimonial.photo_url ? (
+                      <FallbackImage
+                        alt=""
+                        className="h-12 w-12 rounded-full object-cover"
+                        fallbackSrc="/kbs-logo.png"
+                        src={testimonial.photo_url}
+                      />
+                    ) : (
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-gray/10 text-brand-primary">
+                        <User className="h-6 w-6" />
+                      </div>
+                    )}
                     <div>
                       <p className="font-body font-semibold text-text-primary">{testimonial.name}</p>
                       <p className="font-body text-xs text-text-secondary">{testimonial.role}</p>
@@ -617,12 +715,55 @@ function Home() {
                   </div>
                 </Card>
               </ScrollReveal>
-            ))}
+            )) : null}
           </div>
         </div>
       </section>
 
       <WaveDivider className="text-white" />
+
+      {/* ── 7b. FEATURED EVENTS ───────────────────────────────────────────────── */}
+      {!eventsLoading && !eventsEmpty ? (
+        <section className="bg-white py-24 sm:py-32">
+          <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
+            <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+              <ScrollReveal direction="up">
+                <SectionHeader
+                  align="left"
+                  heading="Upcoming School Events"
+                  overline="What's On"
+                  subtext="Open days, exhibitions, and community gatherings — join us on campus."
+                />
+              </ScrollReveal>
+              <Link
+                className="inline-flex min-h-11 items-center gap-2 font-body text-sm font-semibold text-brand-primary transition-colors hover:text-brand-purple"
+                to="/events"
+              >
+                <span>View all events</span>
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {events.map((event, i) => (
+                <ScrollReveal direction="up" delay={i * 0.1} key={event.id}>
+                  <Card className="h-full space-y-4">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-brand-primary" />
+                      {event.type ? <Badge variant="cyan">{event.type}</Badge> : null}
+                    </div>
+                    <h3 className="font-display text-xl text-text-primary">{event.title}</h3>
+                    <p className="font-body text-sm text-text-secondary">{formatDate(event.event_date)}</p>
+                    {event.description ? (
+                      <p className="font-body text-sm leading-7 text-text-secondary line-clamp-3">{event.description}</p>
+                    ) : null}
+                  </Card>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+          <WaveDivider className="text-bg-light" />
+        </section>
+      ) : null}
 
       {/* ── 8. ADMISSIONS CTA BANNER ────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-gradient-to-r from-brand-primary to-brand-accent py-24 text-white">
@@ -660,10 +801,10 @@ function Home() {
           <ScrollReveal direction="scale">
             <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
               <div>
-                <p className="mb-2 font-calligraphy text-xl italic text-white/80">Admissions Open</p>
-                <h2 className="mb-4 font-display text-h1 text-white">Ready to Join the KBS Family?</h2>
+                <p className="mb-2 font-calligraphy text-xl italic text-white/80">{homeHighlights.admissionsBanner.overline}</p>
+                <h2 className="mb-4 font-display text-h1 text-white">{homeHighlights.admissionsBanner.heading}</h2>
                 <p className="mb-8 max-w-2xl font-body text-body-lg text-white/80">
-                  Spaces are limited. Enquire today to begin your child&apos;s journey at Knowledgebased Basic Science Schools.
+                  {homeHighlights.admissionsBanner.subtext}
                 </p>
                 {/* CTA with glow on hover */}
                 <motion.div
@@ -672,8 +813,14 @@ function Home() {
                   whileTap={prefersReducedMotion ? {} : { scale: 0.97 }}
                   transition={{ type: 'spring', stiffness: 300 }}
                 >
-                  <Button as="link" size="lg" to="/admissions" variant="primary">
-                    Enquire Now
+                  <Button
+                    as="link"
+                    onClick={() => trackScheduleVisitClick('home_admissions_banner')}
+                    size="lg"
+                    to={ctaLinks.scheduleVisit}
+                    variant="primary"
+                  >
+                    {cta.scheduleVisit}
                   </Button>
                 </motion.div>
               </div>

@@ -6,38 +6,43 @@ import PageSeo from '../components/seo/PageSeo'
 import Badge from '../components/ui/Badge'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
-import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
+import BrandIllustration from '../components/ui/BrandIllustration'
 import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
+import { trackScheduleVisitClick } from '../lib/analytics'
 import { cn } from '../lib/cn'
+import { academicsCopy, cta, ctaLinks, seo, tiers } from '../lib/messaging'
 
-const tiers = [
+const tierList = [
   {
     id: 'nursery',
-    name: 'Nursery',
-    ageRange: 'Ages 3-5',
+    name: tiers.nursery.name,
+    ageRange: tiers.nursery.ages,
+    headline: tiers.nursery.tagline,
     subjects: ['Early Literacy', 'Numeracy', 'Creative Play', 'Social Development'],
     extracurriculars: ['Music Time', 'Story Circle', 'Hands-on Play', 'Outdoor Exploration'],
     description:
-      'Our nursery programme introduces children to school life through a gentle rhythm of play, language development, early number work, and social confidence building.',
+      'Our nursery programme introduces children to school life through play, language development, early number work, and the Islamic values that shape confident young learners.',
   },
   {
     id: 'primary',
-    name: 'Primary',
-    ageRange: 'Ages 6-11',
+    name: tiers.primary.name,
+    ageRange: tiers.primary.ages,
+    headline: tiers.primary.tagline,
     subjects: ['English Studies', 'Mathematics', 'Basic Science', 'ICT', 'Social Studies'],
     extracurriculars: ['Reading Club', 'Art & Craft', 'School Sports', 'Science Activities'],
     description:
-      'The primary years strengthen academic foundations while encouraging disciplined learning, self-expression, teamwork, and curiosity across core subjects.',
+      'The primary years strengthen academic foundations while encouraging disciplined learning, noble character, teamwork, and curiosity across core subjects.',
   },
   {
     id: 'jss',
-    name: 'JSS',
-    ageRange: 'Ages 12-15',
+    name: tiers.jss.name,
+    ageRange: tiers.jss.ages,
+    headline: tiers.jss.tagline,
     subjects: ['English Language', 'Mathematics', 'Integrated Science', 'Business Studies', 'Civic Education'],
     extracurriculars: ['Debate', 'STEM Projects', 'Leadership Activities', 'Creative Arts'],
     description:
-      'The JSS programme prepares learners for the next stage with deeper academic rigour, personal responsibility, and exposure to leadership and practical problem solving.',
+      'The JSS programme prepares learners for the next stage with deeper academic rigour, technology exposure, personal responsibility, and leadership development.',
   },
 ]
 
@@ -54,25 +59,25 @@ function fadeUpMotion(prefersReducedMotion) {
 
 function Academics() {
   const prefersReducedMotion = useReducedMotion()
-  const [activeTier, setActiveTier] = useState(tiers[0])
+  const [activeTier, setActiveTier] = useState(tierList[0])
 
   return (
     <div className="bg-bg-light">
       <PageSeo
         canonicalPath="/academics"
-        description="Explore the Nursery, Primary, and JSS academic programmes at KBS Nigeria, including subjects, activities, and curriculum alignment."
-        title="Academics | KBS Nigeria"
+        description={seo.academics.description}
+        title={seo.academics.title}
       />
 
       <section className="overflow-hidden bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent text-white">
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-16 sm:px-8 sm:pb-24 lg:px-10 lg:pt-24">
           <motion.div className="mx-auto max-w-3xl space-y-5 text-center" {...fadeUpMotion(prefersReducedMotion)}>
-            <p className="font-calligraphy text-xl italic text-brand-gray">Academics</p>
+            <p className="font-calligraphy text-xl italic text-brand-gray">{academicsCopy.hero.overline}</p>
             <h1 className="font-display text-h1 sm:text-display text-white">
-              Programmes Designed for Every Learning Stage
+              {academicsCopy.hero.heading}
             </h1>
             <p className="font-body text-lg leading-8 text-white/85">
-              From nursery to junior secondary, our curriculum is structured to build confidence, academic depth, and character at the right pace for each child.
+              {academicsCopy.hero.subtext}
             </p>
           </motion.div>
         </div>
@@ -86,11 +91,11 @@ function Academics() {
             className="mx-auto mb-10"
             heading="Explore Our Academic Tiers"
             overline="Curriculum Overview"
-            subtext="Each tier balances strong academics with age-appropriate activities, structure, and developmental support."
+            subtext="Each tier balances strong academics with age-appropriate activities, Islamic character, and technology readiness."
           />
 
           <div className="mb-10 flex flex-wrap justify-center gap-3">
-            {tiers.map((tier) => (
+            {tierList.map((tier) => (
               <button
                 className={cn(
                   'min-h-11 rounded-full px-5 py-3 font-body text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/20',
@@ -114,15 +119,17 @@ function Academics() {
               key={activeTier.id}
               transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: 'easeOut' }}
             >
-              <IllustrationPlaceholder
-                className="min-h-[340px] bg-bg-light"
-                label={`${activeTier.name} illustration placeholder`}
+              <BrandIllustration
+                alt={`${activeTier.name} programme illustration`}
+                className="min-h-[340px] rounded-3xl bg-bg-light p-6"
+                name={activeTier.id}
               />
 
               <div className="space-y-6">
                 <div className="space-y-3">
                   <Badge variant="cyan">{activeTier.ageRange}</Badge>
                   <h2 className="font-display text-4xl text-text-primary">{activeTier.name}</h2>
+                  <p className="font-display text-xl text-brand-primary">{activeTier.headline}</p>
                   <p className="font-body text-base leading-8 text-text-secondary">{activeTier.description}</p>
                 </div>
 
@@ -153,8 +160,13 @@ function Academics() {
                   </p>
                 </Card>
 
-                <Button as="link" to="/admissions" variant="primary">
-                  Enquire About {activeTier.name}
+                <Button
+                  as="link"
+                  onClick={() => trackScheduleVisitClick('academics_tier')}
+                  to={ctaLinks.scheduleVisit}
+                  variant="primary"
+                >
+                  {cta.scheduleVisit}
                 </Button>
               </div>
             </motion.div>

@@ -14,6 +14,7 @@ const Admissions = lazy(() => import('../pages/Admissions'))
 const News = lazy(() => import('../pages/News'))
 const NewsPost = lazy(() => import('../pages/NewsPost'))
 const Gallery = lazy(() => import('../pages/Gallery'))
+const Events = lazy(() => import('../pages/Events'))
 const Resources = lazy(() => import('../pages/Resources'))
 const Contact = lazy(() => import('../pages/Contact'))
 const Unsubscribe = lazy(() => import('../pages/Unsubscribe'))
@@ -24,6 +25,10 @@ const AdminGallery = lazy(() => import('../pages/admin/AdminGallery'))
 const AdminNews = lazy(() => import('../pages/admin/AdminNews'))
 const AdminResources = lazy(() => import('../pages/admin/AdminResources'))
 const AdminNewsletter = lazy(() => import('../pages/admin/AdminNewsletter'))
+const AdminTestimonials = lazy(() => import('../pages/admin/AdminTestimonials'))
+const AdminAchievements = lazy(() => import('../pages/admin/AdminAchievements'))
+const AdminEvents = lazy(() => import('../pages/admin/AdminEvents'))
+const AdminMedia = lazy(() => import('../pages/admin/AdminMedia'))
 const ComponentShowcase = lazy(() => import('../pages/dev/ComponentShowcase'))
 
 import { PageLoader } from '../components/ui/Skeleton'
@@ -82,6 +87,10 @@ const router = createBrowserRouter([
       {
         path: 'gallery',
         element: withSuspense(Gallery),
+      },
+      {
+        path: 'events',
+        element: withSuspense(Events),
       },
       {
         path: 'resources',
@@ -147,6 +156,30 @@ const router = createBrowserRouter([
           {
             path: 'newsletter',
             element: withSuspense(AdminNewsletter),
+          },
+          {
+            path: 'testimonials',
+            element: withSuspense(AdminTestimonials),
+          },
+          {
+            path: 'achievements',
+            element: withSuspense(AdminAchievements),
+          },
+          {
+            path: 'events',
+            element: withSuspense(AdminEvents),
+          },
+          {
+            path: 'events/new',
+            element: withSuspense(AdminEvents),
+          },
+          {
+            path: 'events/:id/edit',
+            element: withSuspense(AdminEvents),
+          },
+          {
+            path: 'media',
+            element: withSuspense(AdminMedia),
           },
         ],
       },

@@ -8,7 +8,6 @@ import FallbackImage from '../components/ui/FallbackImage'
 import IllustrationPlaceholder from '../components/ui/IllustrationPlaceholder'
 import Modal from '../components/ui/Modal'
 import PageSeo from '../components/seo/PageSeo'
-import SectionHeader from '../components/ui/SectionHeader'
 import WaveDivider from '../components/ui/WaveDivider'
 import { GalleryGridSkeleton } from '../components/ui/Skeleton'
 import { useGallery } from '../hooks/useGallery'
@@ -16,7 +15,7 @@ import { fadeUpMotion } from '../lib/motion'
 
 function Gallery() {
   const prefersReducedMotion = useReducedMotion()
-  const { images, loading, error, isEmpty } = useGallery({ limit: undefined })
+  const { images, loading, error, isEmpty } = useGallery({ limit: 'all' })
   const [activeIndex, setActiveIndex] = useState(null)
   const prevButtonRef = useRef(null)
   const nextButtonRef = useRef(null)

@@ -52,6 +52,7 @@ const navItems = [
   { label: 'Academics', to: '/academics' },
   { label: 'Admissions', to: '/admissions' },
   { label: 'News', to: '/news' },
+  { label: 'Events', to: '/events' },
   { label: 'Gallery', to: '/gallery' },
   { label: 'Resources', to: '/resources' },
   { label: 'Contact', to: '/contact' },

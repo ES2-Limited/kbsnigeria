@@ -5,7 +5,10 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import Button from '../ui/Button'
 import FallbackImage from '../ui/FallbackImage'
+import { trackApplyClick, trackCallClick, trackScheduleVisitClick } from '../../lib/analytics'
 import { cn } from '../../lib/cn'
+import { cta, ctaLinks } from '../../lib/messaging'
+import { PHONES } from '../../lib/site'
 
 const navItems = [
   { label: 'Home', to: '/' },
@@ -13,6 +16,7 @@ const navItems = [
   { label: 'Academics', to: '/academics' },
   { label: 'Admissions', to: '/admissions' },
   { label: 'News', to: '/news' },
+  { label: 'Events', to: '/events' },
   { label: 'Gallery', to: '/gallery' },
   { label: 'Resources', to: '/resources' },
   { label: 'Contact', to: '/contact' },
@@ -161,9 +165,24 @@ function Header() {
             </ul>
           </nav>
 
-          <div className="hidden shrink-0 xl:flex xl:justify-self-end">
-            <Button as="link" size="md" to="/admissions" variant="primary">
-              Enquire Now
+          <div className="hidden shrink-0 items-center gap-3 xl:flex xl:justify-self-end">
+            <Button
+              as="a"
+              href={PHONES[0].href}
+              onClick={() => trackCallClick('header')}
+              size="md"
+              variant="ghost"
+            >
+              {cta.callNow}
+            </Button>
+            <Button
+              as="link"
+              onClick={() => trackScheduleVisitClick('header')}
+              size="md"
+              to={ctaLinks.scheduleVisit}
+              variant="primary"
+            >
+              {cta.scheduleVisit}
             </Button>
           </div>
 
@@ -222,9 +241,36 @@ function Header() {
                   </motion.div>
                 ))}
               </motion.nav>
-              <div className="pt-4 sm:pt-6">
-                <Button as="link" fullWidth size="lg" to="/admissions" variant="primary">
-                  Enquire Now
+              <div className="flex flex-col gap-3 pt-4 sm:pt-6">
+                <Button
+                  as="link"
+                  fullWidth
+                  onClick={() => trackScheduleVisitClick('header_mobile')}
+                  size="lg"
+                  to={ctaLinks.scheduleVisit}
+                  variant="primary"
+                >
+                  {cta.scheduleVisit}
+                </Button>
+                <Button
+                  as="link"
+                  fullWidth
+                  onClick={() => trackApplyClick('header_mobile')}
+                  size="lg"
+                  to={ctaLinks.applyNow}
+                  variant="secondary"
+                >
+                  {cta.applyNow}
+                </Button>
+                <Button
+                  as="a"
+                  fullWidth
+                  href={PHONES[0].href}
+                  onClick={() => trackCallClick('header_mobile')}
+                  size="lg"
+                  variant="ghost"
+                >
+                  {cta.callNow}
                 </Button>
               </div>
             </motion.div>

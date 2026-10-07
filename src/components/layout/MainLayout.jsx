@@ -6,6 +6,8 @@ import { useEffect } from 'react'
 import { trackPageView } from '../../lib/analytics'
 import Footer from './Footer'
 import Header from './Header'
+import PublicCtaBlock from './PublicCtaBlock'
+import StickyActionBar from './StickyActionBar'
 import { ScrollProgress } from '../ui/ScrollProgress'
 import { WhatsAppButton } from '../ui/WhatsAppButton'
 
@@ -24,6 +26,7 @@ function MainLayout() {
       <Header />
       <AnimatePresence mode="wait" initial={false}>
         <motion.main
+          className="pb-20 xl:pb-0"
           key={location.pathname}
           initial={prefersReducedMotion ? {} : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -33,8 +36,10 @@ function MainLayout() {
           <Outlet />
         </motion.main>
       </AnimatePresence>
+      <PublicCtaBlock />
       <Footer />
-      <WhatsAppButton />
+      <WhatsAppButton className="hidden xl:flex" />
+      <StickyActionBar />
     </div>
   )
 }
