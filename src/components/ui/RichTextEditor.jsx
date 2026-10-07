@@ -3,10 +3,11 @@
 import Image from '@tiptap/extension-image'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { ImageIcon, List, ListOrdered, Pilcrow, Type, Bold, Italic } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { ImageIcon, List, ListOrdered, Pilcrow, Type, Bold, Italic, Upload } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import Button from './Button'
 import { cn } from '../../lib/cn'
+import { uploadFile } from '../../lib/storage'
 
 function ToolbarButton({ active, children, onClick, title }) {
   return (
@@ -26,6 +27,10 @@ function ToolbarButton({ active, children, onClick, title }) {
 
 function RichTextEditor({ content = '', onChange }) {
   const [imageUrl, setImageUrl] = useState('')
+  const [uploadingImage, setUploadingImage] = useState(false)
+  const [uploadError, setUploadError] = useState('')
+  const fileInputRef = useRef(null)
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -64,6 +69,27 @@ function RichTextEditor({ content = '', onChange }) {
 
     editor.chain().focus().setImage({ src: imageUrl.trim() }).run()
     setImageUrl('')
+    setUploadError('')
+  }
+
+  const handleFileUpload = async (event) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    setUploadingImage(true)
+    setUploadError('')
+
+    const uploadResult = await uploadFile({ file, bucket: 'news-covers' })
+
+    if (uploadResult.error) {
+      setUploadError(uploadResult.error.message || 'Image upload failed')
+      setUploadingImage(false)
+      return
+    }
+
+    editor.chain().focus().setImage({ src: uploadResult.url }).run()
+    setUploadingImage(false)
+    event.target.value = ''
   }
 
   return (
@@ -96,18 +122,38 @@ function RichTextEditor({ content = '', onChange }) {
 
       <EditorContent editor={editor} />
 
-      <div className="mt-3 flex flex-col gap-3 sm:flex-row">
-        <input
-          className="w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary outline-none transition-all duration-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20"
-          onChange={(event) => setImageUrl(event.target.value)}
-          placeholder="Paste image URL to embed"
-          type="url"
-          value={imageUrl}
-        />
-        <Button onClick={addImage} variant="secondary">
-          <ImageIcon className="h-4 w-4" />
-          <span>Embed Image</span>
-        </Button>
+      <div className="mt-3 space-y-2">
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <input
+            className="w-full rounded-xl border border-brand-gray/30 px-4 py-3 font-body text-text-primary outline-none transition-all duration-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-accent/20"
+            onChange={(event) => setImageUrl(event.target.value)}
+            placeholder="Paste image URL to embed"
+            type="url"
+            value={imageUrl}
+          />
+          <Button onClick={addImage} type="button" variant="secondary">
+            <ImageIcon className="h-4 w-4" />
+            <span>Embed URL</span>
+          </Button>
+
+          <input
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="hidden"
+            onChange={handleFileUpload}
+            ref={fileInputRef}
+            type="file"
+          />
+          <Button
+            loading={uploadingImage}
+            onClick={() => fileInputRef.current?.click()}
+            type="button"
+            variant="outline"
+          >
+            <Upload className="h-4 w-4" />
+            <span>Upload Image</span>
+          </Button>
+        </div>
+        {uploadError ? <p className="font-body text-xs text-error">{uploadError}</p> : null}
       </div>
     </div>
   )

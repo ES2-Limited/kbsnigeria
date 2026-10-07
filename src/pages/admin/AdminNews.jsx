@@ -11,6 +11,7 @@ import Input from '../../components/ui/Input'
 import RichTextEditor from '../../components/ui/RichTextEditor'
 import { slugify } from '../../lib/slugify'
 import { invalidateQueryCache } from '../../lib/queryCache'
+import { uploadFile } from '../../lib/storage'
 import { supabase } from '../../lib/supabase'
 import { formatAdminDate } from './_helpers'
 
@@ -120,17 +121,15 @@ function AdminNews() {
     let coverUrl = formData.cover_url
 
     if (coverFile) {
-      const filePath = `${Date.now()}-${coverFile.name.replace(/\s+/g, '-')}`
-      const uploadResult = await supabase.storage.from('news-covers').upload(filePath, coverFile)
+      const uploadResult = await uploadFile({ file: coverFile, bucket: 'news-covers' })
 
       if (uploadResult.error) {
-        setError(uploadResult.error.message)
+        setError(uploadResult.error.message || 'Cover upload failed')
         setSaving(false)
         return
       }
 
-      const { data: publicUrlData } = supabase.storage.from('news-covers').getPublicUrl(filePath)
-      coverUrl = publicUrlData.publicUrl
+      coverUrl = uploadResult.url
     }
 
     const payload = {
@@ -179,6 +178,9 @@ function AdminNews() {
     invalidateQueryCache('news')
     invalidateQueryCache('admin')
     loadPosts()
+  }
+
+  if (isFormMode) {
     return (
       <div className="space-y-8">
         <div className="flex items-center justify-between gap-4">

@@ -2,9 +2,9 @@
 
 import { Trash2, Upload } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
 import { invalidateQueryCache } from '../../lib/queryCache'
+import { deleteFile, uploadFile } from '../../lib/storage'
 import { supabase } from '../../lib/supabase'
 
 function AdminGallery() {
@@ -55,20 +55,18 @@ function AdminGallery() {
     setError('')
 
     for (const file of files) {
-      const filePath = `${Date.now()}-${file.name.replace(/\s+/g, '-')}`
-      const uploadResult = await supabase.storage.from('gallery').upload(filePath, file)
+      const uploadResult = await uploadFile({ file, bucket: 'gallery' })
 
       if (uploadResult.error) {
-        setError(uploadResult.error.message)
+        setError(uploadResult.error.message || 'Image upload failed')
         setUploading(false)
         return
       }
 
-      const { data: publicUrlData } = supabase.storage.from('gallery').getPublicUrl(filePath)
       const insertResult = await supabase.from('gallery_images').insert({
         caption: file.name,
-        storage_path: filePath,
-        url: publicUrlData.publicUrl,
+        storage_path: uploadResult.storagePath,
+        url: uploadResult.url,
       })
 
       if (insertResult.error) {
@@ -91,12 +89,11 @@ function AdminGallery() {
     }
 
     setError('')
-    const storageResult = await supabase.storage.from('gallery').remove([image.storage_path])
-
-    if (storageResult.error) {
-      setError(storageResult.error.message)
-      return
-    }
+    await deleteFile({
+      storagePath: image.storage_path,
+      bucket: 'gallery',
+      url: image.url,
+    })
 
     const deleteResult = await supabase.from('gallery_images').delete().eq('id', image.id)
 
