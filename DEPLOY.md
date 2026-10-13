@@ -46,7 +46,17 @@ After upload:
 4. Check `https://kbsnigeria.com/sitemap.xml`
 5. Check contact/admissions forms and admin login
 
-## 6. Optional Search Setup
+## 6. Netlify Deployment
+For Netlify deployments:
+1. SPA redirects are handled via [public/_redirects](file:///c:/Users/ASUS%20ZENBOOK/Desktop/HeyTechDigital/kbsnigeria/public/_redirects) (`/* /index.html 200`) and [netlify.toml](file:///c:/Users/ASUS%20ZENBOOK/Desktop/HeyTechDigital/kbsnigeria/netlify.toml).
+2. Ensure environment variables are configured in Netlify: **Site configuration > Environment variables**:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+   - `VITE_GA_MEASUREMENT_ID`
+   - `VITE_STORAGE_PROVIDER` (and related storage keys if applicable)
+3. Trigger a redeploy after committing and pushing `public/_redirects` and `netlify.toml`.
+
+## 7. Optional Search Setup
 After launch:
 1. Submit `https://kbsnigeria.com/sitemap.xml` to Google Search Console
 2. Verify GA4 is receiving traffic
